@@ -1,0 +1,3 @@
+# Difficulty tiers ship in MVP as optional bonus content
+
+Each game mode has one required base tier (e.g. "medium") whose daily challenge counts toward the streak and stays within the three-to-five minute core loop. Easy and hard tiers ship in the MVP too, but as optional bonus challenges that a player may additionally complete that day; they don't gate the streak and aren't counted against the core loop's time budget. This delivers the tiered-difficulty feature at MVP rather than deferring it, while preserving the "short but replayable" product principle. The alternative of requiring all three tiers daily was rejected because it could roughly triple daily content (up to nine mode-challenges) and conflicts directly with that principle.

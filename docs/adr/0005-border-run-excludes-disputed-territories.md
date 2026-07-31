@@ -1,0 +1,3 @@
+# Border Run adjacency data excludes disputed and ambiguous cases by default
+
+The Border Run adjacency graph only includes land borders with broad international consensus. Disputed territories, enclaves, and maritime-only borders are left out of the graph entirely rather than included with special handling, until a more complete documented policy is designed. This avoids the generator accidentally taking a political stance or producing puzzles built on contested geography at MVP. The trade-off is a smaller, less complete adjacency graph — some real-world routes (e.g. through disputed regions) simply won't be generable.

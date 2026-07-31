@@ -1,0 +1,3 @@
+# Daily uses a single fixed default collection
+
+Every day's required mode-challenges (Compass, Arrange, Border Run) all draw from one default collection — World — rather than each enabled collection getting its own set of daily mode-challenges. This keeps the daily ritual's size bounded and comparable across all players regardless of collection preference, avoiding a second multiplying axis on top of game modes. Europe, the Autonomous Communities of Spain, and other collections remain available in Practice. The trade-off is that the "geographic breadth" product principle is realized through Practice rather than Daily, at least until a versioned rotating daily program is deliberately designed.

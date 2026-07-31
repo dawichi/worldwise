@@ -2,34 +2,9 @@
 
 ## Document purpose
 
-This document is the product and implementation source of truth for Worldwise. It should help contributors and AI agents understand what we are building, why particular decisions were made, and which decisions remain intentionally open.
+This document is a **temporary implementation roadmap**, not the permanent source of truth. Permanent context — what the product is, its principles, non-goals, tech stack, and key architectural decisions — lives in [`AGENTS.md`](./AGENTS.md); read that first.
 
-The product definition should change deliberately. When an implementation decision materially changes the concept, scope, game rules, data model, or technical direction, update this document in the same change.
-
-## One-sentence definition
-
-Worldwise is a mobile-first geography arcade where players improve their mental map of the world through short daily challenges about direction, distance, order, borders, and other relationships between places.
-
-## Product vision
-
-Worldwise should feel like a small, refined daily ritual for people who enjoy geography. It borrows the accessibility and repeatability of daily games without copying Wordle's word-deduction mechanic or GeoGuessr's imagery and map-identification mechanic.
-
-The game is primarily about geographic intuition:
-
-> I know these places, but do I understand how they relate to one another?
-
-Worldwise is not intended to become a huge quiz platform or to chase virality. It is a carefully finished side project that should be interesting to discuss in job interviews and enjoyable enough to play with friends and family. Mobile is the primary experience, although desktop must remain fully supported.
-
-## Product principles
-
-1. **Relationships over isolated trivia.** Prefer direction, proximity, adjacency, ordering, scale, and routes over questions that only test memorized facts.
-2. **Learn in seconds.** A new player should understand a challenge after one short instruction and an example.
-3. **Short but replayable.** The daily experience should take roughly three to five minutes, while practice should allow unlimited play.
-4. **Compete with yourself.** Streaks, history, accuracy, and personal bests matter more than public rankings.
-5. **Fair generation.** Generated challenges must be deterministic, valid, unambiguous, and appropriately difficult.
-6. **Geographic breadth.** The system should support multiple collections, from the whole world to regions such as Europe or the autonomous communities of Spain.
-7. **A polished small product.** A focused and dependable experience is more valuable than a long list of half-finished modes.
-8. **Accessible by default.** The experience must not depend only on color, precise pointer input, or animation.
+This file exists to guide implementation of what hasn't been built yet. As a section is implemented, remove it from this document — the code, its tests, and any resulting ADR in [`docs/adr/`](./adr/) become the source of truth instead. This file is expected to shrink over time and eventually disappear entirely.
 
 ## Core experience
 
@@ -37,26 +12,31 @@ Worldwise has two complementary ways to play.
 
 ### Daily challenge
 
-The daily challenge is the main ritual. Every player receives the same generated challenge for a given date and game-data version.
+The daily challenge is the main ritual. Every player receives the same generated set of challenges for a given UTC date and game-data version ([ADR-0001](./adr/0001-daily-reset-utc-midnight.md)).
+
+The daily ritual is composed **per game mode**, not as one mixed-mode session: each day the player receives one required mode-challenge for every enabled game mode (for example, one Compass mode-challenge, one Arrange mode-challenge, one Border Run mode-challenge), each built from several rounds. Completing every enabled mode's required mode-challenge for the day completes the daily ritual and advances the streak; partial completion does not ([ADR-0002](./adr/0002-per-mode-daily-challenges.md)).
 
 Initial target:
 
-- One challenge per day.
-- Approximately five rounds.
-- A mixture of supported game modes.
-- One recorded attempt per day.
-- A final score and per-round feedback.
+- One required mode-challenge per enabled game mode, per day.
+- Approximately three rounds per mode-challenge (around nine rounds total for the daily ritual).
+- All mode-challenges draw from a single default collection — World — for the MVP ([ADR-0007](./adr/0007-daily-uses-single-default-collection.md)).
+- One recorded attempt per mode-challenge per day.
+- A final score and per-round feedback for each mode-challenge, plus an overall daily result.
 - A streak and personal history stored locally.
 - A shareable spoiler-free result.
 
-Refreshing the page, changing the device clock, or reopening the application must not accidentally create a different challenge for the same daily key. The exact policy for interrupted attempts and intentional resets must be defined before implementation.
+Difficulty tiers (easy, medium, hard) exist per mode-challenge. Exactly one tier is the required tier for the streak and the three-to-five minute time budget; the other tiers are optional bonus mode-challenges a player may additionally complete the same day, and do not affect the streak or count against the time budget ([ADR-0003](./adr/0003-difficulty-tiers-optional-bonus.md)).
+
+Refreshing the page, changing the device clock, or reopening the application must not accidentally create a different challenge for the same daily key. An interrupted mode-challenge can be resumed at any point before the next UTC reset; after that reset it is no longer resumable and counts as not completed for that day.
 
 ### Practice
 
 Practice lets players continue after the daily challenge or train a particular skill.
 
 - Unlimited randomly generated challenges.
-- Selection by geographic collection and game mode where supported.
+- Selection by geographic collection, game mode, and tier where supported.
+- Collections beyond the Daily default (World) — such as Europe, and later the Autonomous Communities of Spain — are primarily accessed through Practice for the MVP ([ADR-0007](./adr/0007-daily-uses-single-default-collection.md)).
 - Practice results do not affect the daily streak or daily score.
 - Practice may keep separate local statistics such as attempts and accuracy.
 - Repeated challenges should be avoided within a reasonable recent-history window.
@@ -65,7 +45,7 @@ Practice randomness does not need to be shared between players, but challenge va
 
 ## Game modes
 
-The architecture should treat modes as independent verticals with shared concepts for generation, validation, scoring, persistence, and presentation. We should launch with a small set and add modes only when they introduce a genuinely different geographic skill.
+The architecture should treat game modes as independent units with shared concepts for generation, validation, scoring, persistence, and presentation. We should launch with a small set and add modes only when they introduce a genuinely different geographic skill. Each mode may offer difficulty tiers (easy, medium, hard); see Core experience for how tiers interact with the daily ritual ([ADR-0003](./adr/0003-difficulty-tiers-optional-bonus.md)).
 
 ### Recommended MVP modes
 
@@ -100,7 +80,7 @@ Example: build a valid land-border route from France to Poland.
 
 The underlying data is an adjacency graph. Early versions should make the expected rule explicit: any valid route, a route with an exact number of steps, or the shortest route. The generator must verify that a route exists and that the puzzle has the intended difficulty before presenting it.
 
-Special cases such as overseas territories, disputed borders, enclaves, and maritime borders must follow a documented dataset policy.
+Special cases such as overseas territories, disputed borders, enclaves, and maritime borders are excluded from the adjacency graph by default ([ADR-0005](./adr/0005-border-run-excludes-disputed-territories.md)).
 
 ### Possible later modes
 
@@ -136,22 +116,24 @@ Daily challenges are generated from data and rules rather than manually authored
 
 ### Daily key
 
-Generation should use a stable seed derived from at least:
+Each mode-challenge is generated from a stable seed derived from at least:
 
-- A date in `YYYY-MM-DD` format.
+- A date in `YYYY-MM-DD` format, using the UTC calendar date ([ADR-0001](./adr/0001-daily-reset-utc-midnight.md)).
 - A game/generator version.
 - A data version.
-- The collection or daily-program identifier.
+- The collection identifier (the fixed default collection for Daily; see Core experience).
+- The game mode identifier.
+- The tier identifier (required tier, or a bonus tier).
 
 Conceptual example:
 
 ```text
-worldwise:daily:v1:data-v1:2026-07-31:default
+worldwise:daily:v1:data-v1:2026-07-31:world:compass:medium
 ```
 
-The same key must generate the same complete challenge in every supported browser. Do not rely on `Math.random()` for daily content. Use a small, tested deterministic pseudo-random generator fed by a stable hash, or a carefully selected dependency with consistent cross-platform behavior.
+The same key must generate the same complete mode-challenge in every supported browser. Do not rely on `Math.random()` for daily content. Use a small, tested deterministic pseudo-random generator fed by a stable hash, or a carefully selected dependency with consistent cross-platform behavior.
 
-The initial recommendation is to use the UTC calendar date so a future global comparison has one unambiguous challenge. This is an implementation direction, not yet a final product decision: using the player's local date may feel more natural at midnight. The choice must be finalized before daily streaks are implemented and then treated as a compatibility decision.
+Daily resets at UTC midnight, chosen so a global comparison has one unambiguous challenge and generation/testing stay free of timezone-dependent logic; players outside UTC see the new daily ritual at a non-midnight local hour, a deliberately accepted cost ([ADR-0001](./adr/0001-daily-reset-utc-midnight.md)).
 
 ### Generation pipeline
 
@@ -180,8 +162,8 @@ Generated does not mean arbitrary. Every mode needs explicit eligibility rules. 
 - A safe angular margin around Compass answer boundaries.
 - Minimum coordinate or distance separation for Arrange.
 - Verified connectivity and route length for Border Run.
-- Exclusion or special handling of disputed territories.
-- A difficulty band appropriate for the current session.
+- Disputed territories, enclaves, and maritime-only borders excluded by default ([ADR-0005](./adr/0005-border-run-excludes-disputed-territories.md)).
+- A difficulty band appropriate for the current tier.
 - No duplicate place within a round unless the mechanic requires it.
 - No accidental repetition across consecutive daily challenges when reasonably avoidable.
 
@@ -189,16 +171,7 @@ Property-based tests are particularly valuable for proving these invariants acro
 
 ## Scoring and progression
 
-The exact formula is intentionally undecided. It should be simple enough that players understand why they received a score.
-
-Possible inputs are:
-
-- Correctness.
-- Degree of error where the mode has meaningful partial accuracy.
-- Number of attempts.
-- Time, used cautiously so accessibility and thoughtful play are not punished.
-
-The MVP should prioritize correctness and understandable partial credit over speed. Daily results could use a normalized score such as 0–1,000, but this is not yet a requirement.
+Each mode-challenge is scored per the model in [ADR-0004](./adr/0004-scoring-correctness-partial-credit-no-time.md) (correctness plus per-mode partial credit; time recorded but never scored). Each mode-challenge produces its own score using this model; the daily result aggregates the required mode-challenges for that day. Daily results could use a normalized score such as 0–1,000, but this is not yet a requirement.
 
 Useful personal statistics include:
 
@@ -279,55 +252,9 @@ The first UI task is to confirm the screens, content hierarchy, states, and inte
 
 Regardless of visual direction, the final product must be mobile-first, responsive, touch-friendly, readable, and accessible. Respect reduced-motion preferences and do not use color as the sole carrier of meaning.
 
-## Technical direction
+## Candidate dependencies
 
-### Core stack
-
-- **Astro** as the application framework.
-- **Tailwind CSS** for styling.
-- **Lucide** via the Astro-compatible package for interface icons.
-- **TypeScript** with the strictest practical compiler settings.
-- **Biome** for formatting and linting, configured restrictively.
-
-The site should use Astro's static output unless a future server feature gives us a concrete reason to change. Prefer Astro components and browser-native functionality. Add a client framework only if a particular interactive game becomes substantially clearer to implement and maintain with one; do not add React, Vue, Svelte, or another renderer preemptively.
-
-### Styling rules
-
-- Use Tailwind utilities for nearly all styling.
-- Avoid custom CSS, Sass, CSS modules, CSS-in-JS, and additional styling systems.
-- Custom CSS is acceptable only when Tailwind cannot reasonably express an animation or genuinely complex behavior.
-- Keep exceptional custom CSS small, documented, and colocated predictably.
-- Do not use inline SVG for common interface icons when Lucide provides an appropriate icon.
-- Icons need accessible labels when they convey meaning and should be hidden from assistive technology when decorative.
-
-### TypeScript rules
-
-Use Astro's strictest supported TypeScript base configuration and enable additional safe compiler checks where compatible. Desired standards include:
-
-- No implicit `any`.
-- No unchecked indexed access.
-- Exact optional property semantics.
-- No unnecessary fallthrough in switch statements.
-- No implicit returns.
-- Explicit handling of unknown external data.
-- Exhaustive handling of discriminated unions for game modes and persisted schema versions.
-
-Avoid type assertions used merely to silence the compiler. Geographic data and `localStorage` content are runtime inputs and must be validated at their boundaries.
-
-### Biome rules
-
-Biome should be the single formatter and primary linter for supported files.
-
-- Four spaces for indentation, using spaces rather than tabs.
-- Import organization enabled.
-- Recommended rules enabled, then strengthened where they improve correctness and consistency.
-- Treat lint warnings as CI failures.
-- Avoid broad ignore rules. Any suppression should be narrow and explain why the code is safe.
-- Run formatting, linting, and type checking in CI.
-
-The goal is a restrictive but useful configuration. Do not enable rules that fight Astro syntax, generated data, accessibility, or clarity solely to maximize the number of enabled rules.
-
-### Candidate dependencies
+Permanent stack choices and coding conventions live in [`AGENTS.md`](./AGENTS.md#tech-stack). This section tracks dependency decisions still to be made as implementation begins.
 
 Keep the dependency graph intentionally small. Dependencies should solve a demonstrated problem, not anticipated convenience.
 
@@ -352,24 +279,6 @@ Avoid initially:
 - A date library for daily-key operations that the platform can handle safely.
 - A general animation library before the visual direction is selected.
 - Redis, a database, authentication, analytics, advertising, or a server runtime.
-
-### Testing priorities
-
-The most important code is not the page markup; it is the content generator and geographic correctness.
-
-Tests should cover:
-
-- Identical output for identical seed, generator version, and data version.
-- Expected changes when a version changes.
-- Daily generation across a large range of dates without crashes or invalid rounds.
-- Geographic calculations near the antimeridian, poles, and directional boundaries.
-- Mode-specific ambiguity and difficulty rules.
-- Border-graph connectivity and shortest-path behavior.
-- Persistence validation, migrations, interrupted games, and corrupt storage.
-- Keyboard and touch completion of every game mode.
-- Key mobile viewport flows.
-
-CI should run formatting checks, linting, Astro/TypeScript checks, unit tests, and the essential end-to-end suite.
 
 ## Geographic data
 
@@ -424,51 +333,22 @@ This is not authorization to add one during initial development. Before adding a
 
 A traditional public leaderboard is not a current goal. It would shift the product away from self-improvement and introduce cheating and moderation concerns.
 
-## Accessibility, privacy, and internationalization
-
-Accessibility is part of the game design:
-
-- Every interaction must work with keyboard and touch.
-- Dragging must have an equivalent non-drag interaction.
-- Focus states and focus order must be deliberate.
-- Feedback must not depend only on color or sound.
-- Motion must respect `prefers-reduced-motion`.
-- Controls must have meaningful accessible names.
-- Game instructions and result announcements should work with screen readers.
-- Touch targets should be comfortably sized for mobile use.
-
-Privacy should remain simple: no account, no personal profile, and no analytics by default. If analytics are proposed later, they require an explicit product decision and should be privacy-preserving.
-
-The initial language can be English, but content must not be embedded inside generation logic. Place names, mode instructions, and interface strings should be structured so Spanish and other languages can be added without redesigning the game engine. A full internationalization dependency is not required until a second language is actually implemented.
-
 ## MVP scope
 
 The first complete version should aim for:
 
-- World and Europe collections.
-- Compass, Arrange, and Border Run.
-- A deterministic five-round daily challenge.
-- Unlimited practice by mode and collection.
+- World as the default Daily collection; Europe available in Practice ([ADR-0007](./adr/0007-daily-uses-single-default-collection.md)).
+- Compass, Arrange, and Border Run, each with easy/medium/hard tiers; medium is the required tier for Daily ([ADR-0003](./adr/0003-difficulty-tiers-optional-bonus.md)).
+- A deterministic daily ritual: one required mode-challenge per enabled game mode (about three rounds each), plus optional bonus-tier mode-challenges the same day ([ADR-0002](./adr/0002-per-mode-daily-challenges.md)).
+- Unlimited practice by mode, collection, and tier.
 - Local daily progress, streaks, and basic statistics.
 - A spoiler-free result that can be copied or shared.
 - How-to-play, settings/about, data attribution, and local-data controls.
 - A responsive, accessible, mobile-first experience.
+- English and Spanish interface and content at launch, with real i18n infrastructure (string extraction, place-name localization) from day one rather than generation logic with embedded content ([ADR-0006](./adr/0006-bilingual-launch-english-spanish.md)).
 - No login, backend, public leaderboard, or manual daily authoring.
 
-If this is too broad for the first playable milestone, build one collection and Compass end to end—including generation, validation, persistence, accessibility, feedback, and tests—before adding another mode. A complete vertical slice should precede breadth.
-
-## Non-goals for the initial product
-
-- Recreating Wordle with country names.
-- Recreating GeoGuessr or a click-the-country map quiz.
-- Street-view or photograph licensing/integration.
-- User accounts and cross-device synchronization.
-- Real-time multiplayer.
-- Public competitive leaderboards.
-- Manually authored daily content.
-- A content-management system.
-- Native mobile applications.
-- Premature optimization for viral growth or monetization.
+If this is too broad for the first playable milestone, build the World collection and Compass end to end—including generation, validation, persistence, accessibility, feedback, and tests—before adding another mode. A complete vertical slice should precede breadth. Non-goals for the initial product are listed in [`AGENTS.md`](./AGENTS.md#non-goals).
 
 ## Suggested implementation order
 
@@ -485,31 +365,8 @@ If this is too broad for the first playable milestone, build one collection and 
 
 ## Open product decisions
 
-These questions should be answered through prototypes or explicit discussion rather than accidental implementation choices:
+Most of the questions that used to appear here have been resolved and recorded as ADRs in `docs/adr/`. The decisions that remain genuinely open:
 
-- Does the daily challenge reset at UTC midnight or the player's local midnight?
-- Does one daily challenge mix collections, or does it have a single collection/theme?
-- How many rounds provide the best three-to-five-minute session?
-- How is partial credit calculated for each mode?
-- Does time affect score at all?
-- Can an interrupted daily attempt be resumed indefinitely?
-- How much answer explanation is educational without slowing the loop?
-- Which territory and border policy is clearest and fairest?
-- What is the first supported language, and when should Spanish be added?
 - What visual direction will be selected after the Claude Design exploration?
-
-## Working name and positioning
-
-**Name:** Worldwise  
-**Repository:** `worldwise`  
-**Deployment shape:** `worldwise.<master-domain>`
-
-Working positioning:
-
-> A daily game for people who think they know the world.
-
-Alternative supporting line:
-
-> Understand the world, one challenge at a time.
-
-The name, tagline, and final copy may evolve, but the relationship-based geography concept is the product's anchor.
+- If a rotating daily program (multiple default collections over time) is introduced later, how should it be scheduled and versioned?
+- Should the roughly three rounds per mode-challenge be tuned once a playable vertical slice exists?

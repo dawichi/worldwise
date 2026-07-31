@@ -1,0 +1,3 @@
+# English and Spanish ship together at MVP launch
+
+The original plan assumed an English-only MVP, with Spanish deferred until "actually implemented" so i18n tooling could wait. We decided instead to launch with English and Spanish simultaneously, because the Autonomous Communities of Spain collection is Spain-specific and shipping monolingual first risked a painful i18n retrofit right as that collection starts to matter. This means string extraction and place-name localization must exist as real infrastructure from day one rather than being deferred, roughly doubling upfront translation and content work.
