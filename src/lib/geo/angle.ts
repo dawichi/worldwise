@@ -1,0 +1,26 @@
+/** Shortest angular distance between two bearings in degrees, in `[0, 180]`. */
+export function angularDelta(a: number, b: number): number {
+    const diff = Math.abs(a - b) % 360;
+    return diff > 180 ? 360 - diff : diff;
+}
+
+const COMPASS_LABELS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"] as const;
+
+export type CompassLabel = (typeof COMPASS_LABELS)[number];
+
+/**
+ * Names the nearest 8-point compass label for a bearing — display/feedback
+ * copy only (e.g. "Correct — Southeast"). Scoring itself is a continuous
+ * function of angular error (ADR-0008), not this bucket.
+ */
+export function bearingToCompassLabel(bearingDeg: number): CompassLabel {
+    const normalized = ((bearingDeg % 360) + 360) % 360;
+    const index = Math.round(normalized / 45) % 8;
+    const label = COMPASS_LABELS[index];
+    if (label === undefined) {
+        throw new RangeError(
+            `bearingToCompassLabel: computed out-of-range index ${index}`,
+        );
+    }
+    return label;
+}
