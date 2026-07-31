@@ -1,0 +1,54 @@
+{
+    "common": {
+        "appName": "Worldwise",
+        "continue": "Continue",
+        "backToToday": "Back to Today",
+        "streakDayCount": "{count} day streak"
+    },
+    "nav": {
+        "today": "Today",
+        "practice": "Practice",
+        "statistics": "Statistics",
+        "howToPlay": "How to play",
+        "settings": "Settings"
+    },
+    "home": {
+        "ritualProgress": "Today's ritual",
+        "completeOf": "{completed} of {total}",
+        "comingSoon": "Coming soon",
+        "notStarted": "Not started",
+        "start": "Start",
+        "bonusTiersLink": "Optional bonus tiers (easy · hard)",
+        "practiceLink": "Practice — unlimited rounds"
+    },
+    "tiers": {
+        "easy": "Easy",
+        "medium": "Medium",
+        "hard": "Hard"
+    },
+    "modes": {
+        "compass": {
+            "name": "Compass"
+        },
+        "arrange": {
+            "name": "Arrange"
+        },
+        "borderRun": {
+            "name": "Border Run"
+        }
+    },
+    "compass": {
+        "tierLabel": "Compass · {tier}",
+        "roundOf": "Round {current} of {total}",
+        "prompt": "Which direction is {destination} from {origin}?",
+        "submitAnswer": "Submit answer",
+        "creditFull": "Full credit",
+        "creditPartial": "Partial credit",
+        "creditNone": "No credit",
+        "trueBearing": "The direction was {direction} ({degrees}°).",
+        "yourAnswer": "You indicated {degrees}°.",
+        "distanceNote": "{destination} is about {distance} km {direction} of {origin}.",
+        "resultComplete": "Compass · {tier} complete",
+        "resultScore": "{score} / {total}"
+    }
+}

@@ -1,0 +1,54 @@
+{
+    "common": {
+        "appName": "Worldwise",
+        "continue": "Continuar",
+        "backToToday": "Volver a Hoy",
+        "streakDayCount": "Racha de {count} días"
+    },
+    "nav": {
+        "today": "Hoy",
+        "practice": "Práctica",
+        "statistics": "Estadísticas",
+        "howToPlay": "Cómo jugar",
+        "settings": "Ajustes"
+    },
+    "home": {
+        "ritualProgress": "Ritual de hoy",
+        "completeOf": "{completed} de {total}",
+        "comingSoon": "Próximamente",
+        "notStarted": "Sin empezar",
+        "start": "Empezar",
+        "bonusTiersLink": "Niveles adicionales opcionales (fácil · difícil)",
+        "practiceLink": "Práctica — rondas ilimitadas"
+    },
+    "tiers": {
+        "easy": "Fácil",
+        "medium": "Medio",
+        "hard": "Difícil"
+    },
+    "modes": {
+        "compass": {
+            "name": "Brújula"
+        },
+        "arrange": {
+            "name": "Ordenar"
+        },
+        "borderRun": {
+            "name": "Cruce de Fronteras"
+        }
+    },
+    "compass": {
+        "tierLabel": "Brújula · {tier}",
+        "roundOf": "Ronda {current} de {total}",
+        "prompt": "¿En qué dirección está {destination} desde {origin}?",
+        "submitAnswer": "Enviar respuesta",
+        "creditFull": "Acierto completo",
+        "creditPartial": "Acierto parcial",
+        "creditNone": "Sin acierto",
+        "trueBearing": "La dirección era {direction} ({degrees}°).",
+        "yourAnswer": "Indicaste {degrees}°.",
+        "distanceNote": "{destination} está a unos {distance} km al {direction} de {origin}.",
+        "resultComplete": "Brújula · {tier} completada",
+        "resultScore": "{score} / {total}"
+    }
+}
