@@ -1,0 +1,31 @@
+---
+interface Props {
+    id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<div id={id} class="feedback-panel hidden rounded-card p-4" aria-live="polite" data-credit="none">
+    <div data-role="feedback-heading" class="mb-1.5 font-extrabold"></div>
+    <p data-role="feedback-body" class="text-sm leading-relaxed"></p>
+</div>
+
+<style>
+    .feedback-panel[data-credit="full"] {
+        background-color: var(--color-success-bg);
+        color: var(--color-success-text);
+    }
+    .feedback-panel[data-credit="full"] [data-role="feedback-heading"] {
+        color: var(--color-success-icon);
+    }
+    .feedback-panel[data-credit="partial"],
+    .feedback-panel[data-credit="none"] {
+        background-color: var(--color-attention-bg);
+        color: var(--color-attention-text);
+    }
+    .feedback-panel[data-credit="partial"] [data-role="feedback-heading"],
+    .feedback-panel[data-credit="none"] [data-role="feedback-heading"] {
+        color: var(--color-attention-icon);
+    }
+</style>

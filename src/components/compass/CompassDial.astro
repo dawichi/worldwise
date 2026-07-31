@@ -1,0 +1,54 @@
+---
+interface Props {
+    id: string;
+    /** id of the element that names what this dial answers (the round's prompt text). */
+    labelledById: string;
+}
+
+const { id, labelledById } = Astro.props;
+---
+
+<div class="flex flex-col items-center gap-3">
+    <div
+        id={id}
+        class="compass-dial relative touch-none select-none rounded-full outline-none"
+        style="width: 220px; height: 220px;"
+        role="slider"
+        tabindex="0"
+        aria-valuemin="0"
+        aria-valuemax="359"
+        aria-valuenow="0"
+        aria-valuetext=""
+        aria-labelledby={labelledById}
+    >
+        <svg viewBox="0 0 200 200" width="220" height="220" class="pointer-events-none absolute inset-0" aria-hidden="true">
+            <circle cx="100" cy="100" r="92" class="fill-surface stroke-border" stroke-width="1.5"></circle>
+
+            <text x="100" y="22" text-anchor="middle" dominant-baseline="middle" class="fill-text-muted text-[11px] font-bold">N</text>
+            <text x="155" y="45" text-anchor="middle" dominant-baseline="middle" class="fill-text-muted text-[11px] font-bold">NE</text>
+            <text x="178" y="100" text-anchor="middle" dominant-baseline="middle" class="fill-text-muted text-[11px] font-bold">E</text>
+            <text x="155" y="155" text-anchor="middle" dominant-baseline="middle" class="fill-text-muted text-[11px] font-bold">SE</text>
+            <text x="100" y="178" text-anchor="middle" dominant-baseline="middle" class="fill-text-muted text-[11px] font-bold">S</text>
+            <text x="45" y="155" text-anchor="middle" dominant-baseline="middle" class="fill-text-muted text-[11px] font-bold">SW</text>
+            <text x="22" y="100" text-anchor="middle" dominant-baseline="middle" class="fill-text-muted text-[11px] font-bold">W</text>
+            <text x="45" y="45" text-anchor="middle" dominant-baseline="middle" class="fill-text-muted text-[11px] font-bold">NW</text>
+
+            <circle cx="100" cy="100" r="3" class="fill-text-muted"></circle>
+            <g data-role="needle" transform="rotate(0 100 100)">
+                <line x1="100" y1="100" x2="100" y2="26" class="stroke-accent" stroke-width="3" stroke-linecap="round"></line>
+                <circle cx="100" cy="26" r="7" class="fill-accent"></circle>
+            </g>
+        </svg>
+    </div>
+    <div data-role="value-readout" class="text-sm font-semibold text-text-muted" aria-hidden="true">&nbsp;</div>
+</div>
+
+<style>
+    .compass-dial:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 4px;
+    }
+    .compass-dial[aria-disabled="true"] {
+        opacity: 0.6;
+    }
+</style>

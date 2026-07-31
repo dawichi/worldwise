@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
     angularDelta,
+    bearingFromOffset,
     bearingToCompassLabel,
 } from "../../../src/lib/geo/angle";
 
@@ -49,5 +50,36 @@ describe("bearingToCompassLabel", () => {
     it("wraps 360 back to N", () => {
         expect(bearingToCompassLabel(360)).toBe("N");
         expect(bearingToCompassLabel(-45)).toBe("NW");
+    });
+});
+
+describe("bearingFromOffset", () => {
+    it("maps the four cardinal screen-space offsets correctly", () => {
+        expect(bearingFromOffset(0, -100)).toBeCloseTo(0, 9); // straight up = N
+        expect(bearingFromOffset(100, 0)).toBeCloseTo(90, 9); // right = E
+        expect(bearingFromOffset(0, 100)).toBeCloseTo(180, 9); // down = S
+        expect(bearingFromOffset(-100, 0)).toBeCloseTo(270, 9); // left = W
+    });
+
+    it("maps a diagonal offset to 45 degrees", () => {
+        expect(bearingFromOffset(100, -100)).toBeCloseTo(45, 9);
+    });
+
+    it("is independent of distance from center (only the angle matters)", () => {
+        expect(bearingFromOffset(10, -10)).toBeCloseTo(
+            bearingFromOffset(1000, -1000),
+            9,
+        );
+    });
+
+    it("always returns a value in [0, 360)", () => {
+        for (let dx = -50; dx <= 50; dx += 13) {
+            for (let dy = -50; dy <= 50; dy += 17) {
+                if (dx === 0 && dy === 0) continue;
+                const bearing = bearingFromOffset(dx, dy);
+                expect(bearing).toBeGreaterThanOrEqual(0);
+                expect(bearing).toBeLessThan(360);
+            }
+        }
     });
 });

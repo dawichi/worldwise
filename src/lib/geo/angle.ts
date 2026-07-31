@@ -4,6 +4,18 @@ export function angularDelta(a: number, b: number): number {
     return diff > 180 ? 360 - diff : diff;
 }
 
+/**
+ * Bearing (degrees, `[0, 360)`, 0 = north) of a point at screen-space
+ * offset `(dx, dy)` from a dial's center, where `dy` grows downward as it
+ * does in the DOM/SVG coordinate system. Used to convert a pointer
+ * position on the `CompassDial` into the angle it represents.
+ */
+export function bearingFromOffset(dx: number, dy: number): number {
+    const radians = Math.atan2(dx, -dy);
+    const degrees = (radians * 180) / Math.PI;
+    return (degrees + 360) % 360;
+}
+
 const COMPASS_LABELS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"] as const;
 
 export type CompassLabel = (typeof COMPASS_LABELS)[number];
