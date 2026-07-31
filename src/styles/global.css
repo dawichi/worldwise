@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens lifted verbatim from the chosen "Worldwise Screens 1/2/3"
+ * mockups (oklch values). Components must reference these, never hard-code
+ * a color/radius/font.
+ */
+@theme {
+    --color-bg: oklch(96% 0.012 60);
+    --color-surface: oklch(99% 0.004 60);
+    --color-border: oklch(90% 0.015 55);
+    --color-chip: oklch(93% 0.012 55);
+
+    --color-text: oklch(22% 0.02 50);
+    --color-text-muted: oklch(52% 0.02 50);
+
+    --color-accent: oklch(64% 0.16 45);
+    --color-accent-text: oklch(42% 0.14 45);
+    --color-accent-tint: oklch(93% 0.04 45);
+
+    --color-success-bg: oklch(93% 0.06 150);
+    --color-success-icon: oklch(45% 0.13 150);
+    --color-success-text: oklch(35% 0.06 150);
+
+    --color-attention-bg: oklch(96% 0.04 25);
+    --color-attention-icon: oklch(55% 0.14 25);
+    --color-attention-text: oklch(34% 0.06 25);
+
+    --radius-card: 18px;
+    --radius-button: 11px;
+    --radius-pill: 999px;
+
+    /* No font dependency: a system stack already reads close to the
+       mockup's geometric sans on every platform. */
+    --font-sans:
+        ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+        Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+}
+
+:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+/* !important is required on every declaration below: this universal-selector
+   reduced-motion override must beat any component's own transition/animation
+   utility classes, which otherwise carry higher specificity. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        /* biome-ignore lint/complexity/noImportantStyles: must override component-level specificity, see comment above */
+        animation-duration: 0.01ms !important;
+        /* biome-ignore lint/complexity/noImportantStyles: must override component-level specificity, see comment above */
+        animation-iteration-count: 1 !important;
+        /* biome-ignore lint/complexity/noImportantStyles: must override component-level specificity, see comment above */
+        transition-duration: 0.01ms !important;
+        /* biome-ignore lint/complexity/noImportantStyles: must override component-level specificity, see comment above */
+        scroll-behavior: auto !important;
+    }
+}
