@@ -1,0 +1,50 @@
+import { z } from "zod";
+
+export const CURRENT_SCHEMA_VERSION = 1;
+
+const tierSchema = z.enum(["easy", "medium", "hard"]);
+
+const compassRoundAnswerSchema = z.object({
+    /** Degrees [0, 360), or null if this round hasn't been answered yet. */
+    chosenAngleDeg: z.number().gte(0).lt(360).nullable(),
+    /** Credit for this round, in [0, 1]; 0 while unanswered. */
+    credit: z.number().gte(0).lte(1),
+});
+
+const compassDailyEntrySchema = z.object({
+    challengeId: z.string().min(1),
+    generatorVersion: z.string().min(1),
+    dataVersion: z.string().min(1),
+    tier: tierSchema,
+    rounds: z.array(compassRoundAnswerSchema),
+    /** ISO timestamp once every round is answered, else null (resumable). */
+    completedAt: z.string().nullable(),
+});
+
+const streakSchema = z.object({
+    current: z.number().int().gte(0),
+    longest: z.number().int().gte(0),
+    /** UTC date key (YYYY-MM-DD) of the last fully-completed daily ritual. */
+    lastCompletedDate: z.string().nullable(),
+});
+
+export const persistedStateSchema = z.object({
+    schemaVersion: z.literal(CURRENT_SCHEMA_VERSION),
+    compass: z.object({
+        /** Keyed by UTC date key (YYYY-MM-DD). */
+        daily: z.record(z.string(), compassDailyEntrySchema),
+    }),
+    streak: streakSchema,
+});
+
+export type PersistedState = z.infer<typeof persistedStateSchema>;
+export type CompassDailyEntry = z.infer<typeof compassDailyEntrySchema>;
+export type CompassRoundAnswer = z.infer<typeof compassRoundAnswerSchema>;
+
+export function createDefaultState(): PersistedState {
+    return {
+        schemaVersion: CURRENT_SCHEMA_VERSION,
+        compass: { daily: {} },
+        streak: { current: 0, longest: 0, lastCompletedDate: null },
+    };
+}
