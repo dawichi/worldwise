@@ -18,6 +18,7 @@
         "comingSoon": "Próximamente",
         "notStarted": "Sin empezar",
         "start": "Empezar",
+        "completedOf": "Completado · {completed}/{total}",
         "bonusTiersLink": "Niveles adicionales opcionales (fácil · difícil)",
         "practiceLink": "Práctica — rondas ilimitadas"
     },

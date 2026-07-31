@@ -1,0 +1,17 @@
+---
+interface Props {
+    label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<div class="mb-5">
+    <div class="mb-2 flex justify-between text-sm font-semibold text-text-muted">
+        <span>{label}</span>
+        <span id="ritual-progress-label">—</span>
+    </div>
+    <div class="h-1.5 overflow-hidden rounded-pill bg-chip" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="ritual-progress-track">
+        <div id="ritual-progress-bar" class="h-full rounded-pill bg-accent transition-[width]" style="width: 0%"></div>
+    </div>
+</div>

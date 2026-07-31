@@ -1,0 +1,18 @@
+---
+interface Props {
+    name: string;
+    comingSoonLabel: string;
+}
+
+const { name, comingSoonLabel } = Astro.props;
+---
+
+<div class="flex items-center gap-3.5 rounded-card border border-border bg-surface p-4 opacity-60">
+    <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-button bg-chip text-text-muted">
+        <slot name="icon" />
+    </div>
+    <div class="min-w-0 flex-1">
+        <div class="font-bold text-text">{name}</div>
+        <div class="text-sm text-text-muted">{comingSoonLabel}</div>
+    </div>
+</div>

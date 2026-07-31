@@ -18,6 +18,7 @@
         "comingSoon": "Coming soon",
         "notStarted": "Not started",
         "start": "Start",
+        "completedOf": "Completed · {completed}/{total}",
         "bonusTiersLink": "Optional bonus tiers (easy · hard)",
         "practiceLink": "Practice — unlimited rounds"
     },

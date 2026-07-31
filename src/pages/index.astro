@@ -1,10 +1,60 @@
 ---
+import { BarChart3, Compass, Route } from "lucide-astro";
+import DisabledModeCard from "../components/home/DisabledModeCard.astro";
+import ModeCard from "../components/home/ModeCard.astro";
+import RitualProgress from "../components/home/RitualProgress.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { t } from "../lib/i18n/t";
+
+const locale = Astro.currentLocale === "es" ? "es" : "en";
 ---
 
-<BaseLayout title="Worldwise">
-    <main class="mx-auto max-w-2xl px-6 py-14">
-        <h1 class="text-2xl font-bold text-(--color-text)">Worldwise</h1>
-        <p class="mt-2 text-(--color-text-muted)">Home page under construction.</p>
+<BaseLayout title={t(locale, "common.appName")}>
+    <main class="mx-auto max-w-xl px-5 py-8 sm:px-6 sm:py-10">
+        <header class="mb-6 flex items-start justify-between">
+            <div>
+                <div class="text-xl font-extrabold text-text">{t(locale, "common.appName")}</div>
+                <div id="today-date" class="mt-0.5 text-sm text-text-muted"></div>
+            </div>
+            <div
+                id="streak-chip"
+                class="hidden items-center gap-1.5 rounded-pill bg-accent-tint px-3 py-1.5"
+            >
+                <span class="h-2 w-2 rounded-full bg-accent"></span>
+                <span id="streak-count-text" class="text-sm font-bold text-accent-text"></span>
+            </div>
+        </header>
+
+        <RitualProgress label={t(locale, "home.ritualProgress")} />
+
+        <div class="flex flex-col gap-3">
+            <ModeCard
+                id="compass-mode-card"
+                name={t(locale, "modes.compass.name")}
+                statusLabel={t(locale, "home.notStarted")}
+                startLabel={t(locale, "home.start")}
+                href="/play/compass"
+            >
+                <Compass slot="icon" width={20} height={20} aria-hidden="true" />
+            </ModeCard>
+
+            <DisabledModeCard name={t(locale, "modes.arrange.name")} comingSoonLabel={t(locale, "home.comingSoon")}>
+                <BarChart3 slot="icon" width={20} height={20} aria-hidden="true" />
+            </DisabledModeCard>
+
+            <DisabledModeCard name={t(locale, "modes.borderRun.name")} comingSoonLabel={t(locale, "home.comingSoon")}>
+                <Route slot="icon" width={20} height={20} aria-hidden="true" />
+            </DisabledModeCard>
+        </div>
+
+        <div class="mt-6 flex flex-col gap-2">
+            <span class="text-sm font-semibold text-text-muted">{t(locale, "home.bonusTiersLink")}</span>
+            <span class="text-sm font-semibold text-text-muted">{t(locale, "home.practiceLink")}</span>
+        </div>
     </main>
+
+    <script>
+        import { mountHome } from "../client/home";
+        mountHome();
+    </script>
 </BaseLayout>

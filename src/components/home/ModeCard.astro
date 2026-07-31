@@ -1,0 +1,58 @@
+---
+import { Check } from "lucide-astro";
+
+interface Props {
+    id: string;
+    name: string;
+    /** Initial (build-time) render is always "not-started"; client JS updates this after reading localStorage. */
+    statusLabel: string;
+    startLabel: string;
+    href: string;
+}
+
+const { id, name, statusLabel, startLabel, href } = Astro.props;
+---
+
+<div id={id} data-status="not-started" class="mode-card flex items-center gap-3.5 rounded-card border border-border bg-surface p-4">
+    <div
+        data-role="icon-tile"
+        class="icon-tile flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-button bg-chip text-text-muted"
+    >
+        <slot name="icon" />
+    </div>
+    <div class="min-w-0 flex-1">
+        <div class="font-bold text-text">{name}</div>
+        <div data-role="status-label" class="status-label text-sm text-text-muted">{statusLabel}</div>
+    </div>
+    <div data-role="action-slot" class="flex-shrink-0">
+        <a
+            data-role="action-link"
+            href={href}
+            class="rounded-button border-2 border-accent px-4 py-2 text-sm font-bold text-accent-text"
+        >
+            {startLabel}
+        </a>
+    </div>
+    <div data-role="completed-badge" class="hidden h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-success-icon">
+        <Check class="h-4 w-4 text-white" aria-hidden="true" />
+    </div>
+</div>
+
+<style>
+    .mode-card[data-status="in-progress"] {
+        border-width: 2px;
+        border-color: var(--color-accent);
+    }
+    .mode-card[data-status="in-progress"] .icon-tile {
+        background-color: var(--color-accent-tint);
+        color: var(--color-accent-text);
+    }
+    .mode-card[data-status="completed"] .icon-tile {
+        background-color: var(--color-success-bg);
+        color: var(--color-success-icon);
+    }
+    .mode-card[data-status="completed"] .status-label {
+        color: var(--color-success-text);
+        font-weight: 600;
+    }
+</style>
