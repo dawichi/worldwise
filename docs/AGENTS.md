@@ -50,6 +50,7 @@ Permanent unless superseded by a later ADR — read the linked ADR for full cont
 - Border Run excludes disputed territories, enclaves, and maritime-only borders by default. — [ADR-0005](./adr/0005-border-run-excludes-disputed-territories.md)
 - English and Spanish ship together at MVP launch; i18n infrastructure is required from day one, not deferred. — [ADR-0006](./adr/0006-bilingual-launch-english-spanish.md)
 - Daily always draws from a single fixed default collection (World); other collections live in Practice. — [ADR-0007](./adr/0007-daily-uses-single-default-collection.md)
+- Compass answers are a continuous angle on a dial, scored by angular error, not a discrete 8-direction choice; supersedes ADR-0004's Compass-specific clause only. — [ADR-0008](./adr/0008-compass-continuous-angle-scoring.md)
 
 ## Tech stack
 
