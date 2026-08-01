@@ -3,12 +3,18 @@ export type Migration = (
 ) => Record<string, unknown>;
 
 /**
- * No migrations exist yet — `schemaVersion: 1` is the only shape that has
- * ever shipped. Add an entry keyed by the version a stored value is
- * migrating *from* (e.g. `{ 1: migrateV1ToV2 }`) the day a breaking change
- * to `schema.ts` ships.
+ * v1 → v2: adding the Arrange mode introduced a required top-level
+ * `arrange` key. A v1 value has no such key, so it's backfilled with an
+ * empty daily record — existing `compass` progress and the `streak` are
+ * left untouched.
  */
-export const REAL_MIGRATIONS: Record<number, Migration> = {};
+function migrateV1ToV2(data: Record<string, unknown>): Record<string, unknown> {
+    return { ...data, schemaVersion: 2, arrange: { daily: {} } };
+}
+
+export const REAL_MIGRATIONS: Record<number, Migration> = {
+    1: migrateV1ToV2,
+};
 
 function detectVersion(data: Record<string, unknown>): number {
     const { schemaVersion } = data;

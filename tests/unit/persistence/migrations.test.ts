@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
     type Migration,
+    REAL_MIGRATIONS,
     runMigrations,
 } from "../../../src/lib/persistence/migrations/index";
 
@@ -73,5 +74,25 @@ describe("runMigrations", () => {
         const migrations: Record<number, Migration> = { 0: stuck };
         const migrated = runMigrations({ schemaVersion: 0 }, migrations, 3);
         expect(migrated).toEqual({ schemaVersion: 0 });
+    });
+});
+
+describe("REAL_MIGRATIONS[1] (the real v1 -> v2 migration)", () => {
+    it("adds an empty arrange.daily and bumps schemaVersion, leaving everything else untouched", () => {
+        const migrateV1ToV2 = REAL_MIGRATIONS[1];
+        expect(migrateV1ToV2).toBeDefined();
+
+        const v1Data = {
+            schemaVersion: 1,
+            compass: { daily: { "2026-07-31": { challengeId: "x" } } },
+            streak: { current: 5, longest: 9, lastCompletedDate: "2026-07-31" },
+        };
+
+        const migrated = migrateV1ToV2?.(v1Data);
+        expect(migrated).toEqual({
+            ...v1Data,
+            schemaVersion: 2,
+            arrange: { daily: {} },
+        });
     });
 });

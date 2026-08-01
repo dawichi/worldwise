@@ -33,7 +33,7 @@ describe("loadState", () => {
     it("round-trips a valid state through save and load", () => {
         const storage = createMemoryStorage();
         const state: PersistedState = {
-            schemaVersion: 1,
+            schemaVersion: 2,
             compass: {
                 daily: {
                     "2026-07-31": {
@@ -50,6 +50,22 @@ describe("loadState", () => {
                     },
                 },
             },
+            arrange: {
+                daily: {
+                    "2026-07-31": {
+                        challengeId:
+                            "worldwise:daily:v1:data-v1:2026-07-31:world:arrange:medium",
+                        generatorVersion: "v1",
+                        dataVersion: "data-v1",
+                        tier: "medium",
+                        rounds: [
+                            { submittedOrder: ["a", "b", "c"], credit: 0.5 },
+                            { submittedOrder: null, credit: 0 },
+                        ],
+                        completedAt: null,
+                    },
+                },
+            },
             streak: {
                 current: 3,
                 longest: 12,
@@ -59,6 +75,34 @@ describe("loadState", () => {
 
         saveState(state, storage);
         expect(loadState(storage)).toEqual(state);
+    });
+
+    it("migrates a realistic v1 value (no arrange key) to v2 without losing compass progress or the streak", () => {
+        const storage = createMemoryStorage();
+        const v1Value = {
+            schemaVersion: 1,
+            compass: {
+                daily: {
+                    "2026-07-31": {
+                        challengeId:
+                            "worldwise:daily:v1:data-v1:2026-07-31:world:compass:medium",
+                        generatorVersion: "v1",
+                        dataVersion: "data-v1",
+                        tier: "medium",
+                        rounds: [{ chosenAngleDeg: 90, credit: 1 }],
+                        completedAt: "2026-07-31T12:00:00.000Z",
+                    },
+                },
+            },
+            streak: { current: 5, longest: 9, lastCompletedDate: "2026-07-31" },
+        };
+        storage.setItem(STORAGE_KEY, JSON.stringify(v1Value));
+
+        const result = loadState(storage);
+        expect(result.schemaVersion).toBe(2);
+        expect(result.compass).toEqual(v1Value.compass);
+        expect(result.streak).toEqual(v1Value.streak);
+        expect(result.arrange).toEqual({ daily: {} });
     });
 
     it("recovers to defaults from invalid JSON rather than throwing", () => {
