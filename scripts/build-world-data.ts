@@ -16,6 +16,7 @@ import {
     collectionSchema,
 } from "../src/lib/data/collections.schema";
 import { type Place, placeSchema } from "../src/lib/data/places.schema";
+import { computeLandBorders, type RingSet } from "./lib/computeAdjacency";
 
 const REPO_ROOT = path.join(import.meta.dirname, "..");
 const RAW_DIR = path.join(REPO_ROOT, ".data", "raw");
@@ -53,10 +54,17 @@ const geoJsonSchema = z.object({
     features: z.array(z.unknown()),
 });
 
+const geometrySchema = z.object({
+    type: z.enum(["Polygon", "MultiPolygon"]),
+    coordinates: z.array(z.unknown()),
+});
+
 const countryFeatureSchema = z.object({
     properties: z.object({
         TYPE: z.string(),
         UN_A3: z.string(),
+        SOVEREIGNT: z.string(),
+        ADMIN: z.string(),
         NAME_EN: z.string(),
         NAME_ES: z.string(),
         ISO_A2: z.string(),
@@ -64,7 +72,28 @@ const countryFeatureSchema = z.object({
         ISO_A3: z.string(),
         ISO_A3_EH: z.string(),
     }),
+    geometry: geometrySchema,
 });
+
+/** Land-adjacency distance threshold — see source.md for how this value was chosen. */
+const ADJACENCY_THRESHOLD_KM = 3;
+
+/**
+ * Normalizes a GeoJSON Polygon/MultiPolygon into a flat list of rings
+ * (exterior + holes), discarding the polygon-grouping structure — adjacency
+ * only cares about the full set of boundary points, not which ring belongs
+ * to which sub-polygon.
+ */
+function ringsFromGeometry(
+    geometry: z.infer<typeof geometrySchema>,
+): Array<Array<[number, number]>> {
+    if (geometry.type === "Polygon") {
+        return geometry.coordinates as Array<Array<[number, number]>>;
+    }
+    return (
+        geometry.coordinates as Array<Array<Array<[number, number]>>>
+    ).flat();
+}
 
 const placeFeatureSchema = z.object({
     properties: z.object({
@@ -137,7 +166,9 @@ async function main(): Promise<void> {
 
     const capitalsByIso2 = buildCapitalIndex(placesRaw.features);
 
-    const places: Place[] = [];
+    type PlaceDraft = Omit<Place, "landBorders">;
+    const drafts: PlaceDraft[] = [];
+    const ringSets: RingSet[] = [];
     const skipped: string[] = [];
     const seenIso2 = new Set<string>();
 
@@ -148,11 +179,32 @@ async function main(): Promise<void> {
         }
         const props = parsed.data.properties;
 
-        // Sovereign, UN-recognized states only — excludes disputed/breakaway
-        // entities (Taiwan, Somaliland, Turkish Republic of Northern
-        // Cyprus) and non-sovereign dependencies/constituent countries
-        // (Hong Kong, Greenland, Jersey, ...), per source.md.
-        if (props.TYPE !== "Sovereign country" || props.UN_A3 === "-099") {
+        // Sovereign, UN-recognized states only. `TYPE === "Sovereign
+        // country"` alone is NOT sufficient: Natural Earth splits any
+        // country that also has overseas territories (France, the UK, the
+        // Netherlands, Denmark, Australia, New Zealand, Finland, the USA,
+        // China, Kazakhstan, Cuba, Israel — 12 real countries) into a
+        // metropolitan-only row typed "Country" or "Sovereignty" plus
+        // separate "Dependency" rows for each territory, with no
+        // "Sovereign country" row at all for the metropolitan part. Using
+        // `TYPE` alone silently dropped all twelve — a bug found and fixed
+        // in this codebase's history; see source.md for the full writeup.
+        //
+        // The reliable discriminator is `SOVEREIGNT === ADMIN`: true only
+        // for a record that represents itself (a real country, whichever
+        // TYPE label Natural Earth gives its metropolitan row), false for a
+        // dependency/constituent territory (whose ADMIN is itself but
+        // SOVEREIGNT names the parent state, e.g. Jersey/SOVEREIGNT="United
+        // Kingdom"). `UN_A3 !== "-099"` excludes contested states with no UN
+        // M49 code at all (Taiwan, Somaliland, Kosovo). `TYPE !==
+        // "Indeterminate"` excludes the two remaining self-administered-but-
+        // not-a-country cases that pass both other checks: Western Sahara
+        // and Antarctica.
+        if (
+            props.SOVEREIGNT !== props.ADMIN ||
+            props.UN_A3 === "-099" ||
+            props.TYPE === "Indeterminate"
+        ) {
             continue;
         }
 
@@ -178,31 +230,46 @@ async function main(): Promise<void> {
         }
 
         seenIso2.add(iso2);
-        places.push(
-            placeSchema.parse({
-                id: `country:${iso3.toLowerCase()}`,
-                kind: "country",
-                names: { en: props.NAME_EN, es: props.NAME_ES },
-                point: capital,
-                iso2,
-                iso3,
-                sourceVersion: SOURCE_VERSION,
-            } satisfies Place),
-        );
+        const id = `country:${iso3.toLowerCase()}`;
+        drafts.push({
+            id,
+            kind: "country",
+            names: { en: props.NAME_EN, es: props.NAME_ES },
+            point: capital,
+            iso2,
+            iso3,
+            sourceVersion: SOURCE_VERSION,
+        });
+        ringSets.push({
+            id,
+            rings: ringsFromGeometry(parsed.data.geometry),
+        });
     }
 
-    places.sort((a, b) => a.id.localeCompare(b.id));
-
-    if (places.length < 150) {
+    if (drafts.length < 190) {
         throw new Error(
-            `Only ${places.length} places produced (expected ~180) — aborting, check the filters`,
+            `Only ${drafts.length} places produced (expected ~193) — aborting, check the filters`,
         );
     }
+
+    const landBordersById = computeLandBorders(
+        ringSets,
+        ADJACENCY_THRESHOLD_KM,
+    );
+
+    const places: Place[] = drafts
+        .map((draft) =>
+            placeSchema.parse({
+                ...draft,
+                landBorders: landBordersById[draft.id] ?? [],
+            } satisfies Place),
+        )
+        .sort((a, b) => a.id.localeCompare(b.id));
 
     const worldCollection: Collection = collectionSchema.parse({
         id: "world",
         names: { en: "World", es: "Mundo" },
-        supportedModes: ["compass", "arrange"],
+        supportedModes: ["compass", "arrange", "borderRun"],
         places,
     } satisfies Collection);
 

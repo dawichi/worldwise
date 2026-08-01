@@ -22,6 +22,7 @@ function place(id: string, lat: number, lon: number): Place {
         iso2: "XX",
         iso3: "XXX",
         sourceVersion: "test-fixture",
+        landBorders: [],
     };
 }
 

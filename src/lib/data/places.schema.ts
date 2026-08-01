@@ -18,6 +18,10 @@ export const placeSchema = z.object({
     iso2: z.string().length(2),
     iso3: z.string().length(3),
     sourceVersion: z.string().min(1),
+    /** Ids of places this one shares a land border with (empty for islands
+     * with no land neighbors). Computed at build time from polygon geometry —
+     * see `src/data/world/source.md` for the methodology. */
+    landBorders: z.array(z.string().min(1)),
 });
 
 export type Place = z.infer<typeof placeSchema>;

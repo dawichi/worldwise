@@ -10,7 +10,8 @@ export const worldCollection: Collection = {
     },
     "supportedModes": [
         "compass",
-        "arrange"
+        "arrange",
+        "borderRun"
     ],
     "places": [
         {
@@ -26,7 +27,15 @@ export const worldCollection: Collection = {
             },
             "iso2": "AF",
             "iso3": "AFG",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:uzb",
+                "country:tkm",
+                "country:tjk",
+                "country:pak",
+                "country:irn",
+                "country:chn"
+            ]
         },
         {
             "id": "country:ago",
@@ -41,7 +50,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "AO",
             "iso3": "AGO",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:zmb",
+                "country:nam",
+                "country:cod",
+                "country:cog"
+            ]
         },
         {
             "id": "country:alb",
@@ -56,7 +71,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "AL",
             "iso3": "ALB",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:mne",
+                "country:mkd",
+                "country:grc"
+            ]
         },
         {
             "id": "country:and",
@@ -71,7 +91,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "AD",
             "iso3": "AND",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:esp",
+                "country:fra"
+            ]
         },
         {
             "id": "country:are",
@@ -86,7 +110,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "AE",
             "iso3": "ARE",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:sau",
+                "country:omn"
+            ]
         },
         {
             "id": "country:arg",
@@ -101,7 +129,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "AR",
             "iso3": "ARG",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ury",
+                "country:pry",
+                "country:chl",
+                "country:bra",
+                "country:bol"
+            ]
         },
         {
             "id": "country:arm",
@@ -116,7 +151,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "AM",
             "iso3": "ARM",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tur",
+                "country:irn",
+                "country:geo",
+                "country:aze"
+            ]
         },
         {
             "id": "country:atg",
@@ -131,7 +172,24 @@ export const worldCollection: Collection = {
             },
             "iso2": "AG",
             "iso3": "ATG",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
+        },
+        {
+            "id": "country:aus",
+            "kind": "country",
+            "names": {
+                "en": "Australia",
+                "es": "Australia"
+            },
+            "point": {
+                "lat": -35.283029,
+                "lon": 149.129026
+            },
+            "iso2": "AU",
+            "iso3": "AUS",
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:aut",
@@ -146,7 +204,17 @@ export const worldCollection: Collection = {
             },
             "iso2": "AT",
             "iso3": "AUT",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:che",
+                "country:svk",
+                "country:svn",
+                "country:lie",
+                "country:ita",
+                "country:hun",
+                "country:deu",
+                "country:cze"
+            ]
         },
         {
             "id": "country:aze",
@@ -161,7 +229,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "AZ",
             "iso3": "AZE",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tur",
+                "country:rus",
+                "country:irn",
+                "country:geo",
+                "country:arm"
+            ]
         },
         {
             "id": "country:bdi",
@@ -176,7 +251,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "BI",
             "iso3": "BDI",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tza",
+                "country:rwa",
+                "country:cod"
+            ]
         },
         {
             "id": "country:bel",
@@ -191,7 +271,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "BE",
             "iso3": "BEL",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:nld",
+                "country:lux",
+                "country:deu",
+                "country:fra"
+            ]
         },
         {
             "id": "country:ben",
@@ -206,7 +292,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "BJ",
             "iso3": "BEN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tgo",
+                "country:nga",
+                "country:ner",
+                "country:bfa"
+            ]
         },
         {
             "id": "country:bfa",
@@ -221,7 +313,15 @@ export const worldCollection: Collection = {
             },
             "iso2": "BF",
             "iso3": "BFA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tgo",
+                "country:ner",
+                "country:mli",
+                "country:gha",
+                "country:civ",
+                "country:ben"
+            ]
         },
         {
             "id": "country:bgd",
@@ -236,7 +336,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "BD",
             "iso3": "BGD",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ind",
+                "country:mmr"
+            ]
         },
         {
             "id": "country:bgr",
@@ -251,7 +355,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "BG",
             "iso3": "BGR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tur",
+                "country:srb",
+                "country:rou",
+                "country:mkd",
+                "country:grc"
+            ]
         },
         {
             "id": "country:bhr",
@@ -266,7 +377,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "BH",
             "iso3": "BHR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:bhs",
@@ -281,7 +393,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "BS",
             "iso3": "BHS",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:bih",
@@ -296,7 +409,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "BA",
             "iso3": "BIH",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:srb",
+                "country:mne",
+                "country:hrv"
+            ]
         },
         {
             "id": "country:blr",
@@ -311,7 +429,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "BY",
             "iso3": "BLR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ukr",
+                "country:rus",
+                "country:pol",
+                "country:ltu",
+                "country:lva"
+            ]
         },
         {
             "id": "country:blz",
@@ -326,7 +451,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "BZ",
             "iso3": "BLZ",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:mex",
+                "country:gtm"
+            ]
         },
         {
             "id": "country:bol",
@@ -341,7 +470,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "BO",
             "iso3": "BOL",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:per",
+                "country:pry",
+                "country:chl",
+                "country:bra",
+                "country:arg"
+            ]
         },
         {
             "id": "country:bra",
@@ -356,7 +492,19 @@ export const worldCollection: Collection = {
             },
             "iso2": "BR",
             "iso3": "BRA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ven",
+                "country:ury",
+                "country:sur",
+                "country:per",
+                "country:pry",
+                "country:guy",
+                "country:fra",
+                "country:col",
+                "country:bol",
+                "country:arg"
+            ]
         },
         {
             "id": "country:brb",
@@ -371,7 +519,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "BB",
             "iso3": "BRB",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:brn",
@@ -386,7 +535,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "BN",
             "iso3": "BRN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:mys"
+            ]
         },
         {
             "id": "country:btn",
@@ -401,7 +553,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "BT",
             "iso3": "BTN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ind",
+                "country:chn"
+            ]
         },
         {
             "id": "country:bwa",
@@ -416,7 +572,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "BW",
             "iso3": "BWA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:zwe",
+                "country:zmb",
+                "country:zaf",
+                "country:nam"
+            ]
         },
         {
             "id": "country:caf",
@@ -431,7 +593,15 @@ export const worldCollection: Collection = {
             },
             "iso2": "CF",
             "iso3": "CAF",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ssd",
+                "country:sdn",
+                "country:cod",
+                "country:cog",
+                "country:tcd",
+                "country:cmr"
+            ]
         },
         {
             "id": "country:can",
@@ -446,7 +616,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "CA",
             "iso3": "CAN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:usa"
+            ]
         },
         {
             "id": "country:che",
@@ -461,7 +634,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "CH",
             "iso3": "CHE",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:lie",
+                "country:ita",
+                "country:deu",
+                "country:fra",
+                "country:aut"
+            ]
         },
         {
             "id": "country:chl",
@@ -476,7 +656,43 @@ export const worldCollection: Collection = {
             },
             "iso2": "CL",
             "iso3": "CHL",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:per",
+                "country:bol",
+                "country:arg"
+            ]
+        },
+        {
+            "id": "country:chn",
+            "kind": "country",
+            "names": {
+                "en": "People's Republic of China",
+                "es": "China"
+            },
+            "point": {
+                "lat": 39.930838,
+                "lon": 116.38634
+            },
+            "iso2": "CN",
+            "iso3": "CHN",
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:vnm",
+                "country:tjk",
+                "country:rus",
+                "country:pak",
+                "country:prk",
+                "country:npl",
+                "country:mng",
+                "country:lao",
+                "country:kgz",
+                "country:kaz",
+                "country:ind",
+                "country:mmr",
+                "country:btn",
+                "country:afg"
+            ]
         },
         {
             "id": "country:civ",
@@ -491,7 +707,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "CI",
             "iso3": "CIV",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:mli",
+                "country:lbr",
+                "country:gin",
+                "country:gha",
+                "country:bfa"
+            ]
         },
         {
             "id": "country:cmr",
@@ -506,7 +729,15 @@ export const worldCollection: Collection = {
             },
             "iso2": "CM",
             "iso3": "CMR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:nga",
+                "country:gab",
+                "country:gnq",
+                "country:cog",
+                "country:tcd",
+                "country:caf"
+            ]
         },
         {
             "id": "country:cod",
@@ -521,7 +752,18 @@ export const worldCollection: Collection = {
             },
             "iso2": "CD",
             "iso3": "COD",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:zmb",
+                "country:uga",
+                "country:tza",
+                "country:ssd",
+                "country:rwa",
+                "country:cog",
+                "country:caf",
+                "country:bdi",
+                "country:ago"
+            ]
         },
         {
             "id": "country:cog",
@@ -536,7 +778,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "CG",
             "iso3": "COG",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:gab",
+                "country:cod",
+                "country:caf",
+                "country:cmr",
+                "country:ago"
+            ]
         },
         {
             "id": "country:col",
@@ -551,7 +800,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "CO",
             "iso3": "COL",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ven",
+                "country:per",
+                "country:pan",
+                "country:ecu",
+                "country:bra"
+            ]
         },
         {
             "id": "country:com",
@@ -566,7 +822,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "KM",
             "iso3": "COM",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:cpv",
@@ -581,7 +838,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "CV",
             "iso3": "CPV",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:cri",
@@ -596,7 +854,27 @@ export const worldCollection: Collection = {
             },
             "iso2": "CR",
             "iso3": "CRI",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:pan",
+                "country:nic"
+            ]
+        },
+        {
+            "id": "country:cub",
+            "kind": "country",
+            "names": {
+                "en": "Cuba",
+                "es": "Cuba"
+            },
+            "point": {
+                "lat": 23.133905,
+                "lon": -82.366128
+            },
+            "iso2": "CU",
+            "iso3": "CUB",
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:cyp",
@@ -611,7 +889,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "CY",
             "iso3": "CYP",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:cze",
@@ -626,7 +905,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "CZ",
             "iso3": "CZE",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:svk",
+                "country:pol",
+                "country:deu",
+                "country:aut"
+            ]
         },
         {
             "id": "country:deu",
@@ -641,7 +926,18 @@ export const worldCollection: Collection = {
             },
             "iso2": "DE",
             "iso3": "DEU",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:che",
+                "country:pol",
+                "country:nld",
+                "country:lux",
+                "country:fra",
+                "country:dnk",
+                "country:cze",
+                "country:bel",
+                "country:aut"
+            ]
         },
         {
             "id": "country:dji",
@@ -656,7 +952,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "DJ",
             "iso3": "DJI",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:eth",
+                "country:eri"
+            ]
         },
         {
             "id": "country:dma",
@@ -671,7 +971,26 @@ export const worldCollection: Collection = {
             },
             "iso2": "DM",
             "iso3": "DMA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
+        },
+        {
+            "id": "country:dnk",
+            "kind": "country",
+            "names": {
+                "en": "Denmark",
+                "es": "Dinamarca"
+            },
+            "point": {
+                "lat": 55.68051,
+                "lon": 12.56154
+            },
+            "iso2": "DK",
+            "iso3": "DNK",
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:deu"
+            ]
         },
         {
             "id": "country:dom",
@@ -686,7 +1005,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "DO",
             "iso3": "DOM",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:hti"
+            ]
         },
         {
             "id": "country:dza",
@@ -701,7 +1023,15 @@ export const worldCollection: Collection = {
             },
             "iso2": "DZ",
             "iso3": "DZA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tun",
+                "country:ner",
+                "country:mar",
+                "country:mrt",
+                "country:mli",
+                "country:lby"
+            ]
         },
         {
             "id": "country:ecu",
@@ -716,7 +1046,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "EC",
             "iso3": "ECU",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:per",
+                "country:col"
+            ]
         },
         {
             "id": "country:egy",
@@ -731,7 +1065,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "EG",
             "iso3": "EGY",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:sdn",
+                "country:lby",
+                "country:isr"
+            ]
         },
         {
             "id": "country:eri",
@@ -746,7 +1085,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "ER",
             "iso3": "ERI",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:sdn",
+                "country:eth",
+                "country:dji"
+            ]
         },
         {
             "id": "country:esp",
@@ -761,7 +1105,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "ES",
             "iso3": "ESP",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:prt",
+                "country:fra",
+                "country:and"
+            ]
         },
         {
             "id": "country:est",
@@ -776,7 +1125,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "EE",
             "iso3": "EST",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:rus",
+                "country:lva"
+            ]
         },
         {
             "id": "country:eth",
@@ -791,7 +1144,35 @@ export const worldCollection: Collection = {
             },
             "iso2": "ET",
             "iso3": "ETH",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ssd",
+                "country:sdn",
+                "country:som",
+                "country:ken",
+                "country:eri",
+                "country:dji"
+            ]
+        },
+        {
+            "id": "country:fin",
+            "kind": "country",
+            "names": {
+                "en": "Finland",
+                "es": "Finlandia"
+            },
+            "point": {
+                "lat": 60.177509,
+                "lon": 24.932181
+            },
+            "iso2": "FI",
+            "iso3": "FIN",
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:swe",
+                "country:rus",
+                "country:nor"
+            ]
         },
         {
             "id": "country:fji",
@@ -806,7 +1187,35 @@ export const worldCollection: Collection = {
             },
             "iso2": "FJ",
             "iso3": "FJI",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
+        },
+        {
+            "id": "country:fra",
+            "kind": "country",
+            "names": {
+                "en": "France",
+                "es": "Francia"
+            },
+            "point": {
+                "lat": 48.868639,
+                "lon": 2.33139
+            },
+            "iso2": "FR",
+            "iso3": "FRA",
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:che",
+                "country:sur",
+                "country:esp",
+                "country:mco",
+                "country:lux",
+                "country:ita",
+                "country:deu",
+                "country:bra",
+                "country:bel",
+                "country:and"
+            ]
         },
         {
             "id": "country:fsm",
@@ -821,7 +1230,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "FM",
             "iso3": "FSM",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:gab",
@@ -836,7 +1246,30 @@ export const worldCollection: Collection = {
             },
             "iso2": "GA",
             "iso3": "GAB",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:gnq",
+                "country:cog",
+                "country:cmr"
+            ]
+        },
+        {
+            "id": "country:gbr",
+            "kind": "country",
+            "names": {
+                "en": "United Kingdom",
+                "es": "Reino Unido"
+            },
+            "point": {
+                "lat": 51.501941,
+                "lon": -0.118668
+            },
+            "iso2": "GB",
+            "iso3": "GBR",
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:irl"
+            ]
         },
         {
             "id": "country:geo",
@@ -851,7 +1284,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "GE",
             "iso3": "GEO",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tur",
+                "country:rus",
+                "country:aze",
+                "country:arm"
+            ]
         },
         {
             "id": "country:gha",
@@ -866,7 +1305,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "GH",
             "iso3": "GHA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tgo",
+                "country:civ",
+                "country:bfa"
+            ]
         },
         {
             "id": "country:gin",
@@ -881,7 +1325,15 @@ export const worldCollection: Collection = {
             },
             "iso2": "GN",
             "iso3": "GIN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:sle",
+                "country:sen",
+                "country:mli",
+                "country:lbr",
+                "country:gnb",
+                "country:civ"
+            ]
         },
         {
             "id": "country:gmb",
@@ -896,7 +1348,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "GM",
             "iso3": "GMB",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:sen"
+            ]
         },
         {
             "id": "country:gnb",
@@ -911,7 +1366,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "GW",
             "iso3": "GNB",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:sen",
+                "country:gin"
+            ]
         },
         {
             "id": "country:gnq",
@@ -926,7 +1385,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "GQ",
             "iso3": "GNQ",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:gab",
+                "country:cmr"
+            ]
         },
         {
             "id": "country:grc",
@@ -941,7 +1404,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "GR",
             "iso3": "GRC",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tur",
+                "country:mkd",
+                "country:bgr",
+                "country:alb"
+            ]
         },
         {
             "id": "country:grd",
@@ -956,7 +1425,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "GD",
             "iso3": "GRD",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:gtm",
@@ -971,7 +1441,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "GT",
             "iso3": "GTM",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:mex",
+                "country:hnd",
+                "country:slv",
+                "country:blz"
+            ]
         },
         {
             "id": "country:guy",
@@ -986,7 +1462,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "GY",
             "iso3": "GUY",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ven",
+                "country:sur",
+                "country:bra"
+            ]
         },
         {
             "id": "country:hnd",
@@ -1001,7 +1482,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "HN",
             "iso3": "HND",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:nic",
+                "country:gtm",
+                "country:slv"
+            ]
         },
         {
             "id": "country:hrv",
@@ -1016,7 +1502,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "HR",
             "iso3": "HRV",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:svn",
+                "country:srb",
+                "country:mne",
+                "country:hun",
+                "country:bih"
+            ]
         },
         {
             "id": "country:hti",
@@ -1031,7 +1524,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "HT",
             "iso3": "HTI",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:dom"
+            ]
         },
         {
             "id": "country:hun",
@@ -1046,7 +1542,16 @@ export const worldCollection: Collection = {
             },
             "iso2": "HU",
             "iso3": "HUN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ukr",
+                "country:svk",
+                "country:svn",
+                "country:srb",
+                "country:rou",
+                "country:hrv",
+                "country:aut"
+            ]
         },
         {
             "id": "country:idn",
@@ -1061,7 +1566,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "ID",
             "iso3": "IDN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tls",
+                "country:png",
+                "country:mys"
+            ]
         },
         {
             "id": "country:ind",
@@ -1076,7 +1586,15 @@ export const worldCollection: Collection = {
             },
             "iso2": "IN",
             "iso3": "IND",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:pak",
+                "country:npl",
+                "country:chn",
+                "country:mmr",
+                "country:btn",
+                "country:bgd"
+            ]
         },
         {
             "id": "country:irl",
@@ -1091,7 +1609,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "IE",
             "iso3": "IRL",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:gbr"
+            ]
         },
         {
             "id": "country:irn",
@@ -1106,7 +1627,16 @@ export const worldCollection: Collection = {
             },
             "iso2": "IR",
             "iso3": "IRN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tkm",
+                "country:tur",
+                "country:pak",
+                "country:irq",
+                "country:aze",
+                "country:arm",
+                "country:afg"
+            ]
         },
         {
             "id": "country:irq",
@@ -1121,7 +1651,15 @@ export const worldCollection: Collection = {
             },
             "iso2": "IQ",
             "iso3": "IRQ",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tur",
+                "country:syr",
+                "country:sau",
+                "country:kwt",
+                "country:jor",
+                "country:irn"
+            ]
         },
         {
             "id": "country:isl",
@@ -1136,7 +1674,29 @@ export const worldCollection: Collection = {
             },
             "iso2": "IS",
             "iso3": "ISL",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
+        },
+        {
+            "id": "country:isr",
+            "kind": "country",
+            "names": {
+                "en": "Israel",
+                "es": "Israel"
+            },
+            "point": {
+                "lat": 31.778408,
+                "lon": 35.206626
+            },
+            "iso2": "IL",
+            "iso3": "ISR",
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:syr",
+                "country:lbn",
+                "country:jor",
+                "country:egy"
+            ]
         },
         {
             "id": "country:ita",
@@ -1151,7 +1711,15 @@ export const worldCollection: Collection = {
             },
             "iso2": "IT",
             "iso3": "ITA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:vat",
+                "country:che",
+                "country:svn",
+                "country:smr",
+                "country:fra",
+                "country:aut"
+            ]
         },
         {
             "id": "country:jam",
@@ -1166,7 +1734,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "JM",
             "iso3": "JAM",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:jor",
@@ -1181,7 +1750,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "JO",
             "iso3": "JOR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:syr",
+                "country:sau",
+                "country:isr",
+                "country:irq"
+            ]
         },
         {
             "id": "country:jpn",
@@ -1196,7 +1771,30 @@ export const worldCollection: Collection = {
             },
             "iso2": "JP",
             "iso3": "JPN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
+        },
+        {
+            "id": "country:kaz",
+            "kind": "country",
+            "names": {
+                "en": "Kazakhstan",
+                "es": "Kazajistán"
+            },
+            "point": {
+                "lat": 51.181125,
+                "lon": 71.427774
+            },
+            "iso2": "KZ",
+            "iso3": "KAZ",
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:uzb",
+                "country:tkm",
+                "country:rus",
+                "country:kgz",
+                "country:chn"
+            ]
         },
         {
             "id": "country:ken",
@@ -1211,7 +1809,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "KE",
             "iso3": "KEN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:uga",
+                "country:tza",
+                "country:ssd",
+                "country:som",
+                "country:eth"
+            ]
         },
         {
             "id": "country:kgz",
@@ -1226,7 +1831,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "KG",
             "iso3": "KGZ",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:uzb",
+                "country:tjk",
+                "country:kaz",
+                "country:chn"
+            ]
         },
         {
             "id": "country:khm",
@@ -1241,7 +1852,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "KH",
             "iso3": "KHM",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:vnm",
+                "country:tha",
+                "country:lao"
+            ]
         },
         {
             "id": "country:kir",
@@ -1256,7 +1872,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "KI",
             "iso3": "KIR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:kna",
@@ -1271,7 +1888,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "KN",
             "iso3": "KNA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:kor",
@@ -1286,7 +1904,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "KR",
             "iso3": "KOR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:prk"
+            ]
         },
         {
             "id": "country:kwt",
@@ -1301,7 +1922,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "KW",
             "iso3": "KWT",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:sau",
+                "country:irq"
+            ]
         },
         {
             "id": "country:lao",
@@ -1316,7 +1941,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "LA",
             "iso3": "LAO",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:vnm",
+                "country:tha",
+                "country:chn",
+                "country:khm",
+                "country:mmr"
+            ]
         },
         {
             "id": "country:lbn",
@@ -1331,7 +1963,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "LB",
             "iso3": "LBN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:syr",
+                "country:isr"
+            ]
         },
         {
             "id": "country:lbr",
@@ -1346,7 +1982,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "LR",
             "iso3": "LBR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:sle",
+                "country:gin",
+                "country:civ"
+            ]
         },
         {
             "id": "country:lby",
@@ -1361,7 +2002,15 @@ export const worldCollection: Collection = {
             },
             "iso2": "LY",
             "iso3": "LBY",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tun",
+                "country:sdn",
+                "country:ner",
+                "country:egy",
+                "country:tcd",
+                "country:dza"
+            ]
         },
         {
             "id": "country:lca",
@@ -1376,7 +2025,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "LC",
             "iso3": "LCA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:lie",
@@ -1391,7 +2041,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "LI",
             "iso3": "LIE",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:che",
+                "country:aut"
+            ]
         },
         {
             "id": "country:lka",
@@ -1406,7 +2060,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "LK",
             "iso3": "LKA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:lso",
@@ -1421,7 +2076,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "LS",
             "iso3": "LSO",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:zaf"
+            ]
         },
         {
             "id": "country:ltu",
@@ -1436,7 +2094,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "LT",
             "iso3": "LTU",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:rus",
+                "country:pol",
+                "country:lva",
+                "country:blr"
+            ]
         },
         {
             "id": "country:lux",
@@ -1451,7 +2115,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "LU",
             "iso3": "LUX",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:deu",
+                "country:fra",
+                "country:bel"
+            ]
         },
         {
             "id": "country:lva",
@@ -1466,7 +2135,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "LV",
             "iso3": "LVA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:rus",
+                "country:ltu",
+                "country:est",
+                "country:blr"
+            ]
         },
         {
             "id": "country:mar",
@@ -1481,7 +2156,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "MA",
             "iso3": "MAR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:dza"
+            ]
         },
         {
             "id": "country:mco",
@@ -1496,7 +2174,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "MC",
             "iso3": "MCO",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:fra"
+            ]
         },
         {
             "id": "country:mda",
@@ -1511,7 +2192,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "MD",
             "iso3": "MDA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ukr",
+                "country:rou"
+            ]
         },
         {
             "id": "country:mdg",
@@ -1526,7 +2211,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "MG",
             "iso3": "MDG",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:mdv",
@@ -1541,7 +2227,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "MV",
             "iso3": "MDV",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:mex",
@@ -1556,7 +2243,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "MX",
             "iso3": "MEX",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:usa",
+                "country:gtm",
+                "country:blz"
+            ]
         },
         {
             "id": "country:mhl",
@@ -1571,7 +2263,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "MH",
             "iso3": "MHL",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:mkd",
@@ -1586,7 +2279,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "MK",
             "iso3": "MKD",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:srb",
+                "country:grc",
+                "country:bgr",
+                "country:alb"
+            ]
         },
         {
             "id": "country:mli",
@@ -1601,7 +2300,16 @@ export const worldCollection: Collection = {
             },
             "iso2": "ML",
             "iso3": "MLI",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:sen",
+                "country:ner",
+                "country:mrt",
+                "country:gin",
+                "country:civ",
+                "country:bfa",
+                "country:dza"
+            ]
         },
         {
             "id": "country:mlt",
@@ -1616,7 +2324,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "MT",
             "iso3": "MLT",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:mmr",
@@ -1631,7 +2340,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "MM",
             "iso3": "MMR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tha",
+                "country:lao",
+                "country:ind",
+                "country:chn",
+                "country:bgd"
+            ]
         },
         {
             "id": "country:mne",
@@ -1646,7 +2362,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "ME",
             "iso3": "MNE",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:srb",
+                "country:hrv",
+                "country:bih",
+                "country:alb"
+            ]
         },
         {
             "id": "country:mng",
@@ -1661,7 +2383,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "MN",
             "iso3": "MNG",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:rus",
+                "country:chn"
+            ]
         },
         {
             "id": "country:moz",
@@ -1676,7 +2402,15 @@ export const worldCollection: Collection = {
             },
             "iso2": "MZ",
             "iso3": "MOZ",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:zwe",
+                "country:zmb",
+                "country:tza",
+                "country:swz",
+                "country:zaf",
+                "country:mwi"
+            ]
         },
         {
             "id": "country:mrt",
@@ -1691,7 +2425,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "MR",
             "iso3": "MRT",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:sen",
+                "country:mli",
+                "country:dza"
+            ]
         },
         {
             "id": "country:mus",
@@ -1706,7 +2445,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "MU",
             "iso3": "MUS",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:mwi",
@@ -1721,7 +2461,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "MW",
             "iso3": "MWI",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:zmb",
+                "country:tza",
+                "country:moz"
+            ]
         },
         {
             "id": "country:mys",
@@ -1736,7 +2481,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "MY",
             "iso3": "MYS",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tha",
+                "country:idn",
+                "country:brn"
+            ]
         },
         {
             "id": "country:nam",
@@ -1751,7 +2501,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "NA",
             "iso3": "NAM",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:zwe",
+                "country:zmb",
+                "country:zaf",
+                "country:bwa",
+                "country:ago"
+            ]
         },
         {
             "id": "country:ner",
@@ -1766,7 +2523,16 @@ export const worldCollection: Collection = {
             },
             "iso2": "NE",
             "iso3": "NER",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:nga",
+                "country:mli",
+                "country:lby",
+                "country:tcd",
+                "country:bfa",
+                "country:ben",
+                "country:dza"
+            ]
         },
         {
             "id": "country:nga",
@@ -1781,7 +2547,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "NG",
             "iso3": "NGA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ner",
+                "country:tcd",
+                "country:cmr",
+                "country:ben"
+            ]
         },
         {
             "id": "country:nic",
@@ -1796,7 +2568,30 @@ export const worldCollection: Collection = {
             },
             "iso2": "NI",
             "iso3": "NIC",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:hnd",
+                "country:cri"
+            ]
+        },
+        {
+            "id": "country:nld",
+            "kind": "country",
+            "names": {
+                "en": "Netherlands",
+                "es": "Países Bajos"
+            },
+            "point": {
+                "lat": 52.351915,
+                "lon": 4.914694
+            },
+            "iso2": "NL",
+            "iso3": "NLD",
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:deu",
+                "country:bel"
+            ]
         },
         {
             "id": "country:nor",
@@ -1811,7 +2606,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "NO",
             "iso3": "NOR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:swe",
+                "country:rus",
+                "country:fin"
+            ]
         },
         {
             "id": "country:npl",
@@ -1826,7 +2626,27 @@ export const worldCollection: Collection = {
             },
             "iso2": "NP",
             "iso3": "NPL",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ind",
+                "country:chn"
+            ]
+        },
+        {
+            "id": "country:nzl",
+            "kind": "country",
+            "names": {
+                "en": "New Zealand",
+                "es": "Nueva Zelanda"
+            },
+            "point": {
+                "lat": -41.299988,
+                "lon": 174.783266
+            },
+            "iso2": "NZ",
+            "iso3": "NZL",
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:omn",
@@ -1841,7 +2661,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "OM",
             "iso3": "OMN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:yem",
+                "country:are",
+                "country:sau"
+            ]
         },
         {
             "id": "country:pak",
@@ -1856,7 +2681,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "PK",
             "iso3": "PAK",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:irn",
+                "country:ind",
+                "country:chn",
+                "country:afg"
+            ]
         },
         {
             "id": "country:pan",
@@ -1871,7 +2702,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "PA",
             "iso3": "PAN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:cri",
+                "country:col"
+            ]
         },
         {
             "id": "country:per",
@@ -1886,7 +2721,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "PE",
             "iso3": "PER",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ecu",
+                "country:col",
+                "country:chl",
+                "country:bra",
+                "country:bol"
+            ]
         },
         {
             "id": "country:phl",
@@ -1901,7 +2743,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "PH",
             "iso3": "PHL",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:plw",
@@ -1916,7 +2759,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "PW",
             "iso3": "PLW",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:png",
@@ -1931,7 +2775,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "PG",
             "iso3": "PNG",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:idn"
+            ]
         },
         {
             "id": "country:pol",
@@ -1946,7 +2793,16 @@ export const worldCollection: Collection = {
             },
             "iso2": "PL",
             "iso3": "POL",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ukr",
+                "country:svk",
+                "country:rus",
+                "country:ltu",
+                "country:deu",
+                "country:cze",
+                "country:blr"
+            ]
         },
         {
             "id": "country:prk",
@@ -1961,7 +2817,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "KP",
             "iso3": "PRK",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:kor",
+                "country:rus",
+                "country:chn"
+            ]
         },
         {
             "id": "country:prt",
@@ -1976,7 +2837,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "PT",
             "iso3": "PRT",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:esp"
+            ]
         },
         {
             "id": "country:pry",
@@ -1991,7 +2855,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "PY",
             "iso3": "PRY",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:bra",
+                "country:bol",
+                "country:arg"
+            ]
         },
         {
             "id": "country:qat",
@@ -2006,7 +2875,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "QA",
             "iso3": "QAT",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:sau"
+            ]
         },
         {
             "id": "country:rou",
@@ -2021,7 +2893,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "RO",
             "iso3": "ROU",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ukr",
+                "country:srb",
+                "country:mda",
+                "country:hun",
+                "country:bgr"
+            ]
         },
         {
             "id": "country:rus",
@@ -2036,7 +2915,23 @@ export const worldCollection: Collection = {
             },
             "iso2": "RU",
             "iso3": "RUS",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ukr",
+                "country:pol",
+                "country:nor",
+                "country:prk",
+                "country:mng",
+                "country:ltu",
+                "country:lva",
+                "country:kaz",
+                "country:geo",
+                "country:fin",
+                "country:est",
+                "country:chn",
+                "country:blr",
+                "country:aze"
+            ]
         },
         {
             "id": "country:rwa",
@@ -2051,7 +2946,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "RW",
             "iso3": "RWA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:uga",
+                "country:tza",
+                "country:cod",
+                "country:bdi"
+            ]
         },
         {
             "id": "country:sau",
@@ -2066,7 +2967,16 @@ export const worldCollection: Collection = {
             },
             "iso2": "SA",
             "iso3": "SAU",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:yem",
+                "country:are",
+                "country:qat",
+                "country:omn",
+                "country:kwt",
+                "country:jor",
+                "country:irq"
+            ]
         },
         {
             "id": "country:sdn",
@@ -2081,7 +2991,16 @@ export const worldCollection: Collection = {
             },
             "iso2": "SD",
             "iso3": "SDN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ssd",
+                "country:lby",
+                "country:eth",
+                "country:eri",
+                "country:egy",
+                "country:tcd",
+                "country:caf"
+            ]
         },
         {
             "id": "country:sen",
@@ -2096,7 +3015,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "SN",
             "iso3": "SEN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:mrt",
+                "country:mli",
+                "country:gnb",
+                "country:gin",
+                "country:gmb"
+            ]
         },
         {
             "id": "country:sgp",
@@ -2111,7 +3037,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "SG",
             "iso3": "SGP",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:slb",
@@ -2126,7 +3053,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "SB",
             "iso3": "SLB",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:sle",
@@ -2141,7 +3069,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "SL",
             "iso3": "SLE",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:lbr",
+                "country:gin"
+            ]
         },
         {
             "id": "country:slv",
@@ -2156,7 +3088,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "SV",
             "iso3": "SLV",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:hnd",
+                "country:gtm"
+            ]
         },
         {
             "id": "country:smr",
@@ -2171,7 +3107,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "SM",
             "iso3": "SMR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ita"
+            ]
         },
         {
             "id": "country:som",
@@ -2186,7 +3125,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "SO",
             "iso3": "SOM",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ken",
+                "country:eth"
+            ]
         },
         {
             "id": "country:srb",
@@ -2201,7 +3144,16 @@ export const worldCollection: Collection = {
             },
             "iso2": "RS",
             "iso3": "SRB",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:rou",
+                "country:mne",
+                "country:mkd",
+                "country:hun",
+                "country:hrv",
+                "country:bgr",
+                "country:bih"
+            ]
         },
         {
             "id": "country:ssd",
@@ -2216,7 +3168,15 @@ export const worldCollection: Collection = {
             },
             "iso2": "SS",
             "iso3": "SSD",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:uga",
+                "country:sdn",
+                "country:ken",
+                "country:eth",
+                "country:cod",
+                "country:caf"
+            ]
         },
         {
             "id": "country:stp",
@@ -2231,7 +3191,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "ST",
             "iso3": "STP",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:sur",
@@ -2246,7 +3207,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "SR",
             "iso3": "SUR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:guy",
+                "country:fra",
+                "country:bra"
+            ]
         },
         {
             "id": "country:svk",
@@ -2261,7 +3227,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "SK",
             "iso3": "SVK",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ukr",
+                "country:pol",
+                "country:hun",
+                "country:cze",
+                "country:aut"
+            ]
         },
         {
             "id": "country:svn",
@@ -2276,7 +3249,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "SI",
             "iso3": "SVN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ita",
+                "country:hun",
+                "country:hrv",
+                "country:aut"
+            ]
         },
         {
             "id": "country:swe",
@@ -2291,7 +3270,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "SE",
             "iso3": "SWE",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:nor",
+                "country:fin"
+            ]
         },
         {
             "id": "country:swz",
@@ -2306,7 +3289,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "SZ",
             "iso3": "SWZ",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:zaf",
+                "country:moz"
+            ]
         },
         {
             "id": "country:syc",
@@ -2321,7 +3308,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "SC",
             "iso3": "SYC",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:syr",
@@ -2336,7 +3324,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "SY",
             "iso3": "SYR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tur",
+                "country:lbn",
+                "country:jor",
+                "country:isr",
+                "country:irq"
+            ]
         },
         {
             "id": "country:tcd",
@@ -2351,7 +3346,15 @@ export const worldCollection: Collection = {
             },
             "iso2": "TD",
             "iso3": "TCD",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:sdn",
+                "country:nga",
+                "country:ner",
+                "country:lby",
+                "country:caf",
+                "country:cmr"
+            ]
         },
         {
             "id": "country:tgo",
@@ -2366,7 +3369,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "TG",
             "iso3": "TGO",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:gha",
+                "country:bfa",
+                "country:ben"
+            ]
         },
         {
             "id": "country:tha",
@@ -2381,7 +3389,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "TH",
             "iso3": "THA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:mys",
+                "country:lao",
+                "country:khm",
+                "country:mmr"
+            ]
         },
         {
             "id": "country:tjk",
@@ -2396,7 +3410,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "TJ",
             "iso3": "TJK",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:uzb",
+                "country:kgz",
+                "country:chn",
+                "country:afg"
+            ]
         },
         {
             "id": "country:tkm",
@@ -2411,7 +3431,13 @@ export const worldCollection: Collection = {
             },
             "iso2": "TM",
             "iso3": "TKM",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:uzb",
+                "country:kaz",
+                "country:irn",
+                "country:afg"
+            ]
         },
         {
             "id": "country:tls",
@@ -2426,7 +3452,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "TL",
             "iso3": "TLS",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:idn"
+            ]
         },
         {
             "id": "country:ton",
@@ -2441,7 +3470,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "TO",
             "iso3": "TON",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:tto",
@@ -2456,7 +3486,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "TT",
             "iso3": "TTO",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:tun",
@@ -2471,7 +3502,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "TN",
             "iso3": "TUN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:lby",
+                "country:dza"
+            ]
         },
         {
             "id": "country:tur",
@@ -2486,7 +3521,17 @@ export const worldCollection: Collection = {
             },
             "iso2": "TR",
             "iso3": "TUR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:syr",
+                "country:irq",
+                "country:irn",
+                "country:grc",
+                "country:geo",
+                "country:bgr",
+                "country:aze",
+                "country:arm"
+            ]
         },
         {
             "id": "country:tuv",
@@ -2501,7 +3546,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "TV",
             "iso3": "TUV",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:tza",
@@ -2516,7 +3562,17 @@ export const worldCollection: Collection = {
             },
             "iso2": "TZ",
             "iso3": "TZA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:zmb",
+                "country:uga",
+                "country:rwa",
+                "country:moz",
+                "country:mwi",
+                "country:ken",
+                "country:cod",
+                "country:bdi"
+            ]
         },
         {
             "id": "country:uga",
@@ -2531,7 +3587,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "UG",
             "iso3": "UGA",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tza",
+                "country:ssd",
+                "country:rwa",
+                "country:ken",
+                "country:cod"
+            ]
         },
         {
             "id": "country:ukr",
@@ -2546,7 +3609,16 @@ export const worldCollection: Collection = {
             },
             "iso2": "UA",
             "iso3": "UKR",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:svk",
+                "country:rus",
+                "country:rou",
+                "country:pol",
+                "country:mda",
+                "country:hun",
+                "country:blr"
+            ]
         },
         {
             "id": "country:ury",
@@ -2561,7 +3633,30 @@ export const worldCollection: Collection = {
             },
             "iso2": "UY",
             "iso3": "URY",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:bra",
+                "country:arg"
+            ]
+        },
+        {
+            "id": "country:usa",
+            "kind": "country",
+            "names": {
+                "en": "United States of America",
+                "es": "Estados Unidos"
+            },
+            "point": {
+                "lat": 38.901495,
+                "lon": -77.011364
+            },
+            "iso2": "US",
+            "iso3": "USA",
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:mex",
+                "country:can"
+            ]
         },
         {
             "id": "country:uzb",
@@ -2576,7 +3671,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "UZ",
             "iso3": "UZB",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:tkm",
+                "country:tjk",
+                "country:kgz",
+                "country:kaz",
+                "country:afg"
+            ]
         },
         {
             "id": "country:vat",
@@ -2591,7 +3693,10 @@ export const worldCollection: Collection = {
             },
             "iso2": "VA",
             "iso3": "VAT",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:ita"
+            ]
         },
         {
             "id": "country:vct",
@@ -2606,7 +3711,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "VC",
             "iso3": "VCT",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:ven",
@@ -2621,7 +3727,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "VE",
             "iso3": "VEN",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:guy",
+                "country:col",
+                "country:bra"
+            ]
         },
         {
             "id": "country:vnm",
@@ -2636,7 +3747,12 @@ export const worldCollection: Collection = {
             },
             "iso2": "VN",
             "iso3": "VNM",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:lao",
+                "country:chn",
+                "country:khm"
+            ]
         },
         {
             "id": "country:vut",
@@ -2651,7 +3767,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "VU",
             "iso3": "VUT",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:wsm",
@@ -2666,7 +3783,8 @@ export const worldCollection: Collection = {
             },
             "iso2": "WS",
             "iso3": "WSM",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": []
         },
         {
             "id": "country:yem",
@@ -2681,7 +3799,11 @@ export const worldCollection: Collection = {
             },
             "iso2": "YE",
             "iso3": "YEM",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:sau",
+                "country:omn"
+            ]
         },
         {
             "id": "country:zaf",
@@ -2696,7 +3818,15 @@ export const worldCollection: Collection = {
             },
             "iso2": "ZA",
             "iso3": "ZAF",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:zwe",
+                "country:swz",
+                "country:nam",
+                "country:moz",
+                "country:lso",
+                "country:bwa"
+            ]
         },
         {
             "id": "country:zmb",
@@ -2711,7 +3841,17 @@ export const worldCollection: Collection = {
             },
             "iso2": "ZM",
             "iso3": "ZMB",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:zwe",
+                "country:tza",
+                "country:nam",
+                "country:moz",
+                "country:mwi",
+                "country:cod",
+                "country:bwa",
+                "country:ago"
+            ]
         },
         {
             "id": "country:zwe",
@@ -2726,7 +3866,14 @@ export const worldCollection: Collection = {
             },
             "iso2": "ZW",
             "iso3": "ZWE",
-            "sourceVersion": "natural-earth-50m"
+            "sourceVersion": "natural-earth-50m",
+            "landBorders": [
+                "country:zmb",
+                "country:zaf",
+                "country:nam",
+                "country:moz",
+                "country:bwa"
+            ]
         }
     ]
 };
