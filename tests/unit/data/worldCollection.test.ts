@@ -39,7 +39,8 @@ describe("worldCollection (generated data)", () => {
         }
     });
 
-    it("declares Compass as a supported mode", () => {
+    it("declares Compass and Arrange as supported modes", () => {
         expect(worldCollection.supportedModes).toContain("compass");
+        expect(worldCollection.supportedModes).toContain("arrange");
     });
 });

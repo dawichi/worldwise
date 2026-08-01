@@ -202,7 +202,7 @@ async function main(): Promise<void> {
     const worldCollection: Collection = collectionSchema.parse({
         id: "world",
         names: { en: "World", es: "Mundo" },
-        supportedModes: ["compass"],
+        supportedModes: ["compass", "arrange"],
         places,
     } satisfies Collection);
 

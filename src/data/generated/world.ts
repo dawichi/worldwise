@@ -9,7 +9,8 @@ export const worldCollection: Collection = {
         "es": "Mundo"
     },
     "supportedModes": [
-        "compass"
+        "compass",
+        "arrange"
     ],
     "places": [
         {
