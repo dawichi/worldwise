@@ -3,7 +3,7 @@ import {
     computeCompassStatus,
     resolveDailyCompass,
 } from "../lib/challenge/dailyCompass";
-import { recordDailyCompletion } from "../lib/challenge/streak";
+import { maybeRecordDailyCompletion } from "../lib/challenge/dailyRitual";
 import { getPlaceById } from "../lib/data/lookup";
 import { bearingToCompassLabel } from "../lib/geo/angle";
 import { localizedDirectionName } from "../lib/i18n/directions";
@@ -178,22 +178,16 @@ export function mountCompassSession(): void {
         }
 
         const stateBeforeSave = loadState(localStorage);
-        const streak = isLastRound
-            ? recordDailyCompletion(stateBeforeSave.streak, dateKey)
-            : stateBeforeSave.streak;
-        saveState(
-            {
-                ...stateBeforeSave,
-                compass: {
-                    daily: {
-                        ...stateBeforeSave.compass.daily,
-                        [dateKey]: entry,
-                    },
-                },
-                streak,
+        const stateWithEntry = {
+            ...stateBeforeSave,
+            compass: {
+                daily: { ...stateBeforeSave.compass.daily, [dateKey]: entry },
             },
-            localStorage,
-        );
+        };
+        const finalState = isLastRound
+            ? maybeRecordDailyCompletion(stateWithEntry, dateKey)
+            : stateWithEntry;
+        saveState(finalState, localStorage);
 
         dial.disable();
         submitButton.classList.add("hidden");
