@@ -38,9 +38,15 @@ const locale = Astro.currentLocale === "es" ? "es" : "en";
                 <Compass slot="icon" width={20} height={20} aria-hidden="true" />
             </ModeCard>
 
-            <DisabledModeCard name={t(locale, "modes.arrange.name")} comingSoonLabel={t(locale, "home.comingSoon")}>
+            <ModeCard
+                id="arrange-mode-card"
+                name={t(locale, "modes.arrange.name")}
+                statusLabel={t(locale, "home.notStarted")}
+                startLabel={t(locale, "home.start")}
+                href="/play/arrange"
+            >
                 <BarChart3 slot="icon" width={20} height={20} aria-hidden="true" />
-            </DisabledModeCard>
+            </ModeCard>
 
             <DisabledModeCard name={t(locale, "modes.borderRun.name")} comingSoonLabel={t(locale, "home.comingSoon")}>
                 <Route slot="icon" width={20} height={20} aria-hidden="true" />

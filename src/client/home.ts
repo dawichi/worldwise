@@ -1,9 +1,19 @@
 import {
+    type ArrangeDailyStatus,
+    computeArrangeStatus,
+    countAnsweredRounds as countArrangeAnsweredRounds,
+    resolveDailyArrange,
+} from "../lib/challenge/dailyArrange";
+import {
     type CompassDailyStatus,
     computeCompassStatus,
     countAnsweredRounds,
     resolveDailyCompass,
 } from "../lib/challenge/dailyCompass";
+import {
+    countCompletedModesToday,
+    ENABLED_MODE_IDS,
+} from "../lib/challenge/dailyRitual";
 import { type Locale, t } from "../lib/i18n/t";
 import { loadState } from "../lib/persistence/repository";
 
@@ -56,13 +66,14 @@ function renderRitualProgress(
     }
 }
 
-function renderCompassCard(
+function renderModeCard(
     locale: Locale,
-    status: CompassDailyStatus,
+    modeId: "compass" | "arrange",
+    status: CompassDailyStatus | ArrangeDailyStatus,
     answeredCount: number,
     totalRounds: number,
 ): void {
-    const card = document.getElementById("compass-mode-card");
+    const card = document.getElementById(`${modeId}-mode-card`);
     if (!card) {
         return;
     }
@@ -104,7 +115,7 @@ function renderCompassCard(
             actionLink.textContent = t(locale, "common.continue");
         }
         if (statusLabel) {
-            statusLabel.textContent = t(locale, "compass.roundOf", {
+            statusLabel.textContent = t(locale, `${modeId}.roundOf`, {
                 current: answeredCount + 1,
                 total: totalRounds,
             });
@@ -124,10 +135,10 @@ export function mountHome(): void {
     const locale = getLocale();
     const now = new Date();
     const state = loadState(localStorage);
-    const { entry } = resolveDailyCompass(now, state);
-    const status = computeCompassStatus(entry);
-    const answeredCount = countAnsweredRounds(entry);
-    const totalRounds = entry.rounds.length;
+    const compass = resolveDailyCompass(now, state);
+    const arrange = resolveDailyArrange(now, state);
+    const compassStatus = computeCompassStatus(compass.entry);
+    const arrangeStatus = computeArrangeStatus(arrange.entry);
 
     const dateEl = document.getElementById("today-date");
     if (dateEl) {
@@ -135,7 +146,23 @@ export function mountHome(): void {
     }
 
     renderStreak(locale, state.streak.current);
-    // Only Compass is built so far; the daily ritual is "complete" once it is.
-    renderRitualProgress(locale, status === "completed" ? 1 : 0, 1);
-    renderCompassCard(locale, status, answeredCount, totalRounds);
+    renderRitualProgress(
+        locale,
+        countCompletedModesToday(state, compass.dateKey),
+        ENABLED_MODE_IDS.length,
+    );
+    renderModeCard(
+        locale,
+        "compass",
+        compassStatus,
+        countAnsweredRounds(compass.entry),
+        compass.entry.rounds.length,
+    );
+    renderModeCard(
+        locale,
+        "arrange",
+        arrangeStatus,
+        countArrangeAnsweredRounds(arrange.entry),
+        arrange.entry.rounds.length,
+    );
 }
