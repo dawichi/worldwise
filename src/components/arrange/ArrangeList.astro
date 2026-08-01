@@ -1,0 +1,69 @@
+---
+import { ChevronDown, ChevronUp } from "lucide-astro";
+import { ARRANGE_TIERS } from "../../lib/modes/arrange/tiers";
+
+interface Props {
+    id: string;
+}
+
+const { id } = Astro.props;
+// Only the medium tier is wired into UI this milestone, so the shell can
+// assume a fixed row count; a future bonus-tier UI would need this to vary.
+const itemCount = ARRANGE_TIERS.medium.itemsPerRound;
+const rowIndexes = Array.from({ length: itemCount }, (_, index) => index);
+---
+
+<ol id={id} class="mb-6 flex flex-col gap-2">
+    {
+        rowIndexes.map((index) => (
+            <li
+                class="arrange-row flex items-center gap-3 rounded-card border border-border bg-surface p-3"
+                data-index={index}
+            >
+                <span
+                    class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-chip text-sm font-bold text-text"
+                    aria-hidden="true"
+                >
+                    {index + 1}
+                </span>
+                <span data-role="place-name" class="flex-1 truncate text-sm font-bold text-text" />
+                <span data-role="position-indicator" class="hidden flex-shrink-0 text-xs font-bold" />
+                <div class="flex flex-shrink-0 flex-col gap-1">
+                    <button
+                        type="button"
+                        data-role="move-up"
+                        data-index={index}
+                        class="flex h-6 w-7 items-center justify-center rounded-button border border-border bg-surface text-text-muted disabled:opacity-40"
+                    >
+                        <ChevronUp width={14} height={14} aria-hidden="true" />
+                    </button>
+                    <button
+                        type="button"
+                        data-role="move-down"
+                        data-index={index}
+                        class="flex h-6 w-7 items-center justify-center rounded-button border border-border bg-surface text-text-muted disabled:opacity-40"
+                    >
+                        <ChevronDown width={14} height={14} aria-hidden="true" />
+                    </button>
+                </div>
+            </li>
+        ))
+    }
+</ol>
+
+<style>
+    .arrange-row[data-credit="full"] {
+        border-color: var(--color-success-icon);
+        background-color: var(--color-success-bg);
+    }
+    .arrange-row[data-credit="full"] [data-role="position-indicator"] {
+        color: var(--color-success-text);
+    }
+    .arrange-row[data-credit="none"] {
+        border-color: var(--color-attention-icon);
+        background-color: var(--color-attention-bg);
+    }
+    .arrange-row[data-credit="none"] [data-role="position-indicator"] {
+        color: var(--color-attention-text);
+    }
+</style>
