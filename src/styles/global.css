@@ -17,6 +17,11 @@
     --color-accent: oklch(64% 0.16 45);
     --color-accent-text: oklch(42% 0.14 45);
     --color-accent-tint: oklch(93% 0.04 45);
+    /* A darker step than --color-accent, used only for solid-fill button
+       backgrounds carrying white text: the mockup's --color-accent (64%
+       lightness) gives white text only 3.58:1 contrast, short of WCAG AA's
+       4.5:1 for text. 56% clears it (4.97:1) while reading as the same hue. */
+    --color-accent-button: oklch(56% 0.16 45);
 
     --color-success-bg: oklch(93% 0.06 150);
     --color-success-icon: oklch(45% 0.13 150);

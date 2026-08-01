@@ -13,7 +13,7 @@ const locale = Astro.currentLocale === "es" ? "es" : "en";
     <main class="mx-auto max-w-xl px-5 py-8 sm:px-6 sm:py-10">
         <header class="mb-6 flex items-start justify-between">
             <div>
-                <div class="text-xl font-extrabold text-text">{t(locale, "common.appName")}</div>
+                <h1 class="text-xl font-extrabold text-text">{t(locale, "common.appName")}</h1>
                 <div id="today-date" class="mt-0.5 text-sm text-text-muted"></div>
             </div>
             <div

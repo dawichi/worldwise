@@ -11,12 +11,12 @@ const locale = Astro.currentLocale === "es" ? "es" : "en";
         <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-success-bg">
             <CircleCheck width={28} height={28} class="text-success-icon" aria-hidden="true" />
         </div>
-        <p id="result-heading" class="mb-1 text-sm font-bold text-text-muted"></p>
+        <h1 id="result-heading" class="mb-1 text-sm font-bold text-text-muted"></h1>
         <p id="result-score" class="mb-6 text-4xl font-extrabold text-text"></p>
 
         <ul id="result-rounds" class="mb-6 flex flex-col gap-2 text-left"></ul>
 
-        <a href="/" class="block w-full rounded-button bg-accent py-3.5 text-base font-bold text-white">
+        <a href="/" class="block w-full rounded-button bg-accent-button py-3.5 text-base font-bold text-white">
             {t(locale, "common.backToToday")}
         </a>
     </main>
