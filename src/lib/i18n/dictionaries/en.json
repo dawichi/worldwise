@@ -3,7 +3,12 @@
         "appName": "Worldwise",
         "continue": "Continue",
         "backToToday": "Back to Today",
-        "streakDayCount": "{count} day streak"
+        "streakDayCount": "{count} day streak",
+        "submitAnswer": "Submit answer",
+        "creditFull": "Full credit",
+        "creditPartial": "Partial credit",
+        "creditNone": "No credit",
+        "resultScore": "{score} / {total}"
     },
     "nav": {
         "today": "Today",
@@ -42,14 +47,23 @@
         "tierLabel": "Compass · {tier}",
         "roundOf": "Round {current} of {total}",
         "prompt": "Which direction is {destination} from {origin}?",
-        "submitAnswer": "Submit answer",
-        "creditFull": "Full credit",
-        "creditPartial": "Partial credit",
-        "creditNone": "No credit",
         "trueBearing": "The direction was {direction} ({degrees}°).",
         "yourAnswer": "You indicated {degrees}°.",
         "distanceNote": "{destination} is about {distance} km {direction} of {origin}.",
-        "resultComplete": "Compass · {tier} complete",
-        "resultScore": "{score} / {total}"
+        "resultComplete": "Compass · {tier} complete"
+    },
+    "arrange": {
+        "tierLabel": "Arrange · {tier}",
+        "roundOf": "Round {current} of {total}",
+        "promptNorthToSouth": "Order these places from north to south.",
+        "promptWestToEast": "Order these places from west to east.",
+        "promptClosestToFarthest": "Order these places from closest to farthest from {reference}.",
+        "moveUp": "Move {name} up",
+        "moveDown": "Move {name} down",
+        "positionCorrect": "Correct position",
+        "positionIncorrect": "Incorrect position",
+        "inPlaceOf": "{matches} of {total} in place.",
+        "correctOrderWas": "Correct order: {order}.",
+        "resultComplete": "Arrange · {tier} complete"
     }
 }

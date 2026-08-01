@@ -3,7 +3,12 @@
         "appName": "Worldwise",
         "continue": "Continuar",
         "backToToday": "Volver a Hoy",
-        "streakDayCount": "Racha de {count} días"
+        "streakDayCount": "Racha de {count} días",
+        "submitAnswer": "Enviar respuesta",
+        "creditFull": "Acierto completo",
+        "creditPartial": "Acierto parcial",
+        "creditNone": "Sin acierto",
+        "resultScore": "{score} / {total}"
     },
     "nav": {
         "today": "Hoy",
@@ -42,14 +47,23 @@
         "tierLabel": "Brújula · {tier}",
         "roundOf": "Ronda {current} de {total}",
         "prompt": "¿En qué dirección está {destination} desde {origin}?",
-        "submitAnswer": "Enviar respuesta",
-        "creditFull": "Acierto completo",
-        "creditPartial": "Acierto parcial",
-        "creditNone": "Sin acierto",
         "trueBearing": "La dirección era {direction} ({degrees}°).",
         "yourAnswer": "Indicaste {degrees}°.",
         "distanceNote": "{destination} está a unos {distance} km al {direction} de {origin}.",
-        "resultComplete": "Brújula · {tier} completada",
-        "resultScore": "{score} / {total}"
+        "resultComplete": "Brújula · {tier} completada"
+    },
+    "arrange": {
+        "tierLabel": "Ordenar · {tier}",
+        "roundOf": "Ronda {current} de {total}",
+        "promptNorthToSouth": "Ordena estos lugares de norte a sur.",
+        "promptWestToEast": "Ordena estos lugares de oeste a este.",
+        "promptClosestToFarthest": "Ordena estos lugares de más cercano a más lejano desde {reference}.",
+        "moveUp": "Subir {name}",
+        "moveDown": "Bajar {name}",
+        "positionCorrect": "Posición correcta",
+        "positionIncorrect": "Posición incorrecta",
+        "inPlaceOf": "{matches} de {total} en su lugar.",
+        "correctOrderWas": "Orden correcto: {order}.",
+        "resultComplete": "Ordenar · {tier} completado"
     }
 }

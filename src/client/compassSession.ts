@@ -20,9 +20,9 @@ function getLocale(): Locale {
 
 function creditKeyFor(credit: number): TranslationKey {
     if (credit === 1) {
-        return "compass.creditFull";
+        return "common.creditFull";
     }
-    return credit > 0 ? "compass.creditPartial" : "compass.creditNone";
+    return credit > 0 ? "common.creditPartial" : "common.creditNone";
 }
 
 function creditLevel(credit: number): "full" | "partial" | "none" {

@@ -90,7 +90,7 @@ export function mountCompassResult(): void {
         (sum, round) => sum + round.credit,
         0,
     );
-    scoreEl.textContent = t(locale, "compass.resultScore", {
+    scoreEl.textContent = t(locale, "common.resultScore", {
         score: formatScore(totalCredit),
         total: entry.rounds.length,
     });
