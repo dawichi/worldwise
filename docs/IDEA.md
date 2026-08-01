@@ -51,13 +51,7 @@ The architecture should treat game modes as independent units with shared concep
 
 #### Compass
 
-Given an origin and a destination, choose the destination's direction from the origin using an eight-direction compass.
-
-Example: "From Madrid, in which direction is Rome?"
-
-Both places are generated from the active collection. The answer is calculated from geographic coordinates; it is not manually authored.
-
-Generation must reject pairs whose bearing lies too close to a direction boundary. The acceptable margin should be a configurable rule, not a UI workaround. Places that are extremely close together should also be rejected.
+Built for World/medium as a complete vertical slice: generation (`src/lib/modes/compass/`), a continuous-angle dial answer and scoring model ([ADR-0008](./adr/0008-compass-continuous-angle-scoring.md), superseding this section's original discrete 8-button/direction-boundary-margin design), persistence, accessibility, and tests. Remaining for this mode: Practice integration and the easy/hard bonus tiers (the tier configs already exist in code, only the required medium tier is wired into UI).
 
 #### Arrange
 
@@ -159,8 +153,7 @@ The daily program should also be versioned so the mixture and ordering of modes 
 
 Generated does not mean arbitrary. Every mode needs explicit eligibility rules. Examples include:
 
-- A safe angular margin around Compass answer boundaries.
-- Minimum coordinate or distance separation for Arrange.
+- Minimum coordinate or distance separation for Arrange (Compass's equivalent minimum-distance rule already shipped, see `src/lib/modes/compass/validate.ts`).
 - Verified connectivity and route length for Border Run.
 - Disputed territories, enclaves, and maritime-only borders excluded by default ([ADR-0005](./adr/0005-border-run-excludes-disputed-territories.md)).
 - A difficulty band appropriate for the current tier.
@@ -239,32 +232,15 @@ We will define content and navigation before choosing a visual direction. The in
 
 These may be pages, dialogs, tabs, or a smaller combined structure. The content needs are stable; the final navigation pattern is not.
 
-## Visual and interaction direction
+## Visual direction
 
-No strong visual style should be established yet.
-
-The first UI task is to confirm the screens, content hierarchy, states, and interactions listed above. We will then use Claude Design to propose multiple visual directions and choose one deliberately. Until that process is complete:
-
-- Do not introduce a definitive brand palette, typography system, decorative illustration style, or map aesthetic.
-- Do not build a large custom component theme based on assumptions about the future design.
-- Prefer semantically correct, accessible, minimally styled structures when prototyping behavior.
-- Keep content and game logic independent from presentation so the chosen design can be applied without rewrites.
-
-Regardless of visual direction, the final product must be mobile-first, responsive, touch-friendly, readable, and accessible. Respect reduced-motion preferences and do not use color as the sole carrier of meaning.
+Resolved: the warm/light "Worldwise Screens 1/2/3" mockup direction was selected and is now applied — design tokens (colors, radii, a system-font stack, no font dependency) live in `src/styles/global.css`, consumed via Tailwind's generated utility classes. Regardless of visual direction, the product must stay mobile-first, responsive, touch-friendly, readable, and accessible; respect reduced-motion preferences and never use color as the sole carrier of meaning — both verified for the Compass flow via the Playwright accessibility scan.
 
 ## Candidate dependencies
 
-Permanent stack choices and coding conventions live in [`AGENTS.md`](./AGENTS.md#tech-stack). This section tracks dependency decisions still to be made as implementation begins.
+Permanent stack choices and coding conventions live in [`AGENTS.md`](./AGENTS.md#tech-stack). `lucide-astro`, `zod`, `vitest`, `@playwright/test`, and `fast-check` are installed and in use; this section now only tracks dependency decisions still open for future work.
 
 Keep the dependency graph intentionally small. Dependencies should solve a demonstrated problem, not anticipated convenience.
-
-Recommended when implementation begins:
-
-- **`lucide-astro`** for Lucide icons in Astro components.
-- **`zod`** for validating geographic datasets, generated challenge payloads where appropriate, and versioned data read from `localStorage`. Astro already uses Zod in parts of its ecosystem, but Worldwise should declare it directly if application code imports it.
-- **`vitest`** for unit tests covering calculations, deterministic generation, scoring, and persistence migrations.
-- **`@playwright/test`** for a small set of mobile-first end-to-end flows and accessibility-sensitive interaction tests.
-- **`fast-check`** if generator invariants become difficult to cover with ordinary table-driven tests. It is especially suitable for deterministic and geographic property testing, but it need not be installed on day one.
 
 Consider only if needed:
 
@@ -305,23 +281,11 @@ Before importing a dataset:
 - Review disputed and dependent territories explicitly.
 - Add validation for missing references, duplicate IDs, invalid coordinates, and asymmetric adjacency.
 
-Natural Earth is a likely starting point for country-level geometry and metadata, but the exact source set is an open research decision. Do not copy geographic content from an arbitrary quiz website.
+Natural Earth is a likely starting point for country-level geometry and metadata, but the exact source set is an open research decision. Do not copy geographic content from an arbitrary quiz website. (World's own sourcing, filtering, and coordinate-semantic decisions are recorded in `src/data/world/source.md`.)
 
 ## Local persistence
 
-All player progress is stored in `localStorage` for the MVP. UI preferences that need to apply before hydration may use an appropriate browser-native mechanism, but there is no user account.
-
-Persisted data must:
-
-- Use a namespaced key such as `worldwise:state`.
-- Include an explicit schema version.
-- Be validated when read.
-- Have tested migrations between supported versions.
-- Recover gracefully from corrupt or partial content.
-- Store the challenge ID, relevant generator/data versions, answers needed to resume, completion state, and result summary.
-- Avoid collecting personal information.
-
-Application logic should access storage through a small repository/service boundary rather than scattering direct `localStorage` calls throughout components.
+Built as specified: a namespaced `worldwise:state` key, an explicit schema version, read-time validation, a tested migration-chain mechanism, and graceful recovery from corrupt/partial content, all behind a single repository boundary (`src/lib/persistence/`) — no other code touches `localStorage` directly.
 
 ## Optional future backend
 
@@ -348,25 +312,18 @@ The first complete version should aim for:
 - English and Spanish interface and content at launch, with real i18n infrastructure (string extraction, place-name localization) from day one rather than generation logic with embedded content ([ADR-0006](./adr/0006-bilingual-launch-english-spanish.md)).
 - No login, backend, public leaderboard, or manual daily authoring.
 
-If this is too broad for the first playable milestone, build the World collection and Compass end to end—including generation, validation, persistence, accessibility, feedback, and tests—before adding another mode. A complete vertical slice should precede breadth. Non-goals for the initial product are listed in [`AGENTS.md`](./AGENTS.md#non-goals).
+The World-collection-and-Compass vertical slice (generation, validation, persistence, accessibility, feedback, and tests) is done — a complete vertical slice before breadth, as this section originally called for if the full scope proved too broad for a first milestone. Non-goals for the initial product are listed in [`AGENTS.md`](./AGENTS.md#non-goals).
 
 ## Suggested implementation order
 
-1. Confirm the information architecture and complete state diagrams for the daily and practice flows.
-2. Research and document geographic sources, licenses, coordinate semantics, and territory policy.
-3. Scaffold Astro, Tailwind CSS, Lucide, strict TypeScript, Biome, and the test setup.
-4. Define normalized place, collection, challenge, result, and persistence schemas.
-5. Build and test deterministic seed/version infrastructure.
-6. Implement one end-to-end Compass vertical slice with deliberately minimal presentation.
-7. Use Claude Design to explore several visual directions from the confirmed screens and states, then record the selected design system.
-8. Apply the chosen design and complete the daily flow.
-9. Add Arrange, Border Run, practice, statistics, and sharing incrementally.
-10. Perform mobile, accessibility, data-quality, and deterministic-regression testing before release.
+Confirming the IA, researching geographic sources/licenses/coordinate semantics, scaffolding the toolchain, defining the core schemas, building deterministic seed/version infrastructure, the Compass vertical slice itself, and applying the chosen design to the daily flow are all done. Remaining:
+
+1. Add Arrange, Border Run, practice, statistics, and sharing incrementally.
+2. Perform mobile, accessibility, data-quality, and deterministic-regression testing before release (Compass already has a start: property-based generation tests and a Playwright accessibility scan; this still needs to happen for the product as a whole once it's more complete).
 
 ## Open product decisions
 
 Most of the questions that used to appear here have been resolved and recorded as ADRs in `docs/adr/`. The decisions that remain genuinely open:
 
-- What visual direction will be selected after the Claude Design exploration?
 - If a rotating daily program (multiple default collections over time) is introduced later, how should it be scheduled and versioned?
 - Should the roughly three rounds per mode-challenge be tuned once a playable vertical slice exists?
