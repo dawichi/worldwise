@@ -55,7 +55,11 @@ Built for World/medium as a complete vertical slice: generation (`src/lib/modes/
 
 #### Arrange
 
-Drag or otherwise reorder several places according to a geographic property.
+Built for World/medium as a complete vertical slice: deterministic generation,
+proportional scoring, local persistence, a keyboard-first up/down reorder
+control, feedback, result, and daily-ritual integration. Remaining for this
+mode: Practice integration and the easy/hard bonus tiers (the tier configs
+already exist in code, only the required medium tier is wired into UI).
 
 Initial variants:
 
