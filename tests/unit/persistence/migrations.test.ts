@@ -117,3 +117,33 @@ describe("REAL_MIGRATIONS[2] (the real v2 -> v3 migration)", () => {
         });
     });
 });
+
+describe("REAL_MIGRATIONS[3] (the real v3 -> v4 migration)", () => {
+    it("adds a zeroed practice block and bumps schemaVersion, leaving everything else untouched", () => {
+        const migrateV3ToV4 = REAL_MIGRATIONS[3];
+        expect(migrateV3ToV4).toBeDefined();
+
+        const v3Data = {
+            schemaVersion: 3,
+            compass: { daily: { "2026-07-31": { challengeId: "x" } } },
+            arrange: { daily: { "2026-07-31": { challengeId: "y" } } },
+            borderRun: { daily: { "2026-07-31": { challengeId: "z" } } },
+            streak: { current: 5, longest: 9, lastCompletedDate: "2026-07-31" },
+        };
+
+        const migrated = migrateV3ToV4?.(v3Data);
+        const zeroStats = { attempts: 0, roundsAnswered: 0, totalCredit: 0 };
+        expect(migrated).toEqual({
+            ...v3Data,
+            schemaVersion: 4,
+            practice: {
+                stats: {
+                    compass: zeroStats,
+                    arrange: zeroStats,
+                    borderRun: zeroStats,
+                },
+                recentFingerprints: { compass: [], arrange: [], borderRun: [] },
+            },
+        });
+    });
+});

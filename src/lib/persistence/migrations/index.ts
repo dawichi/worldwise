@@ -22,9 +22,33 @@ function migrateV2ToV3(data: Record<string, unknown>): Record<string, unknown> {
     return { ...data, schemaVersion: 3, borderRun: { daily: {} } };
 }
 
+/**
+ * v3 → v4: adding Practice introduced a required top-level `practice` key
+ * (per-mode attempt/accuracy stats, plus a recent-fingerprint history used
+ * to avoid repeating a challenge). A v3 value has no such key, so it's
+ * backfilled zeroed/empty — every daily mode's progress and the `streak`
+ * are left untouched.
+ */
+function migrateV3ToV4(data: Record<string, unknown>): Record<string, unknown> {
+    const zeroStats = { attempts: 0, roundsAnswered: 0, totalCredit: 0 };
+    return {
+        ...data,
+        schemaVersion: 4,
+        practice: {
+            stats: {
+                compass: zeroStats,
+                arrange: zeroStats,
+                borderRun: zeroStats,
+            },
+            recentFingerprints: { compass: [], arrange: [], borderRun: [] },
+        },
+    };
+}
+
 export const REAL_MIGRATIONS: Record<number, Migration> = {
     1: migrateV1ToV2,
     2: migrateV2ToV3,
+    3: migrateV3ToV4,
 };
 
 function detectVersion(data: Record<string, unknown>): number {
