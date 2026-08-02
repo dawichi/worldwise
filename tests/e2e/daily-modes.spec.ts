@@ -135,14 +135,71 @@ test.describe("Arrange daily mode-challenge", () => {
     });
 });
 
+test.describe("Border Run daily mode-challenge", () => {
+    test("completes a full mode-challenge with the guided hop builder", async ({
+        page,
+    }) => {
+        await page.goto("/play/border-run");
+
+        // Exercise add-hop then undo first, to prove the accessible undo
+        // control actually reverts the trail (medium's hop range means the
+        // origin is never directly adjacent to the destination, so the
+        // first candidate is never a same-round dead end).
+        const firstCandidate = page
+            .locator('[data-role="hop-candidates"] button')
+            .first();
+        await firstCandidate.waitFor();
+        await firstCandidate.click();
+        await expect(page.locator('[data-role="path-trail"] li')).toHaveCount(
+            2,
+        );
+
+        await page.getByRole("button", { name: "Undo last hop" }).click();
+        await expect(page.locator('[data-role="path-trail"] li')).toHaveCount(
+            1,
+        );
+
+        for (let round = 0; round < 3; round++) {
+            await page
+                .locator('[data-role="hop-candidates"] button')
+                .first()
+                .click();
+
+            await page.getByRole("button", { name: "Submit answer" }).click();
+            await expect(page.locator("#feedback-panel")).toBeVisible();
+
+            await page.getByRole("button", { name: "Continue" }).click();
+        }
+
+        await expect(page).toHaveURL(/\/result\/border-run/);
+        await expect(page.locator("#result-heading")).toContainText(
+            "Border Run",
+        );
+        await expect(page.locator("#result-score")).toContainText("/ 3");
+        await expect(page.locator("#result-rounds li")).toHaveCount(3);
+    });
+
+    test("Home and Border Run session pages have no automatically detectable accessibility violations", async ({
+        page,
+    }) => {
+        await page.goto("/");
+        const homeResults = await new AxeBuilder({ page }).analyze();
+        expect(homeResults.violations).toEqual([]);
+
+        await page.goto("/play/border-run");
+        const sessionResults = await new AxeBuilder({ page }).analyze();
+        expect(sessionResults.violations).toEqual([]);
+    });
+});
+
 test.describe("Daily ritual (ADR-0002: streak requires every enabled mode)", () => {
-    test("the streak only advances once both Compass and Arrange are completed the same day", async ({
+    test("the streak only advances once every enabled mode is completed the same day", async ({
         page,
     }) => {
         await page.goto("/");
         await expect(page.locator("#streak-chip")).toBeHidden();
         await expect(page.locator("#ritual-progress-label")).toHaveText(
-            "0 of 2",
+            "0 of 3",
         );
 
         await page
@@ -168,7 +225,7 @@ test.describe("Daily ritual (ADR-0002: streak requires every enabled mode)", () 
         await page.goto("/");
         await expect(page.locator("#streak-chip")).toBeHidden();
         await expect(page.locator("#ritual-progress-label")).toHaveText(
-            "1 of 2",
+            "1 of 3",
         );
 
         await page
@@ -187,9 +244,30 @@ test.describe("Daily ritual (ADR-0002: streak requires every enabled mode)", () 
         await expect(page).toHaveURL(/\/result\/arrange/);
 
         await page.goto("/");
+        await expect(page.locator("#streak-chip")).toBeHidden();
+        await expect(page.locator("#ritual-progress-label")).toHaveText(
+            "2 of 3",
+        );
+
+        await page
+            .locator("#borderRun-mode-card")
+            .getByRole("link", { name: "Start" })
+            .click();
+        await expect(page).toHaveURL(/\/play\/border-run/);
+        for (let round = 0; round < 3; round++) {
+            await page
+                .locator('[data-role="hop-candidates"] button')
+                .first()
+                .click();
+            await page.getByRole("button", { name: "Submit answer" }).click();
+            await page.getByRole("button", { name: "Continue" }).click();
+        }
+        await expect(page).toHaveURL(/\/result\/border-run/);
+
+        await page.goto("/");
         await expect(page.locator("#streak-chip")).toBeVisible();
         await expect(page.locator("#ritual-progress-label")).toHaveText(
-            "2 of 2",
+            "3 of 3",
         );
     });
 });
