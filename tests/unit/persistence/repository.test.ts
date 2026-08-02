@@ -33,7 +33,7 @@ describe("loadState", () => {
     it("round-trips a valid state through save and load", () => {
         const storage = createMemoryStorage();
         const state: PersistedState = {
-            schemaVersion: 2,
+            schemaVersion: 3,
             compass: {
                 daily: {
                     "2026-07-31": {
@@ -66,6 +66,25 @@ describe("loadState", () => {
                     },
                 },
             },
+            borderRun: {
+                daily: {
+                    "2026-07-31": {
+                        challengeId:
+                            "worldwise:daily:v1:data-v1:2026-07-31:world:borderRun:medium",
+                        generatorVersion: "v1",
+                        dataVersion: "data-v1",
+                        tier: "medium",
+                        rounds: [
+                            {
+                                submittedPath: ["a", "b", "c"],
+                                credit: 1,
+                            },
+                            { submittedPath: null, credit: 0 },
+                        ],
+                        completedAt: null,
+                    },
+                },
+            },
             streak: {
                 current: 3,
                 longest: 12,
@@ -77,7 +96,7 @@ describe("loadState", () => {
         expect(loadState(storage)).toEqual(state);
     });
 
-    it("migrates a realistic v1 value (no arrange key) to v2 without losing compass progress or the streak", () => {
+    it("migrates a realistic v1 value (no arrange/borderRun keys) all the way to v3 without losing compass progress or the streak", () => {
         const storage = createMemoryStorage();
         const v1Value = {
             schemaVersion: 1,
@@ -99,10 +118,11 @@ describe("loadState", () => {
         storage.setItem(STORAGE_KEY, JSON.stringify(v1Value));
 
         const result = loadState(storage);
-        expect(result.schemaVersion).toBe(2);
+        expect(result.schemaVersion).toBe(3);
         expect(result.compass).toEqual(v1Value.compass);
         expect(result.streak).toEqual(v1Value.streak);
         expect(result.arrange).toEqual({ daily: {} });
+        expect(result.borderRun).toEqual({ daily: {} });
     });
 
     it("recovers to defaults from invalid JSON rather than throwing", () => {

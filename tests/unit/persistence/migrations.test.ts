@@ -96,3 +96,24 @@ describe("REAL_MIGRATIONS[1] (the real v1 -> v2 migration)", () => {
         });
     });
 });
+
+describe("REAL_MIGRATIONS[2] (the real v2 -> v3 migration)", () => {
+    it("adds an empty borderRun.daily and bumps schemaVersion, leaving everything else untouched", () => {
+        const migrateV2ToV3 = REAL_MIGRATIONS[2];
+        expect(migrateV2ToV3).toBeDefined();
+
+        const v2Data = {
+            schemaVersion: 2,
+            compass: { daily: { "2026-07-31": { challengeId: "x" } } },
+            arrange: { daily: { "2026-07-31": { challengeId: "y" } } },
+            streak: { current: 5, longest: 9, lastCompletedDate: "2026-07-31" },
+        };
+
+        const migrated = migrateV2ToV3?.(v2Data);
+        expect(migrated).toEqual({
+            ...v2Data,
+            schemaVersion: 3,
+            borderRun: { daily: {} },
+        });
+    });
+});

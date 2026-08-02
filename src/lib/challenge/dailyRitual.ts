@@ -1,11 +1,8 @@
 import type { PersistedState } from "../persistence/schema";
 import { recordDailyCompletion } from "./streak";
 
-/**
- * Only modes that actually exist in code — not an anticipated Border Run.
- * Add a mode id here the day its persisted entry shape exists.
- */
-export const ENABLED_MODE_IDS = ["compass", "arrange"] as const;
+/** Only modes that actually exist in code and have a persisted entry shape. */
+export const ENABLED_MODE_IDS = ["compass", "arrange", "borderRun"] as const;
 export type EnabledModeId = (typeof ENABLED_MODE_IDS)[number];
 
 function isModeCompletedToday(

@@ -54,14 +54,35 @@ function withArrangeDone(
     };
 }
 
+function withBorderRunDone(
+    state: PersistedState,
+    dateKey: string,
+): PersistedState {
+    return {
+        ...state,
+        borderRun: {
+            daily: {
+                [dateKey]: {
+                    challengeId: "z",
+                    generatorVersion: "v1",
+                    dataVersion: "data-v1",
+                    tier: "medium",
+                    rounds: [],
+                    completedAt: "2026-07-31T12:00:00.000Z",
+                },
+            },
+        },
+    };
+}
+
 describe("ENABLED_MODE_IDS", () => {
-    it("only lists modes that actually exist in code (not Border Run)", () => {
-        expect(ENABLED_MODE_IDS).toEqual(["compass", "arrange"]);
+    it("only lists modes that actually exist in code", () => {
+        expect(ENABLED_MODE_IDS).toEqual(["compass", "arrange", "borderRun"]);
     });
 });
 
 describe("countCompletedModesToday / isDailyRitualComplete", () => {
-    it("counts zero and is incomplete when neither mode is done", () => {
+    it("counts zero and is incomplete when no mode is done", () => {
         const state = createDefaultState();
         expect(countCompletedModesToday(state, DATE_KEY)).toBe(0);
         expect(isDailyRitualComplete(state, DATE_KEY)).toBe(false);
@@ -79,12 +100,24 @@ describe("countCompletedModesToday / isDailyRitualComplete", () => {
         expect(isDailyRitualComplete(state, DATE_KEY)).toBe(false);
     });
 
-    it("counts two and is complete once both modes are done", () => {
+    it("counts two and is incomplete when only two of three modes are done", () => {
         const state = withArrangeDone(
             withCompassDone(createDefaultState(), DATE_KEY),
             DATE_KEY,
         );
         expect(countCompletedModesToday(state, DATE_KEY)).toBe(2);
+        expect(isDailyRitualComplete(state, DATE_KEY)).toBe(false);
+    });
+
+    it("counts three and is complete once every mode is done", () => {
+        const state = withBorderRunDone(
+            withArrangeDone(
+                withCompassDone(createDefaultState(), DATE_KEY),
+                DATE_KEY,
+            ),
+            DATE_KEY,
+        );
+        expect(countCompletedModesToday(state, DATE_KEY)).toBe(3);
         expect(isDailyRitualComplete(state, DATE_KEY)).toBe(true);
     });
 
@@ -101,9 +134,21 @@ describe("maybeRecordDailyCompletion", () => {
         expect(result.streak).toEqual(state.streak);
     });
 
-    it("advances the streak exactly once both modes are done", () => {
+    it("does not touch the streak when only two of three modes are done", () => {
         const state = withArrangeDone(
             withCompassDone(createDefaultState(), DATE_KEY),
+            DATE_KEY,
+        );
+        const result = maybeRecordDailyCompletion(state, DATE_KEY);
+        expect(result.streak).toEqual(state.streak);
+    });
+
+    it("advances the streak exactly once every mode is done", () => {
+        const state = withBorderRunDone(
+            withArrangeDone(
+                withCompassDone(createDefaultState(), DATE_KEY),
+                DATE_KEY,
+            ),
             DATE_KEY,
         );
         const result = maybeRecordDailyCompletion(state, DATE_KEY);
@@ -115,8 +160,11 @@ describe("maybeRecordDailyCompletion", () => {
     });
 
     it("is idempotent: calling it again the same day does not double-increment", () => {
-        const state = withArrangeDone(
-            withCompassDone(createDefaultState(), DATE_KEY),
+        const state = withBorderRunDone(
+            withArrangeDone(
+                withCompassDone(createDefaultState(), DATE_KEY),
+                DATE_KEY,
+            ),
             DATE_KEY,
         );
         const once = maybeRecordDailyCompletion(state, DATE_KEY);

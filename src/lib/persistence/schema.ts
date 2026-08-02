@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const CURRENT_SCHEMA_VERSION = 2;
+export const CURRENT_SCHEMA_VERSION = 3;
 
 const tierSchema = z.enum(["easy", "medium", "hard"]);
 
@@ -38,6 +38,23 @@ const arrangeDailyEntrySchema = z.object({
     completedAt: z.string().nullable(),
 });
 
+const borderRunRoundAnswerSchema = z.object({
+    /** The submitted place-id path (origin through destination), or null if this round hasn't been answered yet. */
+    submittedPath: z.array(z.string().min(1)).nullable(),
+    /** Credit for this round, in [0, 1]; 0 while unanswered (ADR-0004: binary for this mode). */
+    credit: z.number().gte(0).lte(1),
+});
+
+const borderRunDailyEntrySchema = z.object({
+    challengeId: z.string().min(1),
+    generatorVersion: z.string().min(1),
+    dataVersion: z.string().min(1),
+    tier: tierSchema,
+    rounds: z.array(borderRunRoundAnswerSchema),
+    /** ISO timestamp once every round is answered, else null (resumable). */
+    completedAt: z.string().nullable(),
+});
+
 const streakSchema = z.object({
     current: z.number().int().gte(0),
     longest: z.number().int().gte(0),
@@ -55,6 +72,10 @@ export const persistedStateSchema = z.object({
         /** Keyed by UTC date key (YYYY-MM-DD). */
         daily: z.record(z.string(), arrangeDailyEntrySchema),
     }),
+    borderRun: z.object({
+        /** Keyed by UTC date key (YYYY-MM-DD). */
+        daily: z.record(z.string(), borderRunDailyEntrySchema),
+    }),
     streak: streakSchema,
 });
 
@@ -63,12 +84,15 @@ export type CompassDailyEntry = z.infer<typeof compassDailyEntrySchema>;
 export type CompassRoundAnswer = z.infer<typeof compassRoundAnswerSchema>;
 export type ArrangeDailyEntry = z.infer<typeof arrangeDailyEntrySchema>;
 export type ArrangeRoundAnswer = z.infer<typeof arrangeRoundAnswerSchema>;
+export type BorderRunDailyEntry = z.infer<typeof borderRunDailyEntrySchema>;
+export type BorderRunRoundAnswer = z.infer<typeof borderRunRoundAnswerSchema>;
 
 export function createDefaultState(): PersistedState {
     return {
         schemaVersion: CURRENT_SCHEMA_VERSION,
         compass: { daily: {} },
         arrange: { daily: {} },
+        borderRun: { daily: {} },
         streak: { current: 0, longest: 0, lastCompletedDate: null },
     };
 }
