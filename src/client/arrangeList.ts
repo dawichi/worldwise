@@ -78,18 +78,28 @@ export function createArrangeListController(
         rows.forEach((row, index) => {
             const placeId = order[index];
             if (placeId === undefined) {
-                throw new Error(
-                    "createArrangeListController: order/rows length mismatch",
-                );
+                // Beyond the active round's item count (e.g. an easy-tier
+                // round on a shell sized for hard's max) — hide it rather
+                // than leaving stale content or a mismatched-length error.
+                row.li.classList.add("hidden");
+                row.li.removeAttribute("data-place-id");
+                row.li.removeAttribute("data-credit");
+                row.nameEl.textContent = "";
+                row.indicatorEl.classList.add("hidden");
+                row.indicatorEl.textContent = "";
+                row.upButton.disabled = true;
+                row.downButton.disabled = true;
+                return;
             }
             const item = getItem(placeId);
+            row.li.classList.remove("hidden");
             row.li.dataset.placeId = placeId;
             row.nameEl.textContent = item.name;
             row.indicatorEl.classList.add("hidden");
             row.indicatorEl.textContent = "";
             row.li.removeAttribute("data-credit");
             row.upButton.disabled = disabled || index === 0;
-            row.downButton.disabled = disabled || index === rows.length - 1;
+            row.downButton.disabled = disabled || index === order.length - 1;
             row.upButton.setAttribute(
                 "aria-label",
                 formatMoveLabel("up", item.name),
@@ -121,7 +131,7 @@ export function createArrangeListController(
     }
 
     function moveDown(index: number): void {
-        if (disabled || index >= rows.length - 1) {
+        if (disabled || index >= order.length - 1) {
             return;
         }
         swap(index, index + 1);
@@ -145,8 +155,10 @@ export function createArrangeListController(
         showResult(correctOrderIds: string[]): void {
             rows.forEach((row, index) => {
                 const placeId = order[index];
-                const isCorrect =
-                    placeId !== undefined && correctOrderIds[index] === placeId;
+                if (placeId === undefined) {
+                    return;
+                }
+                const isCorrect = correctOrderIds[index] === placeId;
                 row.li.dataset.credit = isCorrect ? "full" : "none";
                 row.indicatorEl.textContent = formatPositionLabel(isCorrect);
                 row.indicatorEl.classList.remove("hidden");

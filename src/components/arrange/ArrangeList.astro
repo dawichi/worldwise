@@ -7,10 +7,14 @@ interface Props {
 }
 
 const { id } = Astro.props;
-// Only the medium tier is wired into UI this milestone, so the shell can
-// assume a fixed row count; a future bonus-tier UI would need this to vary.
-const itemCount = ARRANGE_TIERS.medium.itemsPerRound;
-const rowIndexes = Array.from({ length: itemCount }, (_, index) => index);
+// Astro is fully static (no per-request server), so a tier picked at
+// runtime (Practice) can't size this list at build time. Render the max
+// row count across every tier instead; arrangeList.ts hides rows beyond
+// the active round's actual item count.
+const maxItemCount = Math.max(
+    ...Object.values(ARRANGE_TIERS).map((tier) => tier.itemsPerRound),
+);
+const rowIndexes = Array.from({ length: maxItemCount }, (_, index) => index);
 ---
 
 <ol id={id} class="mb-6 flex flex-col gap-2">
