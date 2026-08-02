@@ -6,8 +6,7 @@ import { generateBorderRunChallenge } from "../../../../src/lib/modes/borderRun/
 import { BORDER_RUN_TIERS } from "../../../../src/lib/modes/borderRun/tiers";
 
 const BASE_PARAMS = {
-    challengeId:
-        "worldwise:daily:v1:data-v1:2026-07-31:world:borderRun:medium",
+    challengeId: "worldwise:daily:v1:data-v1:2026-07-31:world:borderRun:medium",
     generatorVersion: "v1",
     dataVersion: "data-v1",
     collectionId: "world",
