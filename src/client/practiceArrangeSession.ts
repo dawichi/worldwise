@@ -1,4 +1,3 @@
-import { worldCollection } from "../data/generated/world";
 import {
     type PracticeModeId,
     type PracticeTier,
@@ -9,6 +8,10 @@ import {
     generateWithDedup,
     pushRecentFingerprint,
 } from "../lib/challenge/practiceGenerate";
+import {
+    getPracticeCollection,
+    type PracticeCollectionId,
+} from "../lib/data/collections";
 import { getPlaceById } from "../lib/data/lookup";
 import { type Locale, type TranslationKey, t } from "../lib/i18n/t";
 import { generateArrangeChallenge } from "../lib/modes/arrange/generate";
@@ -21,7 +24,6 @@ import { loadState, saveState } from "../lib/persistence/repository";
 import { DATA_VERSION, GENERATOR_VERSION } from "../lib/versions";
 import { createArrangeListController } from "./arrangeList";
 
-const COLLECTION_ID = "world";
 const MODE_ID: PracticeModeId = "arrange";
 
 function getLocale(): Locale {
@@ -33,6 +35,13 @@ function parseTier(): PracticeTier {
     return raw === "easy" || raw === "medium" || raw === "hard"
         ? raw
         : "medium";
+}
+
+function parseCollectionId(): PracticeCollectionId {
+    return new URLSearchParams(window.location.search).get("collection") ===
+        "europe"
+        ? "europe"
+        : "world";
 }
 
 function creditKeyFor(credit: number): TranslationKey {
@@ -79,6 +88,8 @@ function fingerprintOf(challenge: ArrangeChallenge): string {
 export function mountPracticeArrangeSession(): void {
     const locale = getLocale();
     const tier = parseTier();
+    const collectionId = parseCollectionId();
+    const collection = getPracticeCollection(collectionId);
     const state = loadState(localStorage);
 
     const { challenge, fingerprint } = generateWithDedup(
@@ -88,12 +99,12 @@ export function mountPracticeArrangeSession(): void {
                 challengeId: seed,
                 generatorVersion: GENERATOR_VERSION,
                 dataVersion: DATA_VERSION,
-                collectionId: COLLECTION_ID,
+                collectionId,
                 tier,
-                places: worldCollection.places,
+                places: collection.places,
             }),
         fingerprintOf,
-        state.practice.recentFingerprints.arrange,
+        state.practice.recentFingerprints[collectionId].arrange,
     );
 
     let roundIndex = 0;
@@ -170,7 +181,7 @@ export function mountPracticeArrangeSession(): void {
         }
 
         const items = round.itemIds.map((id) => {
-            const place = getPlaceById(worldCollection, id);
+            const place = getPlaceById(collection, id);
             return { id, name: place.names[locale] };
         });
         list.setOrder(round.itemIds, items);
@@ -181,7 +192,7 @@ export function mountPracticeArrangeSession(): void {
         });
 
         if (round.variant === "closest-to-farthest" && round.referenceId) {
-            const reference = getPlaceById(worldCollection, round.referenceId);
+            const reference = getPlaceById(collection, round.referenceId);
             promptEl.textContent = t(
                 locale,
                 "arrange.promptClosestToFarthest",
@@ -217,23 +228,30 @@ export function mountPracticeArrangeSession(): void {
                     practice: {
                         stats: recordPracticeAttempt(
                             stateBeforeSave.practice.stats,
+                            collectionId,
                             MODE_ID,
                             roundCredits,
                         ),
                         recentFingerprints: {
                             ...stateBeforeSave.practice.recentFingerprints,
-                            arrange: pushRecentFingerprint(
-                                stateBeforeSave.practice.recentFingerprints
-                                    .arrange,
-                                fingerprint,
-                            ),
+                            [collectionId]: {
+                                ...stateBeforeSave.practice.recentFingerprints[
+                                    collectionId
+                                ],
+                                arrange: pushRecentFingerprint(
+                                    stateBeforeSave.practice.recentFingerprints[
+                                        collectionId
+                                    ].arrange,
+                                    fingerprint,
+                                ),
+                            },
                         },
                     },
                 },
                 localStorage,
             );
             writePracticeResult(
-                { modeId: MODE_ID, tier, roundCredits },
+                { collectionId, modeId: MODE_ID, tier, roundCredits },
                 sessionStorage,
             );
         }
@@ -246,7 +264,7 @@ export function mountPracticeArrangeSession(): void {
             (id, index) => id === submittedOrder[index],
         ).length;
         const correctNames = round.correctOrderIds
-            .map((id) => getPlaceById(worldCollection, id).names[locale])
+            .map((id) => getPlaceById(collection, id).names[locale])
             .join(", ");
 
         feedbackHeading.textContent = t(locale, creditKeyFor(credit));

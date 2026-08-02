@@ -21,6 +21,10 @@ export function mountPracticeHome(): void {
         document.getElementById("mode-toggle"),
         "mode-toggle",
     );
+    const collectionRoot = must(
+        document.getElementById("collection-toggle"),
+        "collection-toggle",
+    );
     const tierRoot = must(
         document.getElementById("tier-toggle"),
         "tier-toggle",
@@ -31,12 +35,17 @@ export function mountPracticeHome(): void {
     );
 
     const modeGroup = createToggleGroupController(modeRoot, () => {});
+    const collectionGroup = createToggleGroupController(
+        collectionRoot,
+        () => {},
+    );
     const tierGroup = createToggleGroupController(tierRoot, () => {});
 
     startButton.addEventListener("click", () => {
         const mode = modeGroup.getValue();
         const tier = tierGroup.getValue();
+        const collection = collectionGroup.getValue();
         const path = MODE_PATHS[mode] ?? mode;
-        window.location.href = `/practice/${path}?tier=${tier}`;
+        window.location.href = `/practice/${path}?collection=${collection}&tier=${tier}`;
     });
 }

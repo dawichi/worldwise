@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { PracticeCollectionId } from "../data/collections";
 import type { StorageLike } from "../persistence/repository";
 import type { PracticeStats } from "../persistence/schema";
 
@@ -11,18 +12,22 @@ export type PracticeTier = (typeof PRACTICE_TIERS)[number];
 /** Pure state transition for completing one practice challenge — mirrors `streak.ts`'s style. */
 export function recordPracticeAttempt(
     stats: PracticeStats,
+    collectionId: PracticeCollectionId,
     modeId: PracticeModeId,
     roundCredits: number[],
 ): PracticeStats {
-    const current = stats[modeId];
+    const current = stats[collectionId][modeId];
     return {
         ...stats,
-        [modeId]: {
-            attempts: current.attempts + 1,
-            roundsAnswered: current.roundsAnswered + roundCredits.length,
-            totalCredit:
-                current.totalCredit +
-                roundCredits.reduce((sum, credit) => sum + credit, 0),
+        [collectionId]: {
+            ...stats[collectionId],
+            [modeId]: {
+                attempts: current.attempts + 1,
+                roundsAnswered: current.roundsAnswered + roundCredits.length,
+                totalCredit:
+                    current.totalCredit +
+                    roundCredits.reduce((sum, credit) => sum + credit, 0),
+            },
         },
     };
 }
@@ -30,6 +35,7 @@ export function recordPracticeAttempt(
 const PRACTICE_RESULT_STORAGE_KEY = "worldwise:practice:lastResult";
 
 const practiceResultPayloadSchema = z.object({
+    collectionId: z.enum(["world", "europe"]),
     modeId: z.enum(PRACTICE_MODE_IDS),
     tier: z.enum(PRACTICE_TIERS),
     roundCredits: z.array(z.number().gte(0).lte(1)),

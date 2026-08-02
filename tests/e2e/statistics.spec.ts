@@ -14,8 +14,8 @@ test.describe("Statistics (fresh state)", () => {
             "data-status",
             "none",
         );
-        // 2 "No data yet" rows (daily + practice) per mode, 3 modes.
-        await expect(page.getByText("No data yet")).toHaveCount(6);
+        // World has daily + practice rows; Europe has practice only.
+        await expect(page.getByText("No data yet")).toHaveCount(9);
     });
 
     test("has no automatically detectable accessibility violations", async ({
@@ -96,8 +96,8 @@ test.describe("Statistics (after activity)", () => {
             "data-status",
             "full",
         );
-        // Every mode's daily row is filled, plus Compass's practice row —
-        // only Arrange's and Border Run's practice rows are still empty.
-        await expect(page.getByText("No data yet")).toHaveCount(2);
+        // World Daily is full and World Compass practice has data; the two
+        // remaining World practice rows plus all three Europe rows are empty.
+        await expect(page.getByText("No data yet")).toHaveCount(5);
     });
 });

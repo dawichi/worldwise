@@ -1,4 +1,3 @@
-import { worldCollection } from "../data/generated/world";
 import {
     type PracticeModeId,
     type PracticeTier,
@@ -9,6 +8,10 @@ import {
     generateWithDedup,
     pushRecentFingerprint,
 } from "../lib/challenge/practiceGenerate";
+import {
+    getPracticeCollection,
+    type PracticeCollectionId,
+} from "../lib/data/collections";
 import { getPlaceById } from "../lib/data/lookup";
 import { bearingToCompassLabel } from "../lib/geo/angle";
 import { localizedDirectionName } from "../lib/i18n/directions";
@@ -24,7 +27,6 @@ import { loadState, saveState } from "../lib/persistence/repository";
 import { DATA_VERSION, GENERATOR_VERSION } from "../lib/versions";
 import { createCompassDialController } from "./compassDial";
 
-const COLLECTION_ID = "world";
 const MODE_ID: PracticeModeId = "compass";
 
 function getLocale(): Locale {
@@ -36,6 +38,13 @@ function parseTier(): PracticeTier {
     return raw === "easy" || raw === "medium" || raw === "hard"
         ? raw
         : "medium";
+}
+
+function parseCollectionId(): PracticeCollectionId {
+    return new URLSearchParams(window.location.search).get("collection") ===
+        "europe"
+        ? "europe"
+        : "world";
 }
 
 function creditKeyFor(credit: number): TranslationKey {
@@ -72,6 +81,8 @@ function fingerprintOf(challenge: CompassChallenge): string {
 export function mountPracticeCompassSession(): void {
     const locale = getLocale();
     const tier = parseTier();
+    const collectionId = parseCollectionId();
+    const collection = getPracticeCollection(collectionId);
     const tierConfig = COMPASS_TIERS[tier];
     const state = loadState(localStorage);
 
@@ -82,12 +93,12 @@ export function mountPracticeCompassSession(): void {
                 challengeId: seed,
                 generatorVersion: GENERATOR_VERSION,
                 dataVersion: DATA_VERSION,
-                collectionId: COLLECTION_ID,
+                collectionId,
                 tier,
-                places: worldCollection.places,
+                places: collection.places,
             }),
         fingerprintOf,
-        state.practice.recentFingerprints.compass,
+        state.practice.recentFingerprints[collectionId].compass,
     );
 
     let roundIndex = 0;
@@ -158,8 +169,8 @@ export function mountPracticeCompassSession(): void {
         if (!round) {
             return;
         }
-        const origin = getPlaceById(worldCollection, round.originId);
-        const destination = getPlaceById(worldCollection, round.destinationId);
+        const origin = getPlaceById(collection, round.originId);
+        const destination = getPlaceById(collection, round.destinationId);
 
         roundCounterEl.textContent = t(locale, "compass.roundOf", {
             current: roundIndex + 1,
@@ -200,23 +211,30 @@ export function mountPracticeCompassSession(): void {
                     practice: {
                         stats: recordPracticeAttempt(
                             stateBeforeSave.practice.stats,
+                            collectionId,
                             MODE_ID,
                             roundCredits,
                         ),
                         recentFingerprints: {
                             ...stateBeforeSave.practice.recentFingerprints,
-                            compass: pushRecentFingerprint(
-                                stateBeforeSave.practice.recentFingerprints
-                                    .compass,
-                                fingerprint,
-                            ),
+                            [collectionId]: {
+                                ...stateBeforeSave.practice.recentFingerprints[
+                                    collectionId
+                                ],
+                                compass: pushRecentFingerprint(
+                                    stateBeforeSave.practice.recentFingerprints[
+                                        collectionId
+                                    ].compass,
+                                    fingerprint,
+                                ),
+                            },
                         },
                     },
                 },
                 localStorage,
             );
             writePracticeResult(
-                { modeId: MODE_ID, tier, roundCredits },
+                { collectionId, modeId: MODE_ID, tier, roundCredits },
                 sessionStorage,
             );
         }
@@ -226,8 +244,8 @@ export function mountPracticeCompassSession(): void {
 
         const trueLabel = bearingToCompassLabel(round.bearingDeg);
         const trueDirectionName = localizedDirectionName(locale, trueLabel);
-        const origin = getPlaceById(worldCollection, round.originId);
-        const destination = getPlaceById(worldCollection, round.destinationId);
+        const origin = getPlaceById(collection, round.originId);
+        const destination = getPlaceById(collection, round.destinationId);
 
         feedbackHeading.textContent = t(locale, creditKeyFor(credit));
         feedbackBody.textContent = [

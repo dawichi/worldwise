@@ -92,6 +92,7 @@ export function mountPracticeResult(): void {
     );
 
     headingEl.textContent = t(locale, "practice.resultHeading", {
+        collection: t(locale, `collections.${result.collectionId}`),
         mode: t(locale, `modes.${result.modeId}.name`),
         tier: t(locale, `tiers.${result.tier}`),
     });
@@ -111,6 +112,6 @@ export function mountPracticeResult(): void {
 
     const path = MODE_PATHS[result.modeId] ?? result.modeId;
     playAgainButton.addEventListener("click", () => {
-        window.location.href = `/practice/${path}?tier=${result.tier}`;
+        window.location.href = `/practice/${path}?collection=${result.collectionId}&tier=${result.tier}`;
     });
 }

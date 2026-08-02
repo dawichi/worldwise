@@ -32,7 +32,7 @@ Refreshing the page, changing the device clock, or reopening the application mus
 
 ### Practice
 
-Built: `/practice` lets players pick a mode (Compass/Arrange/Border Run) and tier (easy/medium/hard), then run an unlimited sequence of freshly-generated challenges via each mode's existing generator with a random (non-daily-key) seed. Results never touch the daily streak or daily entries; separate local stats (attempts, rounds answered, total credit) accumulate per mode in `practice.stats`, and a small bounded fingerprint history (`practice.recentFingerprints`) avoids repeating a recently-seen challenge within each mode ([`src/lib/challenge/practice.ts`](../src/lib/challenge/practice.ts), [`practiceGenerate.ts`](../src/lib/challenge/practiceGenerate.ts)). Remaining: a collection selector — only World exists in `src/data/generated/` today, so Practice is World-only until Europe (or another collection) ships ([ADR-0007](./adr/0007-daily-uses-single-default-collection.md)); a statistics page to surface the accumulated `practice.stats`; and the Daily bonus-tier UI (easy/hard as same-day bonus mode-challenges, distinct from Practice's tier picker).
+Built: `/practice` lets players pick a collection (World/Europe), mode (Compass/Arrange/Border Run), and tier (easy/medium/hard), then run an unlimited sequence of freshly-generated challenges via each mode's existing generator with a random (non-daily-key) seed. Results never touch the daily streak or daily entries; separate local stats (attempts, rounds answered, total credit) accumulate per collection and mode in `practice.stats`, and a small bounded fingerprint history (`practice.recentFingerprints`) avoids repeating a recently-seen challenge within each collection/mode ([`src/lib/challenge/practice.ts`](../src/lib/challenge/practice.ts), [`practiceGenerate.ts`](../src/lib/challenge/practiceGenerate.ts)). Remaining: the Daily bonus-tier UI (easy/hard as same-day bonus mode-challenges, distinct from Practice's tier picker).
 
 ## Game modes
 
@@ -42,15 +42,15 @@ The architecture should treat game modes as independent units with shared concep
 
 #### Compass
 
-Built for World/medium as a complete vertical slice: generation (`src/lib/modes/compass/`), a continuous-angle dial answer and scoring model ([ADR-0008](./adr/0008-compass-continuous-angle-scoring.md), superseding this section's original discrete 8-button/direction-boundary-margin design), persistence, accessibility, and tests. Remaining for this mode: Practice integration and the easy/hard bonus tiers (the tier configs already exist in code, only the required medium tier is wired into UI).
+Built for World/medium as a complete vertical slice: generation (`src/lib/modes/compass/`), a continuous-angle dial answer and scoring model ([ADR-0008](./adr/0008-compass-continuous-angle-scoring.md), superseding this section's original discrete 8-button/direction-boundary-margin design), persistence, accessibility, and tests. Practice supports all tiers and both World and Europe; remaining for Daily are the easy/hard bonus tiers.
 
 #### Arrange
 
 Built for World/medium as a complete vertical slice: deterministic generation,
 proportional scoring, local persistence, a keyboard-first up/down reorder
 control, feedback, result, and daily-ritual integration. Remaining for this
-mode: Practice integration and the easy/hard bonus tiers (the tier configs
-already exist in code, only the required medium tier is wired into UI).
+mode: Practice supports all tiers and both World and Europe; remaining for Daily
+are the easy/hard bonus tiers.
 
 Initial variants:
 
@@ -63,7 +63,7 @@ The keyboard and screen-reader interaction must provide an alternative to drag-a
 
 #### Border Run
 
-Built for World/medium as a complete vertical slice: a land-adjacency graph computed at build time from polygon geometry (`scripts/lib/computeAdjacency.ts`), deterministic origin/destination generation at a tier-appropriate hop distance (`src/lib/modes/borderRun/`), binary valid-or-not scoring (ADR-0004), persistence, a guided hop-builder session UI (grow a route from the actual land-border neighbors of the last-placed place, with undo — no map or country search), and tests. Remaining for this mode: Practice integration and the easy/hard bonus tiers (the tier configs already exist in code, only the required medium tier is wired into UI).
+Built for World/medium as a complete vertical slice: a land-adjacency graph computed at build time from polygon geometry (`scripts/lib/computeAdjacency.ts`), deterministic origin/destination generation at a tier-appropriate hop distance (`src/lib/modes/borderRun/`), binary valid-or-not scoring (ADR-0004), persistence, a guided hop-builder session UI (grow a route from the actual land-border neighbors of the last-placed place, with undo — no map or country search), and tests. Practice supports all tiers and both World and Europe; remaining for Daily are the easy/hard bonus tiers.
 
 Special cases such as overseas territories, disputed borders, enclaves, and maritime borders are excluded from the adjacency graph by default ([ADR-0005](./adr/0005-border-run-excludes-disputed-territories.md)).
 
@@ -309,7 +309,7 @@ The World-collection vertical slice (generation, validation, persistence, access
 
 Confirming the IA, researching geographic sources/licenses/coordinate semantics, scaffolding the toolchain, defining the core schemas, building deterministic seed/version infrastructure, the Compass/Arrange/Border Run vertical slices themselves, and applying the chosen design to the daily flow are all done. Remaining:
 
-1. Practice and Statistics are done (World-only; `/statistics` reads existing persisted state — streak, per-mode Daily accuracy/days-completed, per-mode Practice attempts/accuracy — via `src/lib/challenge/statistics.ts`, no new generation or persistence writes). Remaining: a second collection to unlock Practice's collection selector (and a per-collection statistics breakdown), and sharing.
+1. Practice and Statistics are done. Practice offers World and Europe; `/statistics` reads existing persisted state — streak, per-mode Daily accuracy/days-completed, and per-collection Practice attempts/accuracy — via `src/lib/challenge/statistics.ts`, with no new generation or persistence writes. Remaining: sharing.
 2. Perform mobile, accessibility, data-quality, and deterministic-regression testing before release (Compass, Arrange, and Border Run each already have a start: property-based generation tests and a Playwright accessibility scan; this still needs to happen for the product as a whole once it's more complete).
 
 ## Open product decisions

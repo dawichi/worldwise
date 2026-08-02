@@ -33,6 +33,10 @@
         "medium": "Medio",
         "hard": "Difícil"
     },
+    "collections": {
+        "world": "Mundo",
+        "europe": "Europa"
+    },
     "modes": {
         "compass": {
             "name": "Brújula"
@@ -80,11 +84,12 @@
     },
     "practice": {
         "title": "Práctica",
+        "chooseCollection": "Elige una colección",
         "chooseMode": "Elige un modo",
         "chooseTier": "Elige una dificultad",
         "start": "Empezar práctica",
         "backToPractice": "Volver a Práctica",
-        "resultHeading": "Práctica de {mode} · {tier}",
+        "resultHeading": "Práctica de {collection} · {mode} · {tier}",
         "roundLabel": "Ronda {round}",
         "playAgain": "Practicar de nuevo",
         "chooseAnother": "Elegir otra"
@@ -98,6 +103,7 @@
         "dayStatusPartial": "{completed} de {total} modos completados",
         "dayStatusNone": "No completado",
         "perMode": "Rendimiento por modo",
+        "practiceCollection": "Práctica · {collection}",
         "dailyAccuracy": "Precisión diaria",
         "daysCompleted": "{count} días completados",
         "practiceAttempts": "{count} intentos de práctica",

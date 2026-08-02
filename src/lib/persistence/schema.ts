@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const CURRENT_SCHEMA_VERSION = 4;
+export const CURRENT_SCHEMA_VERSION = 5;
 
 const tierSchema = z.enum(["easy", "medium", "hard"]);
 
@@ -61,17 +61,27 @@ const practiceModeStatsSchema = z.object({
     totalCredit: z.number().gte(0),
 });
 
-const practiceStatsSchema = z.object({
+const practiceStatsByModeSchema = z.object({
     compass: practiceModeStatsSchema,
     arrange: practiceModeStatsSchema,
     borderRun: practiceModeStatsSchema,
 });
 
 /** Bounded rolling history (see practiceGenerate.ts) used to avoid repeating a recently-seen practice challenge within each mode. */
-const practiceRecentFingerprintsSchema = z.object({
+const practiceRecentFingerprintsByModeSchema = z.object({
     compass: z.array(z.string()),
     arrange: z.array(z.string()),
     borderRun: z.array(z.string()),
+});
+
+const practiceStatsSchema = z.object({
+    world: practiceStatsByModeSchema,
+    europe: practiceStatsByModeSchema,
+});
+
+const practiceRecentFingerprintsSchema = z.object({
+    world: practiceRecentFingerprintsByModeSchema,
+    europe: practiceRecentFingerprintsByModeSchema,
 });
 
 const streakSchema = z.object({
@@ -110,10 +120,19 @@ export type ArrangeRoundAnswer = z.infer<typeof arrangeRoundAnswerSchema>;
 export type BorderRunDailyEntry = z.infer<typeof borderRunDailyEntrySchema>;
 export type BorderRunRoundAnswer = z.infer<typeof borderRunRoundAnswerSchema>;
 export type PracticeModeStats = z.infer<typeof practiceModeStatsSchema>;
+export type PracticeStatsByMode = z.infer<typeof practiceStatsByModeSchema>;
 export type PracticeStats = z.infer<typeof practiceStatsSchema>;
 
 function createDefaultPracticeModeStats(): PracticeModeStats {
     return { attempts: 0, roundsAnswered: 0, totalCredit: 0 };
+}
+
+function createDefaultPracticeStatsByMode(): PracticeStatsByMode {
+    return {
+        compass: createDefaultPracticeModeStats(),
+        arrange: createDefaultPracticeModeStats(),
+        borderRun: createDefaultPracticeModeStats(),
+    };
 }
 
 export function createDefaultState(): PersistedState {
@@ -124,11 +143,13 @@ export function createDefaultState(): PersistedState {
         borderRun: { daily: {} },
         practice: {
             stats: {
-                compass: createDefaultPracticeModeStats(),
-                arrange: createDefaultPracticeModeStats(),
-                borderRun: createDefaultPracticeModeStats(),
+                world: createDefaultPracticeStatsByMode(),
+                europe: createDefaultPracticeStatsByMode(),
             },
-            recentFingerprints: { compass: [], arrange: [], borderRun: [] },
+            recentFingerprints: {
+                world: { compass: [], arrange: [], borderRun: [] },
+                europe: { compass: [], arrange: [], borderRun: [] },
+            },
         },
         streak: { current: 0, longest: 0, lastCompletedDate: null },
     };

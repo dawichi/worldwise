@@ -33,7 +33,7 @@ describe("loadState", () => {
     it("round-trips a valid state through save and load", () => {
         const storage = createMemoryStorage();
         const state: PersistedState = {
-            schemaVersion: 4,
+            schemaVersion: 5,
             compass: {
                 daily: {
                     "2026-07-31": {
@@ -87,22 +87,32 @@ describe("loadState", () => {
             },
             practice: {
                 stats: {
-                    compass: {
-                        attempts: 4,
-                        roundsAnswered: 12,
-                        totalCredit: 9.5,
+                    world: {
+                        compass: {
+                            attempts: 4,
+                            roundsAnswered: 12,
+                            totalCredit: 9.5,
+                        },
+                        arrange: {
+                            attempts: 0,
+                            roundsAnswered: 0,
+                            totalCredit: 0,
+                        },
+                        borderRun: {
+                            attempts: 1,
+                            roundsAnswered: 3,
+                            totalCredit: 2,
+                        },
                     },
-                    arrange: { attempts: 0, roundsAnswered: 0, totalCredit: 0 },
-                    borderRun: {
-                        attempts: 1,
-                        roundsAnswered: 3,
-                        totalCredit: 2,
-                    },
+                    europe: createDefaultState().practice.stats.europe,
                 },
                 recentFingerprints: {
-                    compass: ["country:fra,country:pol"],
-                    arrange: [],
-                    borderRun: [],
+                    world: {
+                        compass: ["country:fra,country:pol"],
+                        arrange: [],
+                        borderRun: [],
+                    },
+                    europe: { compass: [], arrange: [], borderRun: [] },
                 },
             },
             streak: {
@@ -116,7 +126,7 @@ describe("loadState", () => {
         expect(loadState(storage)).toEqual(state);
     });
 
-    it("migrates a realistic v1 value (no arrange/borderRun/practice keys) all the way to v4 without losing compass progress or the streak", () => {
+    it("migrates a realistic v1 value (no arrange/borderRun/practice keys) to the current schema without losing compass progress or the streak", () => {
         const storage = createMemoryStorage();
         const v1Value = {
             schemaVersion: 1,
@@ -138,7 +148,7 @@ describe("loadState", () => {
         storage.setItem(STORAGE_KEY, JSON.stringify(v1Value));
 
         const result = loadState(storage);
-        expect(result.schemaVersion).toBe(4);
+        expect(result.schemaVersion).toBe(5);
         expect(result.compass).toEqual(v1Value.compass);
         expect(result.streak).toEqual(v1Value.streak);
         expect(result.arrange).toEqual({ daily: {} });

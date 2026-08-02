@@ -147,3 +147,56 @@ describe("REAL_MIGRATIONS[3] (the real v3 -> v4 migration)", () => {
         });
     });
 });
+
+describe("REAL_MIGRATIONS[4] (the real v4 -> v5 migration)", () => {
+    it("keeps World Practice progress and initializes Europe", () => {
+        const migrateV4ToV5 = REAL_MIGRATIONS[4];
+        const worldStats = {
+            compass: { attempts: 2, roundsAnswered: 6, totalCredit: 4 },
+            arrange: { attempts: 0, roundsAnswered: 0, totalCredit: 0 },
+            borderRun: { attempts: 1, roundsAnswered: 3, totalCredit: 2 },
+        };
+        const worldFingerprints = {
+            compass: ["a"],
+            arrange: [],
+            borderRun: ["b"],
+        };
+        const migrated = migrateV4ToV5?.({
+            schemaVersion: 4,
+            practice: {
+                stats: worldStats,
+                recentFingerprints: worldFingerprints,
+            },
+        });
+
+        expect(migrated).toEqual({
+            schemaVersion: 5,
+            practice: {
+                stats: {
+                    world: worldStats,
+                    europe: {
+                        compass: {
+                            attempts: 0,
+                            roundsAnswered: 0,
+                            totalCredit: 0,
+                        },
+                        arrange: {
+                            attempts: 0,
+                            roundsAnswered: 0,
+                            totalCredit: 0,
+                        },
+                        borderRun: {
+                            attempts: 0,
+                            roundsAnswered: 0,
+                            totalCredit: 0,
+                        },
+                    },
+                },
+                recentFingerprints: {
+                    world: worldFingerprints,
+                    europe: { compass: [], arrange: [], borderRun: [] },
+                },
+            },
+        });
+    });
+});

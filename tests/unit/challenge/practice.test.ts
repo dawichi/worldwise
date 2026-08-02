@@ -21,23 +21,38 @@ function createMemoryStorage(): StorageLike {
 describe("recordPracticeAttempt", () => {
     it("increments attempts/roundsAnswered/totalCredit for the given mode only", () => {
         const stats = createDefaultState().practice.stats;
-        const result = recordPracticeAttempt(stats, "compass", [1, 0.5, 0]);
+        const result = recordPracticeAttempt(
+            stats,
+            "europe",
+            "compass",
+            [1, 0.5, 0],
+        );
 
-        expect(result.compass).toEqual({
+        expect(result.europe.compass).toEqual({
             attempts: 1,
             roundsAnswered: 3,
             totalCredit: 1.5,
         });
-        expect(result.arrange).toEqual(stats.arrange);
-        expect(result.borderRun).toEqual(stats.borderRun);
+        expect(result.europe.arrange).toEqual(stats.europe.arrange);
+        expect(result.world).toEqual(stats.world);
     });
 
     it("accumulates across repeated attempts", () => {
         const stats = createDefaultState().practice.stats;
-        const once = recordPracticeAttempt(stats, "borderRun", [1, 1, 0]);
-        const twice = recordPracticeAttempt(once, "borderRun", [0, 0, 0]);
+        const once = recordPracticeAttempt(
+            stats,
+            "world",
+            "borderRun",
+            [1, 1, 0],
+        );
+        const twice = recordPracticeAttempt(
+            once,
+            "world",
+            "borderRun",
+            [0, 0, 0],
+        );
 
-        expect(twice.borderRun).toEqual({
+        expect(twice.world.borderRun).toEqual({
             attempts: 2,
             roundsAnswered: 6,
             totalCredit: 2,
@@ -49,6 +64,7 @@ describe("writePracticeResult / readPracticeResult", () => {
     it("round-trips a valid payload", () => {
         const storage = createMemoryStorage();
         const payload: PracticeResultPayload = {
+            collectionId: "europe",
             modeId: "arrange",
             tier: "hard",
             roundCredits: [1, 0.6, 0],

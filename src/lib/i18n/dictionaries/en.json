@@ -33,6 +33,10 @@
         "medium": "Medium",
         "hard": "Hard"
     },
+    "collections": {
+        "world": "World",
+        "europe": "Europe"
+    },
     "modes": {
         "compass": {
             "name": "Compass"
@@ -80,11 +84,12 @@
     },
     "practice": {
         "title": "Practice",
+        "chooseCollection": "Choose a collection",
         "chooseMode": "Choose a mode",
         "chooseTier": "Choose a difficulty",
         "start": "Start practice",
         "backToPractice": "Back to Practice",
-        "resultHeading": "{mode} · {tier} practice",
+        "resultHeading": "{collection} · {mode} · {tier} practice",
         "roundLabel": "Round {round}",
         "playAgain": "Practice again",
         "chooseAnother": "Choose another"
@@ -98,6 +103,7 @@
         "dayStatusPartial": "{completed} of {total} modes completed",
         "dayStatusNone": "Not completed",
         "perMode": "Performance by mode",
+        "practiceCollection": "Practice · {collection}",
         "dailyAccuracy": "Daily accuracy",
         "daysCompleted": "{count} days completed",
         "practiceAttempts": "{count} practice attempts",

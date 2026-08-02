@@ -1,3 +1,4 @@
+import type { PracticeCollectionId } from "../data/collections";
 import type { PersistedState } from "../persistence/schema";
 import { getUtcDateKey } from "../prng/dailyKey";
 import {
@@ -55,6 +56,7 @@ export interface ModeStats {
 export function computeModeStats(
     state: PersistedState,
     modeId: EnabledModeId,
+    collectionId: PracticeCollectionId = "world",
 ): ModeStats {
     const completedDailyEntries = Object.values(state[modeId].daily).filter(
         (entry) => entry.completedAt !== null,
@@ -74,7 +76,7 @@ export function computeModeStats(
         0,
     );
 
-    const practice = state.practice.stats[modeId];
+    const practice = state.practice.stats[collectionId][modeId];
 
     return {
         dailyCompletedDays: completedDailyEntries.length,

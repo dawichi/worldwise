@@ -117,12 +117,19 @@ describe("computeModeStats", () => {
                 ...createDefaultState().practice,
                 stats: {
                     ...createDefaultState().practice.stats,
-                    arrange: { attempts: 3, roundsAnswered: 9, totalCredit: 6 },
+                    europe: {
+                        ...createDefaultState().practice.stats.europe,
+                        arrange: {
+                            attempts: 3,
+                            roundsAnswered: 9,
+                            totalCredit: 6,
+                        },
+                    },
                 },
             },
         };
 
-        const stats = computeModeStats(state, "arrange");
+        const stats = computeModeStats(state, "arrange", "europe");
         expect(stats.practiceAttempts).toBe(3);
         expect(stats.practiceAccuracy).toBe(67);
     });

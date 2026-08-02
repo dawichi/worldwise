@@ -45,10 +45,39 @@ function migrateV3ToV4(data: Record<string, unknown>): Record<string, unknown> {
     };
 }
 
+/**
+ * v4 → v5: Practice gained Europe. Stats and dedup fingerprints are now
+ * scoped to a collection, so existing World progress is retained verbatim
+ * under `world` and Europe starts empty.
+ */
+function migrateV4ToV5(data: Record<string, unknown>): Record<string, unknown> {
+    const practice = data.practice as Record<string, unknown>;
+    const emptyStats = { attempts: 0, roundsAnswered: 0, totalCredit: 0 };
+    return {
+        ...data,
+        schemaVersion: 5,
+        practice: {
+            stats: {
+                world: practice.stats,
+                europe: {
+                    compass: emptyStats,
+                    arrange: emptyStats,
+                    borderRun: emptyStats,
+                },
+            },
+            recentFingerprints: {
+                world: practice.recentFingerprints,
+                europe: { compass: [], arrange: [], borderRun: [] },
+            },
+        },
+    };
+}
+
 export const REAL_MIGRATIONS: Record<number, Migration> = {
     1: migrateV1ToV2,
     2: migrateV2ToV3,
     3: migrateV3ToV4,
+    4: migrateV4ToV5,
 };
 
 function detectVersion(data: Record<string, unknown>): number {

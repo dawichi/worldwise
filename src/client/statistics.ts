@@ -7,6 +7,7 @@ import {
     computeModeStats,
     type ModeStats,
 } from "../lib/challenge/statistics";
+import { PRACTICE_COLLECTION_IDS } from "../lib/data/collections";
 import { type Locale, type TranslationKey, t } from "../lib/i18n/t";
 import { loadState } from "../lib/persistence/repository";
 
@@ -97,6 +98,7 @@ function buildModeCard(
     locale: Locale,
     modeId: EnabledModeId,
     stats: ModeStats,
+    includeDaily: boolean,
 ): HTMLDivElement {
     const card = document.createElement("div");
     card.className = "rounded-card border border-border bg-surface p-4";
@@ -136,7 +138,10 @@ function buildModeCard(
     );
     practiceRow.append(practiceLabel, practiceValue);
 
-    card.append(dailyRow, practiceRow);
+    if (includeDaily) {
+        card.append(dailyRow);
+    }
+    card.append(practiceRow);
     return card;
 }
 
@@ -178,8 +183,24 @@ export function mountStatistics(): void {
         historyEl.append(buildHistoryCell(locale, day));
     }
 
-    for (const modeId of ENABLED_MODE_IDS) {
-        const stats = computeModeStats(state, modeId);
-        modeStatsEl.append(buildModeCard(locale, modeId, stats));
+    for (const collectionId of PRACTICE_COLLECTION_IDS) {
+        const collectionHeading = document.createElement("h3");
+        collectionHeading.className =
+            "mt-4 text-sm font-semibold text-text-muted";
+        collectionHeading.textContent = t(
+            locale,
+            "statistics.practiceCollection",
+            {
+                collection: t(locale, `collections.${collectionId}`),
+            },
+        );
+        modeStatsEl.append(collectionHeading);
+
+        for (const modeId of ENABLED_MODE_IDS) {
+            const stats = computeModeStats(state, modeId, collectionId);
+            modeStatsEl.append(
+                buildModeCard(locale, modeId, stats, collectionId === "world"),
+            );
+        }
     }
 }

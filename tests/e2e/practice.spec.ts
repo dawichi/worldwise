@@ -11,7 +11,9 @@ test.describe("Practice selector", () => {
         await page.getByRole("button", { name: "Hard" }).click();
         await page.getByRole("button", { name: "Start practice" }).click();
 
-        await expect(page).toHaveURL(/\/practice\/arrange\?tier=hard/);
+        await expect(page).toHaveURL(
+            /\/practice\/arrange\?collection=world&tier=hard/,
+        );
     });
 
     test("defaults to Compass/Medium when nothing is changed", async ({
@@ -19,7 +21,20 @@ test.describe("Practice selector", () => {
     }) => {
         await page.goto("/practice");
         await page.getByRole("button", { name: "Start practice" }).click();
-        await expect(page).toHaveURL(/\/practice\/compass\?tier=medium/);
+        await expect(page).toHaveURL(
+            /\/practice\/compass\?collection=world&tier=medium/,
+        );
+    });
+
+    test("starts a Europe session when Europe is selected", async ({
+        page,
+    }) => {
+        await page.goto("/practice");
+        await page.getByRole("button", { name: "Europe" }).click();
+        await page.getByRole("button", { name: "Start practice" }).click();
+        await expect(page).toHaveURL(
+            /\/practice\/compass\?collection=europe&tier=medium/,
+        );
     });
 });
 
@@ -50,7 +65,9 @@ test.describe("Practice sessions", () => {
         await expect(page.locator("#result-rounds li")).toHaveCount(3);
 
         await page.getByRole("button", { name: "Practice again" }).click();
-        await expect(page).toHaveURL(/\/practice\/compass\?tier=easy/);
+        await expect(page).toHaveURL(
+            /\/practice\/compass\?collection=world&tier=easy/,
+        );
     });
 
     test("completes an Arrange practice challenge with the reorder buttons", async ({

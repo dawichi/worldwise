@@ -1,4 +1,3 @@
-import { worldCollection } from "../data/generated/world";
 import {
     type PracticeModeId,
     type PracticeTier,
@@ -9,6 +8,10 @@ import {
     generateWithDedup,
     pushRecentFingerprint,
 } from "../lib/challenge/practiceGenerate";
+import {
+    getPracticeCollection,
+    type PracticeCollectionId,
+} from "../lib/data/collections";
 import { getPlaceById } from "../lib/data/lookup";
 import { type Locale, type TranslationKey, t } from "../lib/i18n/t";
 import { generateBorderRunChallenge } from "../lib/modes/borderRun/generate";
@@ -21,7 +24,6 @@ import { loadState, saveState } from "../lib/persistence/repository";
 import { DATA_VERSION, GENERATOR_VERSION } from "../lib/versions";
 import { createBorderRunPathController } from "./borderRunPath";
 
-const COLLECTION_ID = "world";
 const MODE_ID: PracticeModeId = "borderRun";
 
 function getLocale(): Locale {
@@ -33,6 +35,13 @@ function parseTier(): PracticeTier {
     return raw === "easy" || raw === "medium" || raw === "hard"
         ? raw
         : "medium";
+}
+
+function parseCollectionId(): PracticeCollectionId {
+    return new URLSearchParams(window.location.search).get("collection") ===
+        "europe"
+        ? "europe"
+        : "world";
 }
 
 function creditKeyFor(credit: number): TranslationKey {
@@ -63,6 +72,8 @@ function fingerprintOf(challenge: BorderRunChallenge): string {
 export function mountPracticeBorderRunSession(): void {
     const locale = getLocale();
     const tier = parseTier();
+    const collectionId = parseCollectionId();
+    const collection = getPracticeCollection(collectionId);
     const state = loadState(localStorage);
 
     const { challenge, fingerprint } = generateWithDedup(
@@ -72,12 +83,12 @@ export function mountPracticeBorderRunSession(): void {
                 challengeId: seed,
                 generatorVersion: GENERATOR_VERSION,
                 dataVersion: DATA_VERSION,
-                collectionId: COLLECTION_ID,
+                collectionId,
                 tier,
-                places: worldCollection.places,
+                places: collection.places,
             }),
         fingerprintOf,
-        state.practice.recentFingerprints.borderRun,
+        state.practice.recentFingerprints[collectionId].borderRun,
     );
 
     let roundIndex = 0;
@@ -128,7 +139,7 @@ export function mountPracticeBorderRunSession(): void {
 
     const path = createBorderRunPathController(
         routeRoot,
-        worldCollection.places,
+        collection.places,
         locale,
         (name) => t(locale, "borderRun.addHop", { name }),
     );
@@ -143,8 +154,8 @@ export function mountPracticeBorderRunSession(): void {
             return;
         }
 
-        const origin = getPlaceById(worldCollection, round.originId);
-        const destination = getPlaceById(worldCollection, round.destinationId);
+        const origin = getPlaceById(collection, round.originId);
+        const destination = getPlaceById(collection, round.destinationId);
 
         path.setRound(round.originId, round.destinationId);
 
@@ -170,7 +181,7 @@ export function mountPracticeBorderRunSession(): void {
 
         const submittedPath = path.getPath();
         const credit = scoreBorderRunRound(
-            worldCollection.places,
+            collection.places,
             round,
             submittedPath,
         );
@@ -185,23 +196,30 @@ export function mountPracticeBorderRunSession(): void {
                     practice: {
                         stats: recordPracticeAttempt(
                             stateBeforeSave.practice.stats,
+                            collectionId,
                             MODE_ID,
                             roundCredits,
                         ),
                         recentFingerprints: {
                             ...stateBeforeSave.practice.recentFingerprints,
-                            borderRun: pushRecentFingerprint(
-                                stateBeforeSave.practice.recentFingerprints
-                                    .borderRun,
-                                fingerprint,
-                            ),
+                            [collectionId]: {
+                                ...stateBeforeSave.practice.recentFingerprints[
+                                    collectionId
+                                ],
+                                borderRun: pushRecentFingerprint(
+                                    stateBeforeSave.practice.recentFingerprints[
+                                        collectionId
+                                    ].borderRun,
+                                    fingerprint,
+                                ),
+                            },
                         },
                     },
                 },
                 localStorage,
             );
             writePracticeResult(
-                { modeId: MODE_ID, tier, roundCredits },
+                { collectionId, modeId: MODE_ID, tier, roundCredits },
                 sessionStorage,
             );
         }
@@ -211,12 +229,10 @@ export function mountPracticeBorderRunSession(): void {
         submitButton.classList.add("hidden");
 
         const routeNames = submittedPath
-            .map((id) => getPlaceById(worldCollection, id).names[locale])
+            .map((id) => getPlaceById(collection, id).names[locale])
             .join(" → ");
-        const destinationName = getPlaceById(
-            worldCollection,
-            round.destinationId,
-        ).names[locale];
+        const destinationName = getPlaceById(collection, round.destinationId)
+            .names[locale];
 
         feedbackHeading.textContent = t(locale, creditKeyFor(credit));
         feedbackBody.textContent = isValid
