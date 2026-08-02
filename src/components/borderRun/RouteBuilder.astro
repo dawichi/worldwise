@@ -30,7 +30,7 @@ const locale = Astro.currentLocale === "es" ? "es" : "en";
     <div data-role="hop-candidates" class="mb-6 flex flex-wrap gap-2"></div>
 </div>
 
-<style>
+<style is:global>
     [data-role="path-trail"] li[data-reached="true"] {
         border: 2px solid var(--color-accent);
         color: var(--color-accent-text);
