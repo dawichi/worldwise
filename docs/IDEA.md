@@ -32,16 +32,7 @@ Refreshing the page, changing the device clock, or reopening the application mus
 
 ### Practice
 
-Practice lets players continue after the daily challenge or train a particular skill.
-
-- Unlimited randomly generated challenges.
-- Selection by geographic collection, game mode, and tier where supported.
-- Collections beyond the Daily default (World) — such as Europe, and later the Autonomous Communities of Spain — are primarily accessed through Practice for the MVP ([ADR-0007](./adr/0007-daily-uses-single-default-collection.md)).
-- Practice results do not affect the daily streak or daily score.
-- Practice may keep separate local statistics such as attempts and accuracy.
-- Repeated challenges should be avoided within a reasonable recent-history window.
-
-Practice randomness does not need to be shared between players, but challenge validation must use the same rules as the daily generator.
+Built: `/practice` lets players pick a mode (Compass/Arrange/Border Run) and tier (easy/medium/hard), then run an unlimited sequence of freshly-generated challenges via each mode's existing generator with a random (non-daily-key) seed. Results never touch the daily streak or daily entries; separate local stats (attempts, rounds answered, total credit) accumulate per mode in `practice.stats`, and a small bounded fingerprint history (`practice.recentFingerprints`) avoids repeating a recently-seen challenge within each mode ([`src/lib/challenge/practice.ts`](../src/lib/challenge/practice.ts), [`practiceGenerate.ts`](../src/lib/challenge/practiceGenerate.ts)). Remaining: a collection selector — only World exists in `src/data/generated/` today, so Practice is World-only until Europe (or another collection) ships ([ADR-0007](./adr/0007-daily-uses-single-default-collection.md)); a statistics page to surface the accumulated `practice.stats`; and the Daily bonus-tier UI (easy/hard as same-day bonus mode-challenges, distinct from Practice's tier picker).
 
 ## Game modes
 
@@ -318,7 +309,7 @@ The World-collection vertical slice (generation, validation, persistence, access
 
 Confirming the IA, researching geographic sources/licenses/coordinate semantics, scaffolding the toolchain, defining the core schemas, building deterministic seed/version infrastructure, the Compass/Arrange/Border Run vertical slices themselves, and applying the chosen design to the daily flow are all done. Remaining:
 
-1. Add practice, statistics, and sharing incrementally.
+1. Practice is done (World-only, all three modes/tiers). Remaining: a second collection to unlock Practice's collection selector, statistics, and sharing.
 2. Perform mobile, accessibility, data-quality, and deterministic-regression testing before release (Compass, Arrange, and Border Run each already have a start: property-based generation tests and a Playwright accessibility scan; this still needs to happen for the product as a whole once it's more complete).
 
 ## Open product decisions
