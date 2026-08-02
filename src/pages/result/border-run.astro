@@ -1,0 +1,37 @@
+---
+import { CircleCheck } from "lucide-astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { t } from "../../lib/i18n/t";
+
+const locale = Astro.currentLocale === "es" ? "es" : "en";
+---
+
+<BaseLayout title={`${t(locale, "modes.borderRun.name")} — ${t(locale, "common.appName")}`}>
+    <main class="mx-auto max-w-xl px-5 py-10 text-center sm:px-6">
+        <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-success-bg">
+            <CircleCheck width={28} height={28} class="text-success-icon" aria-hidden="true" />
+        </div>
+        <h1 id="result-heading" class="mb-1 text-sm font-bold text-text-muted"></h1>
+        <p id="result-score" class="mb-6 text-4xl font-extrabold text-text"></p>
+
+        <ul id="result-rounds" class="mb-6 flex flex-col gap-2 text-left"></ul>
+
+        <a href="/" class="block w-full rounded-button bg-accent-button py-3.5 text-base font-bold text-white">
+            {t(locale, "common.backToToday")}
+        </a>
+    </main>
+
+    <style is:global>
+        #result-rounds li[data-credit="full"] [data-role="credit-dot"] {
+            background-color: var(--color-success-icon);
+        }
+        #result-rounds li[data-credit="none"] [data-role="credit-dot"] {
+            background-color: var(--color-attention-icon);
+        }
+    </style>
+
+    <script>
+        import { mountBorderRunResult } from "../../client/borderRunResult";
+        mountBorderRunResult();
+    </script>
+</BaseLayout>

@@ -1,6 +1,5 @@
 ---
 import { BarChart3, Compass, Route } from "lucide-astro";
-import DisabledModeCard from "../components/home/DisabledModeCard.astro";
 import ModeCard from "../components/home/ModeCard.astro";
 import RitualProgress from "../components/home/RitualProgress.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -48,9 +47,15 @@ const locale = Astro.currentLocale === "es" ? "es" : "en";
                 <BarChart3 slot="icon" width={20} height={20} aria-hidden="true" />
             </ModeCard>
 
-            <DisabledModeCard name={t(locale, "modes.borderRun.name")} comingSoonLabel={t(locale, "home.comingSoon")}>
+            <ModeCard
+                id="borderRun-mode-card"
+                name={t(locale, "modes.borderRun.name")}
+                statusLabel={t(locale, "home.notStarted")}
+                startLabel={t(locale, "home.start")}
+                href="/play/border-run"
+            >
                 <Route slot="icon" width={20} height={20} aria-hidden="true" />
-            </DisabledModeCard>
+            </ModeCard>
         </div>
 
         <div class="mt-6 flex flex-col gap-2">

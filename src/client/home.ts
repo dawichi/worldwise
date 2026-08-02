@@ -5,6 +5,12 @@ import {
     resolveDailyArrange,
 } from "../lib/challenge/dailyArrange";
 import {
+    type BorderRunDailyStatus,
+    computeBorderRunStatus,
+    countAnsweredRounds as countBorderRunAnsweredRounds,
+    resolveDailyBorderRun,
+} from "../lib/challenge/dailyBorderRun";
+import {
     type CompassDailyStatus,
     computeCompassStatus,
     countAnsweredRounds,
@@ -68,8 +74,8 @@ function renderRitualProgress(
 
 function renderModeCard(
     locale: Locale,
-    modeId: "compass" | "arrange",
-    status: CompassDailyStatus | ArrangeDailyStatus,
+    modeId: "compass" | "arrange" | "borderRun",
+    status: CompassDailyStatus | ArrangeDailyStatus | BorderRunDailyStatus,
     answeredCount: number,
     totalRounds: number,
 ): void {
@@ -137,8 +143,10 @@ export function mountHome(): void {
     const state = loadState(localStorage);
     const compass = resolveDailyCompass(now, state);
     const arrange = resolveDailyArrange(now, state);
+    const borderRun = resolveDailyBorderRun(now, state);
     const compassStatus = computeCompassStatus(compass.entry);
     const arrangeStatus = computeArrangeStatus(arrange.entry);
+    const borderRunStatus = computeBorderRunStatus(borderRun.entry);
 
     const dateEl = document.getElementById("today-date");
     if (dateEl) {
@@ -164,5 +172,12 @@ export function mountHome(): void {
         arrangeStatus,
         countArrangeAnsweredRounds(arrange.entry),
         arrange.entry.rounds.length,
+    );
+    renderModeCard(
+        locale,
+        "borderRun",
+        borderRunStatus,
+        countBorderRunAnsweredRounds(borderRun.entry),
+        borderRun.entry.rounds.length,
     );
 }

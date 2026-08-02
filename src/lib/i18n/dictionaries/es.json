@@ -65,5 +65,16 @@
         "inPlaceOf": "{matches} de {total} en su lugar.",
         "correctOrderWas": "Orden correcto: {order}.",
         "resultComplete": "Ordenar · {tier} completado"
+    },
+    "borderRun": {
+        "tierLabel": "Cruce de Fronteras · {tier}",
+        "roundOf": "Ronda {current} de {total}",
+        "prompt": "Construye una ruta terrestre desde {origin} hasta {destination}.",
+        "addHop": "Añadir {name}",
+        "undoHop": "Deshacer último tramo",
+        "pathLabel": "Ruta actual",
+        "resultComplete": "Cruce de Fronteras · {tier} completado",
+        "routeValid": "Ruta válida: {route}.",
+        "routeInvalid": "Esa ruta no llega a {destination} por fronteras terrestres."
     }
 }

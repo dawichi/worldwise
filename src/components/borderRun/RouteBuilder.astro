@@ -1,0 +1,48 @@
+---
+import { Undo2 } from "lucide-astro";
+import { t } from "../../lib/i18n/t";
+
+interface Props {
+    id: string;
+}
+
+const { id } = Astro.props;
+const locale = Astro.currentLocale === "es" ? "es" : "en";
+---
+
+<div id={id}>
+    <ol
+        data-role="path-trail"
+        aria-label={t(locale, "borderRun.pathLabel")}
+        class="mb-4 flex flex-wrap items-center gap-2"
+    >
+    </ol>
+
+    <button
+        type="button"
+        data-role="undo-hop"
+        class="mb-4 flex items-center gap-1.5 rounded-button border border-border bg-surface px-3 py-1.5 text-sm font-bold text-text-muted disabled:opacity-40"
+    >
+        <Undo2 width={14} height={14} aria-hidden="true" />
+        {t(locale, "borderRun.undoHop")}
+    </button>
+
+    <div data-role="hop-candidates" class="mb-6 flex flex-wrap gap-2"></div>
+</div>
+
+<style>
+    [data-role="path-trail"] li[data-reached="true"] {
+        border: 2px solid var(--color-accent);
+        color: var(--color-accent-text);
+    }
+    [data-role="path-trail"][data-credit="full"] li {
+        border-color: var(--color-success-icon);
+        background-color: var(--color-success-bg);
+        color: var(--color-success-text);
+    }
+    [data-role="path-trail"][data-credit="none"] li {
+        border-color: var(--color-attention-icon);
+        background-color: var(--color-attention-bg);
+        color: var(--color-attention-text);
+    }
+</style>

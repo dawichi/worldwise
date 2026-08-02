@@ -65,5 +65,16 @@
         "inPlaceOf": "{matches} of {total} in place.",
         "correctOrderWas": "Correct order: {order}.",
         "resultComplete": "Arrange · {tier} complete"
+    },
+    "borderRun": {
+        "tierLabel": "Border Run · {tier}",
+        "roundOf": "Round {current} of {total}",
+        "prompt": "Build a land route from {origin} to {destination}.",
+        "addHop": "Add {name}",
+        "undoHop": "Undo last hop",
+        "pathLabel": "Current route",
+        "resultComplete": "Border Run · {tier} complete",
+        "routeValid": "Valid route: {route}.",
+        "routeInvalid": "That route doesn't reach {destination} via land borders."
     }
 }
