@@ -25,7 +25,8 @@
         "start": "Start",
         "completedOf": "Completed · {completed}/{total}",
         "bonusTiersLink": "Optional bonus tiers (easy · hard)",
-        "practiceLink": "Practice — unlimited rounds"
+        "practiceLink": "Practice — unlimited rounds",
+        "statisticsLink": "Statistics — streaks & accuracy"
     },
     "tiers": {
         "easy": "Easy",
@@ -87,5 +88,21 @@
         "roundLabel": "Round {round}",
         "playAgain": "Practice again",
         "chooseAnother": "Choose another"
+    },
+    "statistics": {
+        "title": "Statistics",
+        "streakCurrent": "Current streak",
+        "streakLongest": "Longest streak",
+        "dailyHistory": "Daily history",
+        "dayStatusFull": "All modes completed",
+        "dayStatusPartial": "{completed} of {total} modes completed",
+        "dayStatusNone": "Not completed",
+        "perMode": "Performance by mode",
+        "dailyAccuracy": "Daily accuracy",
+        "daysCompleted": "{count} days completed",
+        "practiceAttempts": "{count} practice attempts",
+        "practiceAccuracy": "Practice accuracy",
+        "noData": "No data yet",
+        "storedOnDevice": "Your statistics are stored only on this device."
     }
 }

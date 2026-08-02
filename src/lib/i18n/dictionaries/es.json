@@ -25,7 +25,8 @@
         "start": "Empezar",
         "completedOf": "Completado · {completed}/{total}",
         "bonusTiersLink": "Niveles adicionales opcionales (fácil · difícil)",
-        "practiceLink": "Práctica — rondas ilimitadas"
+        "practiceLink": "Práctica — rondas ilimitadas",
+        "statisticsLink": "Estadísticas — rachas y precisión"
     },
     "tiers": {
         "easy": "Fácil",
@@ -87,5 +88,21 @@
         "roundLabel": "Ronda {round}",
         "playAgain": "Practicar de nuevo",
         "chooseAnother": "Elegir otra"
+    },
+    "statistics": {
+        "title": "Estadísticas",
+        "streakCurrent": "Racha actual",
+        "streakLongest": "Racha más larga",
+        "dailyHistory": "Historial diario",
+        "dayStatusFull": "Todos los modos completados",
+        "dayStatusPartial": "{completed} de {total} modos completados",
+        "dayStatusNone": "No completado",
+        "perMode": "Rendimiento por modo",
+        "dailyAccuracy": "Precisión diaria",
+        "daysCompleted": "{count} días completados",
+        "practiceAttempts": "{count} intentos de práctica",
+        "practiceAccuracy": "Precisión en práctica",
+        "noData": "Sin datos todavía",
+        "storedOnDevice": "Tus estadísticas se guardan solo en este dispositivo."
     }
 }

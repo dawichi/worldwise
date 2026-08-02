@@ -1,0 +1,62 @@
+---
+import { ArrowLeft } from "lucide-astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { t } from "../lib/i18n/t";
+
+const locale = Astro.currentLocale === "es" ? "es" : "en";
+---
+
+<BaseLayout title={`${t(locale, "statistics.title")} — ${t(locale, "common.appName")}`}>
+    <main class="mx-auto max-w-xl px-5 py-8 sm:px-6 sm:py-10">
+        <div class="mb-6 flex items-center gap-3">
+            <a
+                href="/"
+                aria-label={t(locale, "common.backToToday")}
+                class="flex h-8 w-8 items-center justify-center rounded-button bg-chip text-text-muted"
+            >
+                <ArrowLeft width={18} height={18} aria-hidden="true" />
+            </a>
+            <h1 class="text-lg font-bold text-text">{t(locale, "statistics.title")}</h1>
+        </div>
+
+        <div class="mb-6 grid grid-cols-2 gap-3">
+            <div class="rounded-card border border-border bg-surface p-4">
+                <div class="text-xs font-semibold text-text-muted">{t(locale, "statistics.streakCurrent")}</div>
+                <div id="streak-current" class="text-lg font-extrabold text-text"></div>
+            </div>
+            <div class="rounded-card border border-border bg-surface p-4">
+                <div class="text-xs font-semibold text-text-muted">{t(locale, "statistics.streakLongest")}</div>
+                <div id="streak-longest" class="text-lg font-extrabold text-text"></div>
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <h2 class="mb-2 text-sm font-semibold text-text-muted">{t(locale, "statistics.dailyHistory")}</h2>
+            <ol id="daily-history" class="flex flex-wrap gap-1.5"></ol>
+        </div>
+
+        <div class="mb-6">
+            <h2 class="mb-2 text-sm font-semibold text-text-muted">{t(locale, "statistics.perMode")}</h2>
+            <div id="mode-stats" class="flex flex-col gap-3"></div>
+        </div>
+
+        <p class="text-xs text-text-muted">{t(locale, "statistics.storedOnDevice")}</p>
+    </main>
+
+    <style is:global>
+        .history-cell[data-status="full"] {
+            background-color: var(--color-success-icon);
+        }
+        .history-cell[data-status="partial"] {
+            background-color: var(--color-attention-icon);
+        }
+        .history-cell[data-status="none"] {
+            background-color: var(--color-chip);
+        }
+    </style>
+
+    <script>
+        import { mountStatistics } from "../client/statistics";
+        mountStatistics();
+    </script>
+</BaseLayout>
