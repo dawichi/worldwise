@@ -309,7 +309,7 @@ The World-collection vertical slice (generation, validation, persistence, access
 
 Confirming the IA, researching geographic sources/licenses/coordinate semantics, scaffolding the toolchain, defining the core schemas, building deterministic seed/version infrastructure, the Compass/Arrange/Border Run vertical slices themselves, and applying the chosen design to the daily flow are all done. Remaining:
 
-1. Practice is done (World-only, all three modes/tiers). Remaining: a second collection to unlock Practice's collection selector, statistics, and sharing.
+1. Practice and Statistics are done (World-only; `/statistics` reads existing persisted state — streak, per-mode Daily accuracy/days-completed, per-mode Practice attempts/accuracy — via `src/lib/challenge/statistics.ts`, no new generation or persistence writes). Remaining: a second collection to unlock Practice's collection selector (and a per-collection statistics breakdown), and sharing.
 2. Perform mobile, accessibility, data-quality, and deterministic-regression testing before release (Compass, Arrange, and Border Run each already have a start: property-based generation tests and a Playwright accessibility scan; this still needs to happen for the product as a whole once it's more complete).
 
 ## Open product decisions
