@@ -76,5 +76,16 @@
         "resultComplete": "Border Run · {tier} complete",
         "routeValid": "Valid route: {route}.",
         "routeInvalid": "That route doesn't reach {destination} via land borders."
+    },
+    "practice": {
+        "title": "Practice",
+        "chooseMode": "Choose a mode",
+        "chooseTier": "Choose a difficulty",
+        "start": "Start practice",
+        "backToPractice": "Back to Practice",
+        "resultHeading": "{mode} · {tier} practice",
+        "roundLabel": "Round {round}",
+        "playAgain": "Practice again",
+        "chooseAnother": "Choose another"
     }
 }

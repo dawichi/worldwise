@@ -60,7 +60,7 @@ const locale = Astro.currentLocale === "es" ? "es" : "en";
 
         <div class="mt-6 flex flex-col gap-2">
             <span class="text-sm font-semibold text-text-muted">{t(locale, "home.bonusTiersLink")}</span>
-            <span class="text-sm font-semibold text-text-muted">{t(locale, "home.practiceLink")}</span>
+            <a href="/practice" class="text-sm font-semibold text-accent-text">{t(locale, "home.practiceLink")}</a>
         </div>
     </main>
 

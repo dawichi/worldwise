@@ -1,0 +1,43 @@
+---
+interface Option {
+    value: string;
+    label: string;
+}
+
+interface Props {
+    id: string;
+    options: Option[];
+    selected: string;
+}
+
+const { id, options, selected } = Astro.props;
+---
+
+<div id={id} class="flex flex-wrap gap-2">
+    {
+        options.map((option) => (
+            <button
+                type="button"
+                data-role="toggle-option"
+                data-value={option.value}
+                aria-pressed={option.value === selected ? "true" : "false"}
+                class="toggle-option rounded-pill border px-4 py-2 text-sm font-bold"
+            >
+                {option.label}
+            </button>
+        ))
+    }
+</div>
+
+<style>
+    .toggle-option {
+        border-color: var(--color-border);
+        background-color: var(--color-surface);
+        color: var(--color-text);
+    }
+    .toggle-option[aria-pressed="true"] {
+        border-color: var(--color-accent);
+        background-color: var(--color-accent-tint);
+        color: var(--color-accent-text);
+    }
+</style>

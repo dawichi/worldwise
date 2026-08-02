@@ -1,0 +1,57 @@
+---
+import { ArrowLeft } from "lucide-astro";
+import ToggleGroup from "../../components/practice/ToggleGroup.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { t } from "../../lib/i18n/t";
+
+const locale = Astro.currentLocale === "es" ? "es" : "en";
+
+const modeOptions = [
+    { value: "compass", label: t(locale, "modes.compass.name") },
+    { value: "arrange", label: t(locale, "modes.arrange.name") },
+    { value: "borderRun", label: t(locale, "modes.borderRun.name") },
+];
+const tierOptions = [
+    { value: "easy", label: t(locale, "tiers.easy") },
+    { value: "medium", label: t(locale, "tiers.medium") },
+    { value: "hard", label: t(locale, "tiers.hard") },
+];
+---
+
+<BaseLayout title={`${t(locale, "practice.title")} — ${t(locale, "common.appName")}`}>
+    <main class="mx-auto max-w-xl px-5 py-8 sm:px-6 sm:py-10">
+        <div class="mb-6 flex items-center gap-3">
+            <a
+                href="/"
+                aria-label={t(locale, "common.backToToday")}
+                class="flex h-8 w-8 items-center justify-center rounded-button bg-chip text-text-muted"
+            >
+                <ArrowLeft width={18} height={18} aria-hidden="true" />
+            </a>
+            <h1 class="text-lg font-bold text-text">{t(locale, "practice.title")}</h1>
+        </div>
+
+        <div class="mb-6 flex flex-col gap-2">
+            <span class="text-sm font-semibold text-text-muted">{t(locale, "practice.chooseMode")}</span>
+            <ToggleGroup id="mode-toggle" options={modeOptions} selected="compass" />
+        </div>
+
+        <div class="mb-8 flex flex-col gap-2">
+            <span class="text-sm font-semibold text-text-muted">{t(locale, "practice.chooseTier")}</span>
+            <ToggleGroup id="tier-toggle" options={tierOptions} selected="medium" />
+        </div>
+
+        <button
+            id="start-practice"
+            type="button"
+            class="w-full rounded-button bg-accent-button py-3.5 text-base font-bold text-white"
+        >
+            {t(locale, "practice.start")}
+        </button>
+    </main>
+
+    <script>
+        import { mountPracticeHome } from "../../client/practiceHome";
+        mountPracticeHome();
+    </script>
+</BaseLayout>

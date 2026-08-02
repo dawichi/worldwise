@@ -76,5 +76,16 @@
         "resultComplete": "Cruce de Fronteras · {tier} completado",
         "routeValid": "Ruta válida: {route}.",
         "routeInvalid": "Esa ruta no llega a {destination} por fronteras terrestres."
+    },
+    "practice": {
+        "title": "Práctica",
+        "chooseMode": "Elige un modo",
+        "chooseTier": "Elige una dificultad",
+        "start": "Empezar práctica",
+        "backToPractice": "Volver a Práctica",
+        "resultHeading": "Práctica de {mode} · {tier}",
+        "roundLabel": "Ronda {round}",
+        "playAgain": "Practicar de nuevo",
+        "chooseAnother": "Elegir otra"
     }
 }
