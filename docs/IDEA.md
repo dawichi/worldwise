@@ -72,11 +72,7 @@ The keyboard and screen-reader interaction must provide an alternative to drag-a
 
 #### Border Run
 
-Connect an origin and destination through adjacent territories.
-
-Example: build a valid land-border route from France to Poland.
-
-The underlying data is an adjacency graph. Early versions should make the expected rule explicit: any valid route, a route with an exact number of steps, or the shortest route. The generator must verify that a route exists and that the puzzle has the intended difficulty before presenting it.
+Built for World/medium as a complete vertical slice: a land-adjacency graph computed at build time from polygon geometry (`scripts/lib/computeAdjacency.ts`), deterministic origin/destination generation at a tier-appropriate hop distance (`src/lib/modes/borderRun/`), binary valid-or-not scoring (ADR-0004), persistence, a guided hop-builder session UI (grow a route from the actual land-border neighbors of the last-placed place, with undo — no map or country search), and tests. Remaining for this mode: Practice integration and the easy/hard bonus tiers (the tier configs already exist in code, only the required medium tier is wired into UI).
 
 Special cases such as overseas territories, disputed borders, enclaves, and maritime borders are excluded from the adjacency graph by default ([ADR-0005](./adr/0005-border-run-excludes-disputed-territories.md)).
 
@@ -316,14 +312,14 @@ The first complete version should aim for:
 - English and Spanish interface and content at launch, with real i18n infrastructure (string extraction, place-name localization) from day one rather than generation logic with embedded content ([ADR-0006](./adr/0006-bilingual-launch-english-spanish.md)).
 - No login, backend, public leaderboard, or manual daily authoring.
 
-The World-collection-and-Compass vertical slice (generation, validation, persistence, accessibility, feedback, and tests) is done — a complete vertical slice before breadth, as this section originally called for if the full scope proved too broad for a first milestone. Non-goals for the initial product are listed in [`AGENTS.md`](./AGENTS.md#non-goals).
+The World-collection vertical slice (generation, validation, persistence, accessibility, feedback, and tests) is done for all three MVP modes — Compass, Arrange, and Border Run — each at their required medium tier, a complete vertical slice before breadth, as this section originally called for if the full scope proved too broad for a first milestone. Non-goals for the initial product are listed in [`AGENTS.md`](./AGENTS.md#non-goals).
 
 ## Suggested implementation order
 
-Confirming the IA, researching geographic sources/licenses/coordinate semantics, scaffolding the toolchain, defining the core schemas, building deterministic seed/version infrastructure, the Compass vertical slice itself, and applying the chosen design to the daily flow are all done. Remaining:
+Confirming the IA, researching geographic sources/licenses/coordinate semantics, scaffolding the toolchain, defining the core schemas, building deterministic seed/version infrastructure, the Compass/Arrange/Border Run vertical slices themselves, and applying the chosen design to the daily flow are all done. Remaining:
 
-1. Add Arrange, Border Run, practice, statistics, and sharing incrementally.
-2. Perform mobile, accessibility, data-quality, and deterministic-regression testing before release (Compass already has a start: property-based generation tests and a Playwright accessibility scan; this still needs to happen for the product as a whole once it's more complete).
+1. Add practice, statistics, and sharing incrementally.
+2. Perform mobile, accessibility, data-quality, and deterministic-regression testing before release (Compass, Arrange, and Border Run each already have a start: property-based generation tests and a Playwright accessibility scan; this still needs to happen for the product as a whole once it's more complete).
 
 ## Open product decisions
 
