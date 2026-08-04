@@ -1,5 +1,6 @@
 import { worldCollection } from "../data/generated/world";
 import { resolveDailyArrange } from "../lib/challenge/dailyArrange";
+import { parseDailyTierParam, withTierQuery } from "../lib/challenge/dailyTier";
 import { getPlaceById } from "../lib/data/lookup";
 import { type Locale, t } from "../lib/i18n/t";
 import { loadState } from "../lib/persistence/repository";
@@ -63,11 +64,14 @@ function buildRoundItem(
 
 export function mountArrangeResult(): void {
     const locale = getLocale();
+    const tier = parseDailyTierParam(
+        new URLSearchParams(window.location.search),
+    );
     const state = loadState(localStorage);
-    const { challenge, entry } = resolveDailyArrange(new Date(), state);
+    const { challenge, entry } = resolveDailyArrange(new Date(), state, tier);
 
     if (entry.completedAt === null) {
-        window.location.href = "/play/arrange";
+        window.location.href = withTierQuery("/play/arrange", tier);
         return;
     }
 
@@ -85,7 +89,7 @@ export function mountArrangeResult(): void {
     );
 
     headingEl.textContent = t(locale, "arrange.resultComplete", {
-        tier: t(locale, "tiers.medium"),
+        tier: t(locale, `tiers.${tier}`),
     });
 
     const totalCredit = entry.rounds.reduce(

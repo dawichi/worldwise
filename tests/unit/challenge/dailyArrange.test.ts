@@ -60,6 +60,7 @@ describe("resolveDailyArrange", () => {
                         completedAt: null,
                     },
                 },
+                dailyBonus: {},
             },
         };
 
@@ -68,6 +69,49 @@ describe("resolveDailyArrange", () => {
             challenge.rounds[0]?.correctOrderIds,
         );
         expect(countAnsweredRounds(entry)).toBe(1);
+    });
+});
+
+describe("resolveDailyArrange with a bonus tier", () => {
+    it("resolves independently from the required (medium) tier's entry", () => {
+        const state = createDefaultState();
+        const required = resolveDailyArrange(NOW, state);
+        const easy = resolveDailyArrange(NOW, state, "easy");
+
+        expect(required.tier).toBe("medium");
+        expect(easy.tier).toBe("easy");
+        expect(easy.challenge).not.toEqual(required.challenge);
+    });
+
+    it("a completed bonus entry does not affect the required tier's entry", () => {
+        const state = createDefaultState();
+        const { dateKey, challenge } = resolveDailyArrange(NOW, state, "easy");
+
+        const stateWithBonusDone: PersistedState = {
+            ...state,
+            arrange: {
+                ...state.arrange,
+                dailyBonus: {
+                    [`${dateKey}:easy`]: {
+                        challengeId: challenge.id,
+                        generatorVersion: challenge.generatorVersion,
+                        dataVersion: challenge.dataVersion,
+                        tier: challenge.tier,
+                        rounds: challenge.rounds.map((round) => ({
+                            submittedOrder: round.correctOrderIds,
+                            credit: 1,
+                        })),
+                        completedAt: "2026-07-31T12:00:00.000Z",
+                    },
+                },
+            },
+        };
+
+        const required = resolveDailyArrange(NOW, stateWithBonusDone);
+        expect(computeArrangeStatus(required.entry)).toBe("not-started");
+
+        const bonus = resolveDailyArrange(NOW, stateWithBonusDone, "easy");
+        expect(computeArrangeStatus(bonus.entry)).toBe("completed");
     });
 });
 

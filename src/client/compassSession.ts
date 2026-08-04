@@ -2,10 +2,16 @@ import { worldCollection } from "../data/generated/world";
 import {
     computeCompassStatus,
     resolveDailyCompass,
+    withCompassDailyEntry,
 } from "../lib/challenge/dailyCompass";
 import { maybeRecordDailyCompletion } from "../lib/challenge/dailyRitual";
+import {
+    DAILY_REQUIRED_TIER,
+    parseDailyTierParam,
+    withTierQuery,
+} from "../lib/challenge/dailyTier";
 import { getPlaceById } from "../lib/data/lookup";
-import { bearingToCompassLabel } from "../lib/geo/angle";
+import { angularDelta, bearingToCompassLabel } from "../lib/geo/angle";
 import { localizedDirectionName } from "../lib/i18n/directions";
 import { type Locale, type TranslationKey, t } from "../lib/i18n/t";
 import { scoreCompassRound } from "../lib/modes/compass/score";
@@ -13,6 +19,7 @@ import { COMPASS_TIERS } from "../lib/modes/compass/tiers";
 import type { CompassRound } from "../lib/modes/compass/types";
 import { loadState, saveState } from "../lib/persistence/repository";
 import { createCompassDialController } from "./compassDial";
+import { createCompassMapController } from "./compassMap";
 
 function getLocale(): Locale {
     return document.documentElement.lang === "es" ? "es" : "en";
@@ -52,25 +59,24 @@ function must<T>(value: T | null | undefined, description: string): T {
 export function mountCompassSession(): void {
     const locale = getLocale();
     const sessionStart = new Date();
+    const tier = parseDailyTierParam(
+        new URLSearchParams(window.location.search),
+    );
     const initialState = loadState(localStorage);
     const { dateKey, challenge, entry } = resolveDailyCompass(
         sessionStart,
         initialState,
+        tier,
     );
 
     if (computeCompassStatus(entry) === "completed") {
-        window.location.href = "/result/compass";
+        window.location.href = withTierQuery("/result/compass", tier);
         return;
     }
 
     // Persist a freshly-initialized entry right away so a reload mid-session resumes correctly.
     saveState(
-        {
-            ...initialState,
-            compass: {
-                daily: { ...initialState.compass.daily, [dateKey]: entry },
-            },
-        },
+        withCompassDailyEntry(initialState, dateKey, tier, entry),
         localStorage,
     );
 
@@ -102,6 +108,14 @@ export function mountCompassSession(): void {
         document.getElementById("compass-dial"),
         "compass-dial",
     );
+    const originLabelEl = must(
+        dialRoot.querySelector<HTMLElement>('[data-role="origin-label"]'),
+        "origin-label",
+    );
+    const destinationLabelEl = must(
+        dialRoot.querySelector<HTMLElement>('[data-role="flight-destination"]'),
+        "flight-destination",
+    );
     const submitButton = must(
         document.getElementById("submit-answer"),
         "submit-answer",
@@ -129,6 +143,7 @@ export function mountCompassSession(): void {
         const label = bearingToCompassLabel(deg);
         return `${Math.round(deg)}° · ${localizedDirectionName(locale, label)}`;
     });
+    const map = createCompassMapController(dialRoot, worldCollection);
 
     function currentRound(): CompassRound | undefined {
         return challenge.rounds[roundIndex];
@@ -152,6 +167,9 @@ export function mountCompassSession(): void {
         });
         originChipEl.textContent = origin.names[locale];
         destinationChipEl.textContent = destination.names[locale];
+        map.render(origin);
+        originLabelEl.textContent = origin.names[locale];
+        destinationLabelEl.textContent = destination.names[locale];
 
         feedbackPanel.classList.add("hidden");
         continueButton.classList.add("hidden");
@@ -170,6 +188,7 @@ export function mountCompassSession(): void {
             round.bearingDeg,
             tierConfig,
         );
+        const delta = angularDelta(chosenAngleDeg, round.bearingDeg);
         entry.rounds[roundIndex] = { chosenAngleDeg, credit };
 
         const isLastRound = roundIndex === entry.rounds.length - 1;
@@ -178,18 +197,20 @@ export function mountCompassSession(): void {
         }
 
         const stateBeforeSave = loadState(localStorage);
-        const stateWithEntry = {
-            ...stateBeforeSave,
-            compass: {
-                daily: { ...stateBeforeSave.compass.daily, [dateKey]: entry },
-            },
-        };
-        const finalState = isLastRound
-            ? maybeRecordDailyCompletion(stateWithEntry, dateKey)
-            : stateWithEntry;
+        const stateWithEntry = withCompassDailyEntry(
+            stateBeforeSave,
+            dateKey,
+            tier,
+            entry,
+        );
+        const finalState =
+            isLastRound && tier === DAILY_REQUIRED_TIER
+                ? maybeRecordDailyCompletion(stateWithEntry, dateKey)
+                : stateWithEntry;
         saveState(finalState, localStorage);
 
         dial.disable();
+        dial.revealAnswer(round.bearingDeg, credit);
         submitButton.classList.add("hidden");
 
         const trueLabel = bearingToCompassLabel(round.bearingDeg);
@@ -205,6 +226,9 @@ export function mountCompassSession(): void {
             }),
             t(locale, "compass.yourAnswer", {
                 degrees: Math.round(chosenAngleDeg),
+            }),
+            t(locale, "compass.angleDifference", {
+                degrees: Math.round(delta),
             }),
             t(locale, "compass.distanceNote", {
                 destination: destination.names[locale],
@@ -223,7 +247,7 @@ export function mountCompassSession(): void {
     function goToNextRoundOrResult(): void {
         const isLastRound = roundIndex === entry.rounds.length - 1;
         if (isLastRound) {
-            window.location.href = "/result/compass";
+            window.location.href = withTierQuery("/result/compass", tier);
             return;
         }
         roundIndex += 1;

@@ -4,14 +4,18 @@ import type { CompassChallenge } from "../modes/compass/types";
 import type { CompassDailyEntry, PersistedState } from "../persistence/schema";
 import { buildDailyKey, getUtcDateKey } from "../prng/dailyKey";
 import { DATA_VERSION, GENERATOR_VERSION } from "../versions";
+import {
+    DAILY_REQUIRED_TIER,
+    type DailyTier,
+    dailyBonusEntryKey,
+} from "./dailyTier";
 
 const COLLECTION_ID = "world";
 const MODE_ID = "compass";
-/** The required daily tier (ADR-0003); easy/hard are bonus-only, not built this milestone. */
-const DAILY_TIER = "medium";
 
 export interface DailyCompassContext {
     dateKey: string;
+    tier: DailyTier;
     challenge: CompassChallenge;
     /** The persisted entry for today — freshly initialized if this is the first visit today. */
     entry: CompassDailyEntry;
@@ -40,6 +44,7 @@ function createEntry(challenge: CompassChallenge): CompassDailyEntry {
 export function resolveDailyCompass(
     now: Date,
     state: PersistedState,
+    tier: DailyTier = DAILY_REQUIRED_TIER,
 ): DailyCompassContext {
     const dateKey = getUtcDateKey(now);
     const seed = buildDailyKey({
@@ -48,7 +53,7 @@ export function resolveDailyCompass(
         date: dateKey,
         collectionId: COLLECTION_ID,
         modeId: MODE_ID,
-        tierId: DAILY_TIER,
+        tierId: tier,
     });
 
     const challenge = generateCompassChallenge({
@@ -57,13 +62,45 @@ export function resolveDailyCompass(
         generatorVersion: GENERATOR_VERSION,
         dataVersion: DATA_VERSION,
         collectionId: COLLECTION_ID,
-        tier: DAILY_TIER,
+        tier,
         places: worldCollection.places,
     });
 
-    const entry = state.compass.daily[dateKey] ?? createEntry(challenge);
+    const entry =
+        tier === DAILY_REQUIRED_TIER
+            ? (state.compass.daily[dateKey] ?? createEntry(challenge))
+            : (state.compass.dailyBonus[dailyBonusEntryKey(dateKey, tier)] ??
+              createEntry(challenge));
 
-    return { dateKey, challenge, entry };
+    return { dateKey, tier, challenge, entry };
+}
+
+/** Writes `entry` back to the map matching `tier` — required stays in `daily`, bonus goes in `dailyBonus`. */
+export function withCompassDailyEntry(
+    state: PersistedState,
+    dateKey: string,
+    tier: DailyTier,
+    entry: CompassDailyEntry,
+): PersistedState {
+    if (tier === DAILY_REQUIRED_TIER) {
+        return {
+            ...state,
+            compass: {
+                ...state.compass,
+                daily: { ...state.compass.daily, [dateKey]: entry },
+            },
+        };
+    }
+    return {
+        ...state,
+        compass: {
+            ...state.compass,
+            dailyBonus: {
+                ...state.compass.dailyBonus,
+                [dailyBonusEntryKey(dateKey, tier)]: entry,
+            },
+        },
+    };
 }
 
 export type CompassDailyStatus = "not-started" | "in-progress" | "completed";

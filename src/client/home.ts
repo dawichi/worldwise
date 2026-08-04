@@ -20,6 +20,10 @@ import {
     countCompletedModesToday,
     ENABLED_MODE_IDS,
 } from "../lib/challenge/dailyRitual";
+import {
+    DAILY_BONUS_TIER_IDS,
+    type DailyBonusTier,
+} from "../lib/challenge/dailyTier";
 import { type Locale, t } from "../lib/i18n/t";
 import { loadState } from "../lib/persistence/repository";
 
@@ -137,6 +141,29 @@ function renderModeCard(
     }
 }
 
+function renderBonusTierPills<Entry>(
+    modeId: "compass" | "arrange" | "borderRun",
+    resolveTier: (tier: DailyBonusTier) => { entry: Entry },
+    computeStatus: (
+        entry: Entry,
+    ) => "not-started" | "in-progress" | "completed",
+): void {
+    const row = document.getElementById(`${modeId}-bonus-row`);
+    if (!row) {
+        return;
+    }
+    for (const tier of DAILY_BONUS_TIER_IDS) {
+        const link = row.querySelector<HTMLAnchorElement>(
+            `[data-tier="${tier}"]`,
+        );
+        if (!link) {
+            continue;
+        }
+        const { entry } = resolveTier(tier);
+        link.dataset.status = computeStatus(entry);
+    }
+}
+
 export function mountHome(): void {
     const locale = getLocale();
     const now = new Date();
@@ -179,5 +206,21 @@ export function mountHome(): void {
         borderRunStatus,
         countBorderRunAnsweredRounds(borderRun.entry),
         borderRun.entry.rounds.length,
+    );
+
+    renderBonusTierPills(
+        "compass",
+        (tier) => resolveDailyCompass(now, state, tier),
+        computeCompassStatus,
+    );
+    renderBonusTierPills(
+        "arrange",
+        (tier) => resolveDailyArrange(now, state, tier),
+        computeArrangeStatus,
+    );
+    renderBonusTierPills(
+        "borderRun",
+        (tier) => resolveDailyBorderRun(now, state, tier),
+        computeBorderRunStatus,
     );
 }

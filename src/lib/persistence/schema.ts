@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const CURRENT_SCHEMA_VERSION = 5;
+export const CURRENT_SCHEMA_VERSION = 6;
 
 const tierSchema = z.enum(["easy", "medium", "hard"]);
 
@@ -94,16 +94,22 @@ const streakSchema = z.object({
 export const persistedStateSchema = z.object({
     schemaVersion: z.literal(CURRENT_SCHEMA_VERSION),
     compass: z.object({
-        /** Keyed by UTC date key (YYYY-MM-DD). */
+        /** Keyed by UTC date key (YYYY-MM-DD). Always the required tier (ADR-0003). */
         daily: z.record(z.string(), compassDailyEntrySchema),
+        /** Optional bonus-tier entries, keyed by `${dateKey}:${tier}` (tier is "easy" or "hard"). */
+        dailyBonus: z.record(z.string(), compassDailyEntrySchema),
     }),
     arrange: z.object({
-        /** Keyed by UTC date key (YYYY-MM-DD). */
+        /** Keyed by UTC date key (YYYY-MM-DD). Always the required tier (ADR-0003). */
         daily: z.record(z.string(), arrangeDailyEntrySchema),
+        /** Optional bonus-tier entries, keyed by `${dateKey}:${tier}` (tier is "easy" or "hard"). */
+        dailyBonus: z.record(z.string(), arrangeDailyEntrySchema),
     }),
     borderRun: z.object({
-        /** Keyed by UTC date key (YYYY-MM-DD). */
+        /** Keyed by UTC date key (YYYY-MM-DD). Always the required tier (ADR-0003). */
         daily: z.record(z.string(), borderRunDailyEntrySchema),
+        /** Optional bonus-tier entries, keyed by `${dateKey}:${tier}` (tier is "easy" or "hard"). */
+        dailyBonus: z.record(z.string(), borderRunDailyEntrySchema),
     }),
     practice: z.object({
         stats: practiceStatsSchema,
@@ -138,9 +144,9 @@ function createDefaultPracticeStatsByMode(): PracticeStatsByMode {
 export function createDefaultState(): PersistedState {
     return {
         schemaVersion: CURRENT_SCHEMA_VERSION,
-        compass: { daily: {} },
-        arrange: { daily: {} },
-        borderRun: { daily: {} },
+        compass: { daily: {}, dailyBonus: {} },
+        arrange: { daily: {}, dailyBonus: {} },
+        borderRun: { daily: {}, dailyBonus: {} },
         practice: {
             stats: {
                 world: createDefaultPracticeStatsByMode(),

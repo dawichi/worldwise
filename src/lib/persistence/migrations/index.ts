@@ -73,11 +73,31 @@ function migrateV4ToV5(data: Record<string, unknown>): Record<string, unknown> {
     };
 }
 
+/**
+ * v5 → v6: Daily gained optional bonus tiers (easy/hard), which live in a
+ * new `dailyBonus` map alongside each mode's existing (required-tier-only)
+ * `daily` map. A v5 value has no such key, so it's backfilled empty —
+ * existing required-tier progress and the `streak` are left untouched.
+ */
+function migrateV5ToV6(data: Record<string, unknown>): Record<string, unknown> {
+    const compass = data.compass as Record<string, unknown>;
+    const arrange = data.arrange as Record<string, unknown>;
+    const borderRun = data.borderRun as Record<string, unknown>;
+    return {
+        ...data,
+        schemaVersion: 6,
+        compass: { ...compass, dailyBonus: {} },
+        arrange: { ...arrange, dailyBonus: {} },
+        borderRun: { ...borderRun, dailyBonus: {} },
+    };
+}
+
 export const REAL_MIGRATIONS: Record<number, Migration> = {
     1: migrateV1ToV2,
     2: migrateV2ToV3,
     3: migrateV3ToV4,
     4: migrateV4ToV5,
+    5: migrateV5ToV6,
 };
 
 function detectVersion(data: Record<string, unknown>): number {

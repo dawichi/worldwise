@@ -1,5 +1,7 @@
+import { compassCountryShapes } from "../data/generated/compassShapes";
 import { worldCollection } from "../data/generated/world";
 import { resolveDailyCompass } from "../lib/challenge/dailyCompass";
+import { parseDailyTierParam, withTierQuery } from "../lib/challenge/dailyTier";
 import { getPlaceById } from "../lib/data/lookup";
 import { bearingToCompassLabel } from "../lib/geo/angle";
 import { localizedDirectionName } from "../lib/i18n/directions";
@@ -33,13 +35,52 @@ function formatScore(value: number): string {
 function buildRoundItem(
     originName: string,
     destinationName: string,
+    originIso2: string,
     trueDirectionName: string,
+    chosenAngleDeg: number,
+    trueBearingDeg: number,
     credit: number,
 ): HTMLLIElement {
     const item = document.createElement("li");
     item.className =
         "flex items-center gap-3 rounded-card border border-border bg-surface p-3";
     item.dataset.credit = creditLevel(credit);
+
+    const visual = document.createElement("div");
+    visual.className = "compass-result-visual";
+    visual.setAttribute("aria-hidden", "true");
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 100 100");
+    const map = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    map.setAttribute(
+        "d",
+        compassCountryShapes[originIso2] ??
+            "M20 35 L65 20 L82 55 L61 82 L25 72 Z",
+    );
+    map.setAttribute("class", "fill-accent/20 stroke-accent");
+    map.setAttribute("stroke-width", "1.5");
+    const chosen = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "line",
+    );
+    chosen.setAttribute("x1", "50");
+    chosen.setAttribute("y1", "50");
+    chosen.setAttribute("x2", "50");
+    chosen.setAttribute("y2", "8");
+    chosen.setAttribute("transform", `rotate(${chosenAngleDeg} 50 50)`);
+    chosen.setAttribute(
+        "stroke",
+        `hsl(${Math.round(12 + credit * 128)} 78% 43%)`,
+    );
+    chosen.setAttribute("stroke-width", "3");
+    chosen.setAttribute("stroke-linecap", "round");
+    const perfect = chosen.cloneNode() as SVGLineElement;
+    perfect.setAttribute("transform", `rotate(${trueBearingDeg} 50 50)`);
+    perfect.setAttribute("stroke", "var(--color-success-icon)");
+    perfect.setAttribute("stroke-width", "1.5");
+    perfect.setAttribute("stroke-dasharray", "3 2");
+    svg.append(map, perfect, chosen);
+    visual.append(svg);
 
     const dot = document.createElement("span");
     dot.dataset.role = "credit-dot";
@@ -55,17 +96,20 @@ function buildRoundItem(
     direction.className = "flex-shrink-0 text-sm font-bold";
     direction.textContent = trueDirectionName;
 
-    item.append(dot, label, direction);
+    item.append(visual, dot, label, direction);
     return item;
 }
 
 export function mountCompassResult(): void {
     const locale = getLocale();
+    const tier = parseDailyTierParam(
+        new URLSearchParams(window.location.search),
+    );
     const state = loadState(localStorage);
-    const { challenge, entry } = resolveDailyCompass(new Date(), state);
+    const { challenge, entry } = resolveDailyCompass(new Date(), state, tier);
 
     if (entry.completedAt === null) {
-        window.location.href = "/play/compass";
+        window.location.href = withTierQuery("/play/compass", tier);
         return;
     }
 
@@ -83,7 +127,7 @@ export function mountCompassResult(): void {
     );
 
     headingEl.textContent = t(locale, "compass.resultComplete", {
-        tier: t(locale, "tiers.medium"),
+        tier: t(locale, `tiers.${tier}`),
     });
 
     const totalCredit = entry.rounds.reduce(
@@ -113,7 +157,10 @@ export function mountCompassResult(): void {
             buildRoundItem(
                 origin.names[locale],
                 destination.names[locale],
+                origin.iso2,
                 trueDirectionName,
+                answer.chosenAngleDeg ?? 0,
+                round.bearingDeg,
                 answer.credit,
             ),
         );

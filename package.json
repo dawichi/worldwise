@@ -18,7 +18,8 @@
         "test": "vitest run",
         "test:watch": "vitest",
         "e2e": "playwright test",
-        "data:build": "bun run scripts/build-world-data.ts"
+        "data:build": "bun run scripts/build-world-data.ts",
+        "data:build:compass-shapes": "bun run scripts/build-compass-shapes.ts"
     },
     "dependencies": {
         "astro": "^7.1.6",

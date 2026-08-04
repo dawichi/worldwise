@@ -25,10 +25,15 @@ test.describe("Compass daily mode-challenge", () => {
             // answer for a continuous control, this just needs to move the
             // needle off its default value.
             await page.mouse.click(centerX + box.width * 0.4, centerY);
-            await expect(dial).toHaveAttribute("aria-valuenow", "90");
+            await expect(dial).not.toHaveAttribute("aria-valuenow", "0");
 
             await page.getByRole("button", { name: "Submit answer" }).click();
             await expect(page.locator("#feedback-panel")).toBeVisible();
+            await expect(dial).toHaveAttribute("data-revealed", "true");
+            await expect(
+                dial.locator('[data-role="perfect-needle"]'),
+            ).not.toHaveClass(/hidden/);
+            await expect(dial).toHaveAttribute("style", /--needle-color/);
 
             await page.getByRole("button", { name: "Continue" }).click();
         }
@@ -269,5 +274,56 @@ test.describe("Daily ritual (ADR-0002: streak requires every enabled mode)", () 
         await expect(page.locator("#ritual-progress-label")).toHaveText(
             "3 of 3",
         );
+    });
+});
+
+test.describe("Daily bonus tiers (ADR-0003: optional, don't affect the streak)", () => {
+    test("completing a bonus-tier mode-challenge doesn't affect the ritual or streak, and shows as completed on Home", async ({
+        page,
+    }) => {
+        await page.goto("/");
+        await expect(page.locator("#ritual-progress-label")).toHaveText(
+            "0 of 3",
+        );
+
+        await page
+            .locator("#arrange-bonus-row")
+            .getByRole("link", { name: "Easy" })
+            .click();
+        await expect(page).toHaveURL(/\/play\/arrange\?tier=easy/);
+
+        for (let round = 0; round < 3; round++) {
+            await page
+                .getByRole("button", { name: /Move .+ down/ })
+                .first()
+                .click();
+            await page.getByRole("button", { name: "Submit answer" }).click();
+            await page.getByRole("button", { name: "Continue" }).click();
+        }
+
+        await expect(page).toHaveURL(/\/result\/arrange\?tier=easy/);
+        await expect(page.locator("#result-heading")).toContainText("Easy");
+
+        await page.goto("/");
+        await expect(page.locator("#streak-chip")).toBeHidden();
+        await expect(page.locator("#ritual-progress-label")).toHaveText(
+            "0 of 3",
+        );
+        await expect(
+            page.locator('#arrange-bonus-row [data-tier="easy"]'),
+        ).toHaveAttribute("data-status", "completed");
+        await expect(
+            page.locator('#arrange-bonus-row [data-tier="hard"]'),
+        ).toHaveAttribute("data-status", "not-started");
+        await expect(
+            page.locator('#compass-bonus-row [data-tier="easy"]'),
+        ).toHaveAttribute("data-status", "not-started");
+
+        // Required (medium) Arrange is still untouched by the bonus attempt.
+        await expect(
+            page
+                .locator("#arrange-mode-card")
+                .getByRole("link", { name: "Start" }),
+        ).toBeVisible();
     });
 });

@@ -13,7 +13,7 @@ import {
     type PracticeCollectionId,
 } from "../lib/data/collections";
 import { getPlaceById } from "../lib/data/lookup";
-import { bearingToCompassLabel } from "../lib/geo/angle";
+import { angularDelta, bearingToCompassLabel } from "../lib/geo/angle";
 import { localizedDirectionName } from "../lib/i18n/directions";
 import { type Locale, type TranslationKey, t } from "../lib/i18n/t";
 import { generateCompassChallenge } from "../lib/modes/compass/generate";
@@ -26,6 +26,7 @@ import type {
 import { loadState, saveState } from "../lib/persistence/repository";
 import { DATA_VERSION, GENERATOR_VERSION } from "../lib/versions";
 import { createCompassDialController } from "./compassDial";
+import { createCompassMapController } from "./compassMap";
 
 const MODE_ID: PracticeModeId = "compass";
 
@@ -128,6 +129,14 @@ export function mountPracticeCompassSession(): void {
         document.getElementById("compass-dial"),
         "compass-dial",
     );
+    const originLabelEl = must(
+        dialRoot.querySelector<HTMLElement>('[data-role="origin-label"]'),
+        "origin-label",
+    );
+    const destinationLabelEl = must(
+        dialRoot.querySelector<HTMLElement>('[data-role="flight-destination"]'),
+        "flight-destination",
+    );
     const submitButton = must(
         document.getElementById("submit-answer"),
         "submit-answer",
@@ -159,6 +168,7 @@ export function mountPracticeCompassSession(): void {
         const label = bearingToCompassLabel(deg);
         return `${Math.round(deg)}° · ${localizedDirectionName(locale, label)}`;
     });
+    const map = createCompassMapController(dialRoot, collection);
 
     function currentRound(): CompassRound | undefined {
         return challenge.rounds[roundIndex];
@@ -182,6 +192,9 @@ export function mountPracticeCompassSession(): void {
         });
         originChipEl.textContent = origin.names[locale];
         destinationChipEl.textContent = destination.names[locale];
+        map.render(origin);
+        originLabelEl.textContent = origin.names[locale];
+        destinationLabelEl.textContent = destination.names[locale];
 
         feedbackPanel.classList.add("hidden");
         continueButton.classList.add("hidden");
@@ -200,6 +213,7 @@ export function mountPracticeCompassSession(): void {
             round.bearingDeg,
             tierConfig,
         );
+        const delta = angularDelta(chosenAngleDeg, round.bearingDeg);
         roundCredits.push(credit);
 
         const isLastRound = roundIndex === challenge.rounds.length - 1;
@@ -240,6 +254,7 @@ export function mountPracticeCompassSession(): void {
         }
 
         dial.disable();
+        dial.revealAnswer(round.bearingDeg, credit);
         submitButton.classList.add("hidden");
 
         const trueLabel = bearingToCompassLabel(round.bearingDeg);
@@ -255,6 +270,9 @@ export function mountPracticeCompassSession(): void {
             }),
             t(locale, "compass.yourAnswer", {
                 degrees: Math.round(chosenAngleDeg),
+            }),
+            t(locale, "compass.angleDifference", {
+                degrees: Math.round(delta),
             }),
             t(locale, "compass.distanceNote", {
                 destination: destination.names[locale],

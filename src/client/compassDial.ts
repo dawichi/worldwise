@@ -7,6 +7,7 @@ export interface CompassDialController {
     /** Re-enables the dial and resets it to the initial value, for moving on to the next round. */
     reset: () => void;
     onChange: (callback: (deg: number) => void) => void;
+    revealAnswer: (trueBearingDeg: number, credit: number) => void;
 }
 
 const KEYBOARD_STEP_DEG = 1;
@@ -33,18 +34,32 @@ export function createCompassDialController(
     const readout = root.parentElement?.querySelector<HTMLElement>(
         '[data-role="value-readout"]',
     );
+    const perfectNeedle = root.querySelector<SVGGraphicsElement>(
+        '[data-role="perfect-needle"]',
+    );
     const changeCallbacks: Array<(deg: number) => void> = [];
     let value = INITIAL_VALUE_DEG;
     let disabled = false;
 
     function render(deg: number): void {
-        needle?.setAttribute("transform", `rotate(${deg} 100 100)`);
+        needle?.setAttribute("transform", `rotate(${deg} 100 80)`);
         const text = formatValueText(deg);
         root.setAttribute("aria-valuenow", String(Math.round(deg)));
         root.setAttribute("aria-valuetext", text);
         if (readout) {
             readout.textContent = text;
         }
+    }
+
+    function revealAnswer(trueBearingDeg: number, credit: number): void {
+        perfectNeedle?.setAttribute(
+            "transform",
+            `rotate(${trueBearingDeg} 100 80)`,
+        );
+        perfectNeedle?.classList.remove("hidden");
+        const hue = Math.round(12 + Math.min(credit, 1) * 128);
+        root.style.setProperty("--needle-color", `hsl(${hue} 78% 43%)`);
+        root.dataset.revealed = "true";
     }
 
     function setValue(deg: number): void {
@@ -117,10 +132,14 @@ export function createCompassDialController(
             disabled = false;
             root.removeAttribute("aria-disabled");
             root.tabIndex = 0;
+            root.removeAttribute("data-revealed");
+            perfectNeedle?.classList.add("hidden");
+            root.style.removeProperty("--needle-color");
             setValue(INITIAL_VALUE_DEG);
         },
         onChange(callback: (deg: number) => void): void {
             changeCallbacks.push(callback);
         },
+        revealAnswer,
     };
 }

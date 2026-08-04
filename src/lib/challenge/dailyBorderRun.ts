@@ -7,14 +7,18 @@ import type {
 } from "../persistence/schema";
 import { buildDailyKey, getUtcDateKey } from "../prng/dailyKey";
 import { DATA_VERSION, GENERATOR_VERSION } from "../versions";
+import {
+    DAILY_REQUIRED_TIER,
+    type DailyTier,
+    dailyBonusEntryKey,
+} from "./dailyTier";
 
 const COLLECTION_ID = "world";
 const MODE_ID = "borderRun";
-/** The required daily tier (ADR-0003); easy/hard are bonus-only, not built this milestone. */
-const DAILY_TIER = "medium";
 
 export interface DailyBorderRunContext {
     dateKey: string;
+    tier: DailyTier;
     challenge: BorderRunChallenge;
     /** The persisted entry for today — freshly initialized if this is the first visit today. */
     entry: BorderRunDailyEntry;
@@ -43,6 +47,7 @@ function createEntry(challenge: BorderRunChallenge): BorderRunDailyEntry {
 export function resolveDailyBorderRun(
     now: Date,
     state: PersistedState,
+    tier: DailyTier = DAILY_REQUIRED_TIER,
 ): DailyBorderRunContext {
     const dateKey = getUtcDateKey(now);
     const seed = buildDailyKey({
@@ -51,7 +56,7 @@ export function resolveDailyBorderRun(
         date: dateKey,
         collectionId: COLLECTION_ID,
         modeId: MODE_ID,
-        tierId: DAILY_TIER,
+        tierId: tier,
     });
 
     const challenge = generateBorderRunChallenge({
@@ -60,13 +65,45 @@ export function resolveDailyBorderRun(
         generatorVersion: GENERATOR_VERSION,
         dataVersion: DATA_VERSION,
         collectionId: COLLECTION_ID,
-        tier: DAILY_TIER,
+        tier,
         places: worldCollection.places,
     });
 
-    const entry = state.borderRun.daily[dateKey] ?? createEntry(challenge);
+    const entry =
+        tier === DAILY_REQUIRED_TIER
+            ? (state.borderRun.daily[dateKey] ?? createEntry(challenge))
+            : (state.borderRun.dailyBonus[dailyBonusEntryKey(dateKey, tier)] ??
+              createEntry(challenge));
 
-    return { dateKey, challenge, entry };
+    return { dateKey, tier, challenge, entry };
+}
+
+/** Writes `entry` back to the map matching `tier` — required stays in `daily`, bonus goes in `dailyBonus`. */
+export function withBorderRunDailyEntry(
+    state: PersistedState,
+    dateKey: string,
+    tier: DailyTier,
+    entry: BorderRunDailyEntry,
+): PersistedState {
+    if (tier === DAILY_REQUIRED_TIER) {
+        return {
+            ...state,
+            borderRun: {
+                ...state.borderRun,
+                daily: { ...state.borderRun.daily, [dateKey]: entry },
+            },
+        };
+    }
+    return {
+        ...state,
+        borderRun: {
+            ...state.borderRun,
+            dailyBonus: {
+                ...state.borderRun.dailyBonus,
+                [dailyBonusEntryKey(dateKey, tier)]: entry,
+            },
+        },
+    };
 }
 
 export type BorderRunDailyStatus = "not-started" | "in-progress" | "completed";

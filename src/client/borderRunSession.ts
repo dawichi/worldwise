@@ -2,8 +2,14 @@ import { worldCollection } from "../data/generated/world";
 import {
     computeBorderRunStatus,
     resolveDailyBorderRun,
+    withBorderRunDailyEntry,
 } from "../lib/challenge/dailyBorderRun";
 import { maybeRecordDailyCompletion } from "../lib/challenge/dailyRitual";
+import {
+    DAILY_REQUIRED_TIER,
+    parseDailyTierParam,
+    withTierQuery,
+} from "../lib/challenge/dailyTier";
 import { getPlaceById } from "../lib/data/lookup";
 import { type Locale, type TranslationKey, t } from "../lib/i18n/t";
 import { scoreBorderRunRound } from "../lib/modes/borderRun/score";
@@ -41,25 +47,24 @@ function must<T>(value: T | null | undefined, description: string): T {
 export function mountBorderRunSession(): void {
     const locale = getLocale();
     const sessionStart = new Date();
+    const tier = parseDailyTierParam(
+        new URLSearchParams(window.location.search),
+    );
     const initialState = loadState(localStorage);
     const { dateKey, challenge, entry } = resolveDailyBorderRun(
         sessionStart,
         initialState,
+        tier,
     );
 
     if (computeBorderRunStatus(entry) === "completed") {
-        window.location.href = "/result/border-run";
+        window.location.href = withTierQuery("/result/border-run", tier);
         return;
     }
 
     // Persist a freshly-initialized entry right away so a reload mid-session resumes correctly.
     saveState(
-        {
-            ...initialState,
-            borderRun: {
-                daily: { ...initialState.borderRun.daily, [dateKey]: entry },
-            },
-        },
+        withBorderRunDailyEntry(initialState, dateKey, tier, entry),
         localStorage,
     );
 
@@ -160,18 +165,16 @@ export function mountBorderRunSession(): void {
         }
 
         const stateBeforeSave = loadState(localStorage);
-        const stateWithEntry = {
-            ...stateBeforeSave,
-            borderRun: {
-                daily: {
-                    ...stateBeforeSave.borderRun.daily,
-                    [dateKey]: entry,
-                },
-            },
-        };
-        const finalState = isLastRound
-            ? maybeRecordDailyCompletion(stateWithEntry, dateKey)
-            : stateWithEntry;
+        const stateWithEntry = withBorderRunDailyEntry(
+            stateBeforeSave,
+            dateKey,
+            tier,
+            entry,
+        );
+        const finalState =
+            isLastRound && tier === DAILY_REQUIRED_TIER
+                ? maybeRecordDailyCompletion(stateWithEntry, dateKey)
+                : stateWithEntry;
         saveState(finalState, localStorage);
 
         const isValid = credit === 1;
@@ -202,7 +205,7 @@ export function mountBorderRunSession(): void {
     function goToNextRoundOrResult(): void {
         const isLastRound = roundIndex === entry.rounds.length - 1;
         if (isLastRound) {
-            window.location.href = "/result/border-run";
+            window.location.href = withTierQuery("/result/border-run", tier);
             return;
         }
         roundIndex += 1;

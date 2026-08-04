@@ -24,7 +24,7 @@
         "notStarted": "Sin empezar",
         "start": "Empezar",
         "completedOf": "Completado · {completed}/{total}",
-        "bonusTiersLink": "Niveles adicionales opcionales (fácil · difícil)",
+        "bonusTiersLabel": "Niveles adicionales opcionales (fácil · difícil)",
         "practiceLink": "Práctica — rondas ilimitadas",
         "statisticsLink": "Estadísticas — rachas y precisión"
     },
@@ -54,6 +54,7 @@
         "prompt": "¿En qué dirección está {destination} desde {origin}?",
         "trueBearing": "La dirección era {direction} ({degrees}°).",
         "yourAnswer": "Indicaste {degrees}°.",
+        "angleDifference": "Tu flecha se desvió {degrees}°.",
         "distanceNote": "{destination} está a unos {distance} km al {direction} de {origin}.",
         "resultComplete": "Brújula · {tier} completada"
     },

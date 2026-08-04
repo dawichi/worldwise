@@ -1,5 +1,6 @@
 ---
 import { BarChart3, Compass, Route } from "lucide-astro";
+import BonusTierRow from "../components/home/BonusTierRow.astro";
 import ModeCard from "../components/home/ModeCard.astro";
 import RitualProgress from "../components/home/RitualProgress.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -58,8 +59,32 @@ const locale = Astro.currentLocale === "es" ? "es" : "en";
             </ModeCard>
         </div>
 
+        <div class="mt-6 flex flex-col gap-2.5 rounded-card border border-border bg-surface p-4">
+            <span class="text-sm font-semibold text-text-muted">{t(locale, "home.bonusTiersLabel")}</span>
+            <BonusTierRow
+                id="compass-bonus-row"
+                name={t(locale, "modes.compass.name")}
+                href="/play/compass"
+                easyLabel={t(locale, "tiers.easy")}
+                hardLabel={t(locale, "tiers.hard")}
+            />
+            <BonusTierRow
+                id="arrange-bonus-row"
+                name={t(locale, "modes.arrange.name")}
+                href="/play/arrange"
+                easyLabel={t(locale, "tiers.easy")}
+                hardLabel={t(locale, "tiers.hard")}
+            />
+            <BonusTierRow
+                id="borderRun-bonus-row"
+                name={t(locale, "modes.borderRun.name")}
+                href="/play/border-run"
+                easyLabel={t(locale, "tiers.easy")}
+                hardLabel={t(locale, "tiers.hard")}
+            />
+        </div>
+
         <div class="mt-6 flex flex-col gap-2">
-            <span class="text-sm font-semibold text-text-muted">{t(locale, "home.bonusTiersLink")}</span>
             <a href="/practice" class="text-sm font-semibold text-accent-text">{t(locale, "home.practiceLink")}</a>
             <a href="/statistics" class="text-sm font-semibold text-accent-text">{t(locale, "home.statisticsLink")}</a>
         </div>

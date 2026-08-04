@@ -200,3 +200,27 @@ describe("REAL_MIGRATIONS[4] (the real v4 -> v5 migration)", () => {
         });
     });
 });
+
+describe("REAL_MIGRATIONS[5] (the real v5 -> v6 migration)", () => {
+    it("adds an empty dailyBonus map to each mode and bumps schemaVersion, leaving everything else untouched", () => {
+        const migrateV5ToV6 = REAL_MIGRATIONS[5];
+        expect(migrateV5ToV6).toBeDefined();
+
+        const v5Data = {
+            schemaVersion: 5,
+            compass: { daily: { "2026-07-31": { challengeId: "x" } } },
+            arrange: { daily: { "2026-07-31": { challengeId: "y" } } },
+            borderRun: { daily: { "2026-07-31": { challengeId: "z" } } },
+            streak: { current: 5, longest: 9, lastCompletedDate: "2026-07-31" },
+        };
+
+        const migrated = migrateV5ToV6?.(v5Data);
+        expect(migrated).toEqual({
+            ...v5Data,
+            schemaVersion: 6,
+            compass: { daily: v5Data.compass.daily, dailyBonus: {} },
+            arrange: { daily: v5Data.arrange.daily, dailyBonus: {} },
+            borderRun: { daily: v5Data.borderRun.daily, dailyBonus: {} },
+        });
+    });
+});

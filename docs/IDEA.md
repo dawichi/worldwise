@@ -32,7 +32,7 @@ Refreshing the page, changing the device clock, or reopening the application mus
 
 ### Practice
 
-Built: `/practice` lets players pick a collection (World/Europe), mode (Compass/Arrange/Border Run), and tier (easy/medium/hard), then run an unlimited sequence of freshly-generated challenges via each mode's existing generator with a random (non-daily-key) seed. Results never touch the daily streak or daily entries; separate local stats (attempts, rounds answered, total credit) accumulate per collection and mode in `practice.stats`, and a small bounded fingerprint history (`practice.recentFingerprints`) avoids repeating a recently-seen challenge within each collection/mode ([`src/lib/challenge/practice.ts`](../src/lib/challenge/practice.ts), [`practiceGenerate.ts`](../src/lib/challenge/practiceGenerate.ts)). Remaining: the Daily bonus-tier UI (easy/hard as same-day bonus mode-challenges, distinct from Practice's tier picker).
+Built: `/practice` lets players pick a collection (World/Europe), mode (Compass/Arrange/Border Run), and tier (easy/medium/hard), then run an unlimited sequence of freshly-generated challenges via each mode's existing generator with a random (non-daily-key) seed. Results never touch the daily streak or daily entries; separate local stats (attempts, rounds answered, total credit) accumulate per collection and mode in `practice.stats`, and a small bounded fingerprint history (`practice.recentFingerprints`) avoids repeating a recently-seen challenge within each collection/mode ([`src/lib/challenge/practice.ts`](../src/lib/challenge/practice.ts), [`practiceGenerate.ts`](../src/lib/challenge/practiceGenerate.ts)).
 
 ## Game modes
 
@@ -42,15 +42,15 @@ The architecture should treat game modes as independent units with shared concep
 
 #### Compass
 
-Built for World/medium as a complete vertical slice: generation (`src/lib/modes/compass/`), a continuous-angle dial answer and scoring model ([ADR-0008](./adr/0008-compass-continuous-angle-scoring.md), superseding this section's original discrete 8-button/direction-boundary-margin design), persistence, accessibility, and tests. Practice supports all tiers and both World and Europe; remaining for Daily are the easy/hard bonus tiers.
+Built for World/medium as a complete vertical slice: generation (`src/lib/modes/compass/`), a continuous-angle dial answer and scoring model ([ADR-0008](./adr/0008-compass-continuous-angle-scoring.md), superseding this section's original discrete 8-button/direction-boundary-margin design), persistence, accessibility, and tests. Practice supports all tiers and both World and Europe. Daily's easy/hard bonus tiers are also built — optional same-day mode-challenges reachable from Home, kept independent from the required (medium) entry and never affecting the streak ([ADR-0003](./adr/0003-difficulty-tiers-optional-bonus.md)).
 
 #### Arrange
 
 Built for World/medium as a complete vertical slice: deterministic generation,
 proportional scoring, local persistence, a keyboard-first up/down reorder
-control, feedback, result, and daily-ritual integration. Remaining for this
-mode: Practice supports all tiers and both World and Europe; remaining for Daily
-are the easy/hard bonus tiers.
+control, feedback, result, and daily-ritual integration. Practice supports all
+tiers and both World and Europe. Daily's easy/hard bonus tiers are also built
+([ADR-0003](./adr/0003-difficulty-tiers-optional-bonus.md)).
 
 Initial variants:
 
@@ -63,7 +63,7 @@ The keyboard and screen-reader interaction must provide an alternative to drag-a
 
 #### Border Run
 
-Built for World/medium as a complete vertical slice: a land-adjacency graph computed at build time from polygon geometry (`scripts/lib/computeAdjacency.ts`), deterministic origin/destination generation at a tier-appropriate hop distance (`src/lib/modes/borderRun/`), binary valid-or-not scoring (ADR-0004), persistence, a guided hop-builder session UI (grow a route from the actual land-border neighbors of the last-placed place, with undo — no map or country search), and tests. Practice supports all tiers and both World and Europe; remaining for Daily are the easy/hard bonus tiers.
+Built for World/medium as a complete vertical slice: a land-adjacency graph computed at build time from polygon geometry (`scripts/lib/computeAdjacency.ts`), deterministic origin/destination generation at a tier-appropriate hop distance (`src/lib/modes/borderRun/`), binary valid-or-not scoring (ADR-0004), persistence, a guided hop-builder session UI (grow a route from the actual land-border neighbors of the last-placed place, with undo — no map or country search), and tests. Practice supports all tiers and both World and Europe. Daily's easy/hard bonus tiers are also built ([ADR-0003](./adr/0003-difficulty-tiers-optional-bonus.md)).
 
 Special cases such as overseas territories, disputed borders, enclaves, and maritime borders are excluded from the adjacency graph by default ([ADR-0005](./adr/0005-border-run-excludes-disputed-territories.md)).
 
@@ -303,7 +303,7 @@ The first complete version should aim for:
 - English and Spanish interface and content at launch, with real i18n infrastructure (string extraction, place-name localization) from day one rather than generation logic with embedded content ([ADR-0006](./adr/0006-bilingual-launch-english-spanish.md)).
 - No login, backend, public leaderboard, or manual daily authoring.
 
-The World-collection vertical slice (generation, validation, persistence, accessibility, feedback, and tests) is done for all three MVP modes — Compass, Arrange, and Border Run — each at their required medium tier, a complete vertical slice before breadth, as this section originally called for if the full scope proved too broad for a first milestone. Non-goals for the initial product are listed in [`AGENTS.md`](./AGENTS.md#non-goals).
+The World-collection vertical slice (generation, validation, persistence, accessibility, feedback, and tests) is done for all three MVP modes — Compass, Arrange, and Border Run — each at their required medium tier, a complete vertical slice before breadth, as this section originally called for if the full scope proved too broad for a first milestone. The easy/hard bonus tiers are also done for all three modes. Non-goals for the initial product are listed in [`AGENTS.md`](./AGENTS.md#non-goals).
 
 ## Suggested implementation order
 

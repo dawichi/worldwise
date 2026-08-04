@@ -1,0 +1,47 @@
+---
+interface Props {
+    id: string;
+    name: string;
+    href: string;
+    easyLabel: string;
+    hardLabel: string;
+}
+
+const { id, name, href, easyLabel, hardLabel } = Astro.props;
+---
+
+<div id={id} class="flex items-center justify-between gap-2">
+    <span class="text-sm text-text-muted">{name}</span>
+    <div class="flex gap-2">
+        <a
+            data-role="bonus-tier-link"
+            data-tier="easy"
+            data-status="not-started"
+            href={`${href}?tier=easy`}
+            class="bonus-tier-pill rounded-pill border border-border px-3 py-1 text-sm font-semibold text-text"
+        >
+            {easyLabel}
+        </a>
+        <a
+            data-role="bonus-tier-link"
+            data-tier="hard"
+            data-status="not-started"
+            href={`${href}?tier=hard`}
+            class="bonus-tier-pill rounded-pill border border-border px-3 py-1 text-sm font-semibold text-text"
+        >
+            {hardLabel}
+        </a>
+    </div>
+</div>
+
+<style>
+    .bonus-tier-pill[data-status="in-progress"] {
+        border-color: var(--color-accent);
+        color: var(--color-accent-text);
+    }
+    .bonus-tier-pill[data-status="completed"] {
+        border-color: transparent;
+        background-color: var(--color-success-bg);
+        color: var(--color-success-text);
+    }
+</style>

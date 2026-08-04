@@ -1,5 +1,6 @@
 import { worldCollection } from "../data/generated/world";
 import { resolveDailyBorderRun } from "../lib/challenge/dailyBorderRun";
+import { parseDailyTierParam, withTierQuery } from "../lib/challenge/dailyTier";
 import { getPlaceById } from "../lib/data/lookup";
 import { type Locale, t } from "../lib/i18n/t";
 import { loadState } from "../lib/persistence/repository";
@@ -57,11 +58,14 @@ function buildRoundItem(
 
 export function mountBorderRunResult(): void {
     const locale = getLocale();
+    const tier = parseDailyTierParam(
+        new URLSearchParams(window.location.search),
+    );
     const state = loadState(localStorage);
-    const { challenge, entry } = resolveDailyBorderRun(new Date(), state);
+    const { challenge, entry } = resolveDailyBorderRun(new Date(), state, tier);
 
     if (entry.completedAt === null) {
-        window.location.href = "/play/border-run";
+        window.location.href = withTierQuery("/play/border-run", tier);
         return;
     }
 
@@ -79,7 +83,7 @@ export function mountBorderRunResult(): void {
     );
 
     headingEl.textContent = t(locale, "borderRun.resultComplete", {
-        tier: t(locale, "tiers.medium"),
+        tier: t(locale, `tiers.${tier}`),
     });
 
     const totalCredit = entry.rounds.reduce(

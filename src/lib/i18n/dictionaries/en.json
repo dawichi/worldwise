@@ -24,7 +24,7 @@
         "notStarted": "Not started",
         "start": "Start",
         "completedOf": "Completed · {completed}/{total}",
-        "bonusTiersLink": "Optional bonus tiers (easy · hard)",
+        "bonusTiersLabel": "Optional bonus tiers (easy · hard)",
         "practiceLink": "Practice — unlimited rounds",
         "statisticsLink": "Statistics — streaks & accuracy"
     },
@@ -54,6 +54,7 @@
         "prompt": "Which direction is {destination} from {origin}?",
         "trueBearing": "The direction was {direction} ({degrees}°).",
         "yourAnswer": "You indicated {degrees}°.",
+        "angleDifference": "Your arrow was {degrees}° away.",
         "distanceNote": "{destination} is about {distance} km {direction} of {origin}.",
         "resultComplete": "Compass · {tier} complete"
     },

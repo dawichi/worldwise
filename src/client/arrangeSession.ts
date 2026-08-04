@@ -2,8 +2,14 @@ import { worldCollection } from "../data/generated/world";
 import {
     computeArrangeStatus,
     resolveDailyArrange,
+    withArrangeDailyEntry,
 } from "../lib/challenge/dailyArrange";
 import { maybeRecordDailyCompletion } from "../lib/challenge/dailyRitual";
+import {
+    DAILY_REQUIRED_TIER,
+    parseDailyTierParam,
+    withTierQuery,
+} from "../lib/challenge/dailyTier";
 import { getPlaceById } from "../lib/data/lookup";
 import { type Locale, type TranslationKey, t } from "../lib/i18n/t";
 import { scoreArrangeRound } from "../lib/modes/arrange/score";
@@ -57,25 +63,24 @@ function must<T>(value: T | null | undefined, description: string): T {
 export function mountArrangeSession(): void {
     const locale = getLocale();
     const sessionStart = new Date();
+    const tier = parseDailyTierParam(
+        new URLSearchParams(window.location.search),
+    );
     const initialState = loadState(localStorage);
     const { dateKey, challenge, entry } = resolveDailyArrange(
         sessionStart,
         initialState,
+        tier,
     );
 
     if (computeArrangeStatus(entry) === "completed") {
-        window.location.href = "/result/arrange";
+        window.location.href = withTierQuery("/result/arrange", tier);
         return;
     }
 
     // Persist a freshly-initialized entry right away so a reload mid-session resumes correctly.
     saveState(
-        {
-            ...initialState,
-            arrange: {
-                daily: { ...initialState.arrange.daily, [dateKey]: entry },
-            },
-        },
+        withArrangeDailyEntry(initialState, dateKey, tier, entry),
         localStorage,
     );
 
@@ -192,15 +197,16 @@ export function mountArrangeSession(): void {
         }
 
         const stateBeforeSave = loadState(localStorage);
-        const stateWithEntry = {
-            ...stateBeforeSave,
-            arrange: {
-                daily: { ...stateBeforeSave.arrange.daily, [dateKey]: entry },
-            },
-        };
-        const finalState = isLastRound
-            ? maybeRecordDailyCompletion(stateWithEntry, dateKey)
-            : stateWithEntry;
+        const stateWithEntry = withArrangeDailyEntry(
+            stateBeforeSave,
+            dateKey,
+            tier,
+            entry,
+        );
+        const finalState =
+            isLastRound && tier === DAILY_REQUIRED_TIER
+                ? maybeRecordDailyCompletion(stateWithEntry, dateKey)
+                : stateWithEntry;
         saveState(finalState, localStorage);
 
         list.showResult(round.correctOrderIds);
@@ -232,7 +238,7 @@ export function mountArrangeSession(): void {
     function goToNextRoundOrResult(): void {
         const isLastRound = roundIndex === entry.rounds.length - 1;
         if (isLastRound) {
-            window.location.href = "/result/arrange";
+            window.location.href = withTierQuery("/result/arrange", tier);
             return;
         }
         roundIndex += 1;

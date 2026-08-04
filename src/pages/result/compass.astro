@@ -36,6 +36,17 @@ const locale = Astro.currentLocale === "es" ? "es" : "en";
         #result-rounds li[data-credit="none"] [data-role="true-direction"] {
             color: var(--color-attention-text);
         }
+        .compass-result-visual {
+            display: grid;
+            flex: 0 0 auto;
+            width: 3.25rem;
+            height: 3.25rem;
+            place-items: center;
+            overflow: hidden;
+            border-radius: 1rem;
+            background: var(--color-surface-raised);
+        }
+        .compass-result-visual svg { width: 100%; height: 100%; }
     </style>
 
     <script>

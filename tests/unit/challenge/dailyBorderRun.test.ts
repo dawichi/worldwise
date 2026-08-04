@@ -63,6 +63,7 @@ describe("resolveDailyBorderRun", () => {
                         completedAt: null,
                     },
                 },
+                dailyBonus: {},
             },
         };
 
@@ -72,6 +73,56 @@ describe("resolveDailyBorderRun", () => {
             challenge.rounds[0]?.destinationId,
         ]);
         expect(countAnsweredRounds(entry)).toBe(1);
+    });
+});
+
+describe("resolveDailyBorderRun with a bonus tier", () => {
+    it("resolves independently from the required (medium) tier's entry", () => {
+        const state = createDefaultState();
+        const required = resolveDailyBorderRun(NOW, state);
+        const easy = resolveDailyBorderRun(NOW, state, "easy");
+
+        expect(required.tier).toBe("medium");
+        expect(easy.tier).toBe("easy");
+        expect(easy.challenge).not.toEqual(required.challenge);
+    });
+
+    it("a completed bonus entry does not affect the required tier's entry", () => {
+        const state = createDefaultState();
+        const { dateKey, challenge } = resolveDailyBorderRun(
+            NOW,
+            state,
+            "easy",
+        );
+
+        const stateWithBonusDone: PersistedState = {
+            ...state,
+            borderRun: {
+                ...state.borderRun,
+                dailyBonus: {
+                    [`${dateKey}:easy`]: {
+                        challengeId: challenge.id,
+                        generatorVersion: challenge.generatorVersion,
+                        dataVersion: challenge.dataVersion,
+                        tier: challenge.tier,
+                        rounds: challenge.rounds.map((round) => ({
+                            submittedPath: [
+                                round.originId,
+                                round.destinationId,
+                            ],
+                            credit: 1,
+                        })),
+                        completedAt: "2026-07-31T12:00:00.000Z",
+                    },
+                },
+            },
+        };
+
+        const required = resolveDailyBorderRun(NOW, stateWithBonusDone);
+        expect(computeBorderRunStatus(required.entry)).toBe("not-started");
+
+        const bonus = resolveDailyBorderRun(NOW, stateWithBonusDone, "easy");
+        expect(computeBorderRunStatus(bonus.entry)).toBe("completed");
     });
 });
 

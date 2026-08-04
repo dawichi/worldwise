@@ -40,6 +40,7 @@ describe("computeDailyHistory", () => {
                         completedAt: "2026-07-30T10:00:00.000Z",
                     },
                 },
+                dailyBonus: {},
             },
             arrange: {
                 daily: {
@@ -52,6 +53,7 @@ describe("computeDailyHistory", () => {
                         completedAt: "2026-07-30T11:00:00.000Z",
                     },
                 },
+                dailyBonus: {},
             },
         };
 
@@ -102,6 +104,7 @@ describe("computeModeStats", () => {
                         completedAt: null,
                     },
                 },
+                dailyBonus: {},
             },
         };
 

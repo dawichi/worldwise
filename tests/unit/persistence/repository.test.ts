@@ -33,7 +33,7 @@ describe("loadState", () => {
     it("round-trips a valid state through save and load", () => {
         const storage = createMemoryStorage();
         const state: PersistedState = {
-            schemaVersion: 5,
+            schemaVersion: 6,
             compass: {
                 daily: {
                     "2026-07-31": {
@@ -49,6 +49,7 @@ describe("loadState", () => {
                         completedAt: null,
                     },
                 },
+                dailyBonus: {},
             },
             arrange: {
                 daily: {
@@ -65,6 +66,7 @@ describe("loadState", () => {
                         completedAt: null,
                     },
                 },
+                dailyBonus: {},
             },
             borderRun: {
                 daily: {
@@ -84,6 +86,7 @@ describe("loadState", () => {
                         completedAt: null,
                     },
                 },
+                dailyBonus: {},
             },
             practice: {
                 stats: {
@@ -148,11 +151,11 @@ describe("loadState", () => {
         storage.setItem(STORAGE_KEY, JSON.stringify(v1Value));
 
         const result = loadState(storage);
-        expect(result.schemaVersion).toBe(5);
-        expect(result.compass).toEqual(v1Value.compass);
+        expect(result.schemaVersion).toBe(6);
+        expect(result.compass).toEqual({ ...v1Value.compass, dailyBonus: {} });
         expect(result.streak).toEqual(v1Value.streak);
-        expect(result.arrange).toEqual({ daily: {} });
-        expect(result.borderRun).toEqual({ daily: {} });
+        expect(result.arrange).toEqual({ daily: {}, dailyBonus: {} });
+        expect(result.borderRun).toEqual({ daily: {}, dailyBonus: {} });
         expect(result.practice).toEqual(createDefaultState().practice);
     });
 

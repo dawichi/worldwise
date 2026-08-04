@@ -19,7 +19,9 @@ function withCompassDone(
     return {
         ...state,
         compass: {
+            ...state.compass,
             daily: {
+                ...state.compass.daily,
                 [dateKey]: {
                     challengeId: "x",
                     generatorVersion: "v1",
@@ -33,6 +35,30 @@ function withCompassDone(
     };
 }
 
+function withCompassBonusDone(
+    state: PersistedState,
+    dateKey: string,
+    tier: "easy" | "hard",
+): PersistedState {
+    return {
+        ...state,
+        compass: {
+            ...state.compass,
+            dailyBonus: {
+                ...state.compass.dailyBonus,
+                [`${dateKey}:${tier}`]: {
+                    challengeId: "x-bonus",
+                    generatorVersion: "v1",
+                    dataVersion: "data-v1",
+                    tier,
+                    rounds: [],
+                    completedAt: "2026-07-31T09:00:00.000Z",
+                },
+            },
+        },
+    };
+}
+
 function withArrangeDone(
     state: PersistedState,
     dateKey: string,
@@ -40,7 +66,9 @@ function withArrangeDone(
     return {
         ...state,
         arrange: {
+            ...state.arrange,
             daily: {
+                ...state.arrange.daily,
                 [dateKey]: {
                     challengeId: "y",
                     generatorVersion: "v1",
@@ -61,7 +89,9 @@ function withBorderRunDone(
     return {
         ...state,
         borderRun: {
+            ...state.borderRun,
             daily: {
+                ...state.borderRun.daily,
                 [dateKey]: {
                     challengeId: "z",
                     generatorVersion: "v1",
@@ -125,9 +155,29 @@ describe("countCompletedModesToday / isDailyRitualComplete", () => {
         const state = withCompassDone(createDefaultState(), "2026-07-30");
         expect(isDailyRitualComplete(state, DATE_KEY)).toBe(false);
     });
+
+    it("a completed bonus-tier entry does not count toward the ritual (ADR-0003)", () => {
+        const state = withCompassBonusDone(
+            withCompassBonusDone(createDefaultState(), DATE_KEY, "easy"),
+            DATE_KEY,
+            "hard",
+        );
+        expect(countCompletedModesToday(state, DATE_KEY)).toBe(0);
+        expect(isDailyRitualComplete(state, DATE_KEY)).toBe(false);
+    });
 });
 
 describe("maybeRecordDailyCompletion", () => {
+    it("does not touch the streak from bonus-tier completions alone", () => {
+        const state = withCompassBonusDone(
+            withCompassBonusDone(createDefaultState(), DATE_KEY, "easy"),
+            DATE_KEY,
+            "hard",
+        );
+        const result = maybeRecordDailyCompletion(state, DATE_KEY);
+        expect(result.streak).toEqual(state.streak);
+    });
+
     it("does not touch the streak when only one mode is done", () => {
         const state = withCompassDone(createDefaultState(), DATE_KEY);
         const result = maybeRecordDailyCompletion(state, DATE_KEY);
