@@ -5,10 +5,15 @@
         "backToToday": "Volver a Hoy",
         "streakDayCount": "Racha de {count} días",
         "submitAnswer": "Enviar respuesta",
+        "shareResult": "Compartir resultado",
+        "shared": "Compartido",
+        "copied": "Resultado copiado",
+        "shareFailed": "No se pudo compartir el resultado",
         "creditFull": "Acierto completo",
         "creditPartial": "Acierto parcial",
         "creditNone": "Sin acierto",
-        "resultScore": "{score} / {total}"
+        "resultScore": "{score} / {total}",
+        "shareScore": "Puntuación"
     },
     "nav": {
         "today": "Hoy",

@@ -4,6 +4,7 @@ import { parseDailyTierParam, withTierQuery } from "../lib/challenge/dailyTier";
 import { getPlaceById } from "../lib/data/lookup";
 import { type Locale, t } from "../lib/i18n/t";
 import { loadState } from "../lib/persistence/repository";
+import { buildSpoilerFreeResultText, mountShareButton } from "./shareResult";
 
 function getLocale(): Locale {
     return document.documentElement.lang === "es" ? "es" : "en";
@@ -68,7 +69,11 @@ export function mountArrangeResult(): void {
         new URLSearchParams(window.location.search),
     );
     const state = loadState(localStorage);
-    const { challenge, entry } = resolveDailyArrange(new Date(), state, tier);
+    const { dateKey, challenge, entry } = resolveDailyArrange(
+        new Date(),
+        state,
+        tier,
+    );
 
     if (entry.completedAt === null) {
         window.location.href = withTierQuery("/play/arrange", tier);
@@ -87,6 +92,14 @@ export function mountArrangeResult(): void {
         document.getElementById("result-rounds"),
         "result-rounds",
     );
+    const shareButton = must(
+        document.getElementById("share-result") as HTMLButtonElement | null,
+        "share-result",
+    );
+    const shareStatus = must(
+        document.getElementById("share-status"),
+        "share-status",
+    );
 
     headingEl.textContent = t(locale, "arrange.resultComplete", {
         tier: t(locale, `tiers.${tier}`),
@@ -100,6 +113,27 @@ export function mountArrangeResult(): void {
         score: formatScore(totalCredit),
         total: entry.rounds.length,
     });
+    mountShareButton(
+        shareButton,
+        shareStatus,
+        buildSpoilerFreeResultText({
+            appName: t(locale, "common.appName"),
+            modeName: t(locale, "modes.arrange.name"),
+            tierName: t(locale, `tiers.${tier}`),
+            dateKey,
+            scoreLabel: t(locale, "common.shareScore"),
+            score: formatScore(totalCredit),
+            total: entry.rounds.length,
+            credits: entry.rounds.map((round) => round.credit),
+            url: window.location.origin,
+        }),
+        {
+            shareResult: t(locale, "common.shareResult"),
+            shared: t(locale, "common.shared"),
+            copied: t(locale, "common.copied"),
+            failed: t(locale, "common.shareFailed"),
+        },
+    );
 
     for (let index = 0; index < challenge.rounds.length; index++) {
         const round = challenge.rounds[index];

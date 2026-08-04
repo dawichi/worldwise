@@ -42,6 +42,9 @@ test.describe("Compass daily mode-challenge", () => {
         await expect(page.locator("#result-heading")).toContainText("Compass");
         await expect(page.locator("#result-score")).toContainText("/ 3");
         await expect(page.locator("#result-rounds li")).toHaveCount(3);
+        await expect(
+            page.getByRole("button", { name: "Share result" }),
+        ).toBeVisible();
     });
 
     test("completes a full mode-challenge via keyboard only (no pointer events)", async ({
@@ -125,6 +128,9 @@ test.describe("Arrange daily mode-challenge", () => {
         await expect(page.locator("#result-heading")).toContainText("Arrange");
         await expect(page.locator("#result-score")).toContainText("/ 3");
         await expect(page.locator("#result-rounds li")).toHaveCount(3);
+        await expect(
+            page.getByRole("button", { name: "Share result" }),
+        ).toBeVisible();
     });
 
     test("Home and Arrange session pages have no automatically detectable accessibility violations", async ({
@@ -182,6 +188,9 @@ test.describe("Border Run daily mode-challenge", () => {
         );
         await expect(page.locator("#result-score")).toContainText("/ 3");
         await expect(page.locator("#result-rounds li")).toHaveCount(3);
+        await expect(
+            page.getByRole("button", { name: "Share result" }),
+        ).toBeVisible();
     });
 
     test("Home and Border Run session pages have no automatically detectable accessibility violations", async ({

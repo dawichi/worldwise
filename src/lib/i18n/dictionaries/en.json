@@ -5,10 +5,15 @@
         "backToToday": "Back to Today",
         "streakDayCount": "{count} day streak",
         "submitAnswer": "Submit answer",
+        "shareResult": "Share result",
+        "shared": "Shared",
+        "copied": "Result copied",
+        "shareFailed": "Could not share the result",
         "creditFull": "Full credit",
         "creditPartial": "Partial credit",
         "creditNone": "No credit",
-        "resultScore": "{score} / {total}"
+        "resultScore": "{score} / {total}",
+        "shareScore": "Score"
     },
     "nav": {
         "today": "Today",
