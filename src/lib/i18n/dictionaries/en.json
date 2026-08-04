@@ -150,6 +150,16 @@
         "practiceAttempts": "{count} practice attempts",
         "practiceAccuracy": "Practice accuracy",
         "noData": "No data yet",
+        "notAvailable": "—",
+        "overviewTitle": "Recent overview",
+        "completedRituals": "{count} complete rituals",
+        "activeDays": "{count} active days",
+        "modeCompletionRate": "{rate}% of mode challenges completed",
+        "practiceRounds": "{count} practice rounds",
+        "completedRitualsLabel": "Complete rituals",
+        "activeDaysLabel": "Active days",
+        "modeCompletionRateLabel": "Mode completion",
+        "practiceRoundsLabel": "Practice volume",
         "storedOnDevice": "Your statistics are stored only on this device."
     },
     "howToPlay": {

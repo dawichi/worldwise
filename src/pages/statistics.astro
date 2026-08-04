@@ -30,6 +30,32 @@ const locale = pageLocale(Astro.currentLocale, Astro.url);
             </div>
         </div>
 
+        <section class="mb-6 rounded-card border border-border bg-surface p-4" aria-labelledby="overview-title">
+            <h2 id="overview-title" class="mb-3 text-sm font-extrabold text-text">{t(locale, "statistics.overviewTitle")}</h2>
+            <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                <div>
+                    <div id="overview-rituals" class="font-bold text-text"></div>
+                    <div class="text-xs text-text-muted">{t(locale, "statistics.completedRitualsLabel")}</div>
+                </div>
+                <div>
+                    <div id="overview-active-days" class="font-bold text-text"></div>
+                    <div class="text-xs text-text-muted">{t(locale, "statistics.activeDaysLabel")}</div>
+                </div>
+                <div>
+                    <div id="overview-completion-rate" class="font-bold text-text"></div>
+                    <div class="text-xs text-text-muted">{t(locale, "statistics.modeCompletionRateLabel")}</div>
+                </div>
+                <div>
+                    <div id="overview-practice-rounds" class="font-bold text-text"></div>
+                    <div class="text-xs text-text-muted">{t(locale, "statistics.practiceRoundsLabel")}</div>
+                </div>
+                <div class="col-span-2 border-t border-border pt-3">
+                    <div class="text-xs text-text-muted">{t(locale, "statistics.practiceAccuracy")}</div>
+                    <div id="overview-practice-accuracy" class="font-bold text-text"></div>
+                </div>
+            </div>
+        </section>
+
         <div class="mb-6">
             <h2 class="mb-2 text-sm font-semibold text-text-muted">{t(locale, "statistics.dailyHistory")}</h2>
             <ol id="daily-history" class="flex flex-wrap gap-1.5"></ol>

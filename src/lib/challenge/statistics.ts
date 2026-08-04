@@ -47,6 +47,63 @@ export interface ModeStats {
     practiceAccuracy: number | null;
 }
 
+export interface StatisticsOverview {
+    completedRituals: number;
+    activeDays: number;
+    modeCompletionRate: number;
+    practiceRoundsAnswered: number;
+    practiceAccuracy: number | null;
+}
+
+/** Summarizes the recent daily window and all persisted Practice activity. */
+export function computeStatisticsOverview(
+    state: PersistedState,
+    today: Date,
+    historyDays: number,
+): StatisticsOverview {
+    const history = computeDailyHistory(state, today, historyDays);
+    const totalModeChallenges = history.reduce(
+        (sum, day) => sum + day.totalModes,
+        0,
+    );
+    const completedModeChallenges = history.reduce(
+        (sum, day) => sum + day.completedModes,
+        0,
+    );
+    const completedRituals = history.filter(
+        (day) => day.completedModes === day.totalModes,
+    ).length;
+    const activeDays = history.filter((day) => day.completedModes > 0).length;
+
+    let practiceRoundsAnswered = 0;
+    let practiceTotalCredit = 0;
+    for (const collectionId of ["world", "europe"] as const) {
+        for (const modeId of ENABLED_MODE_IDS) {
+            const stats = state.practice.stats[collectionId][modeId];
+            practiceRoundsAnswered += stats.roundsAnswered;
+            practiceTotalCredit += stats.totalCredit;
+        }
+    }
+
+    return {
+        completedRituals,
+        activeDays,
+        modeCompletionRate:
+            totalModeChallenges > 0
+                ? Math.round(
+                      (completedModeChallenges / totalModeChallenges) * 100,
+                  )
+                : 0,
+        practiceRoundsAnswered,
+        practiceAccuracy:
+            practiceRoundsAnswered > 0
+                ? Math.round(
+                      (practiceTotalCredit / practiceRoundsAnswered) * 100,
+                  )
+                : null,
+    };
+}
+
 /**
  * Per-mode performance across both Daily and Practice. Daily accuracy is
  * computed the same way Practice's own accuracy already is (total round

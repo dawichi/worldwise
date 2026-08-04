@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
     computeDailyHistory,
     computeModeStats,
+    computeStatisticsOverview,
 } from "../../../src/lib/challenge/statistics";
 import {
     createDefaultState,
@@ -135,5 +136,95 @@ describe("computeModeStats", () => {
         const stats = computeModeStats(state, "arrange", "europe");
         expect(stats.practiceAttempts).toBe(3);
         expect(stats.practiceAccuracy).toBe(67);
+    });
+});
+
+describe("computeStatisticsOverview", () => {
+    it("returns zeroed values for a fresh state", () => {
+        expect(
+            computeStatisticsOverview(createDefaultState(), NOW, 14),
+        ).toEqual({
+            completedRituals: 0,
+            activeDays: 0,
+            modeCompletionRate: 0,
+            practiceRoundsAnswered: 0,
+            practiceAccuracy: null,
+        });
+    });
+
+    it("combines recent daily completion with practice totals", () => {
+        const defaultState = createDefaultState();
+        const state: PersistedState = {
+            ...defaultState,
+            compass: {
+                daily: {
+                    "2026-07-31": {
+                        challengeId: "c",
+                        generatorVersion: "v1",
+                        dataVersion: "data-v1",
+                        tier: "medium",
+                        rounds: [],
+                        completedAt: "2026-07-31T10:00:00.000Z",
+                    },
+                },
+                dailyBonus: {},
+            },
+            arrange: {
+                daily: {
+                    "2026-07-31": {
+                        challengeId: "a",
+                        generatorVersion: "v1",
+                        dataVersion: "data-v1",
+                        tier: "medium",
+                        rounds: [],
+                        completedAt: "2026-07-31T10:00:00.000Z",
+                    },
+                },
+                dailyBonus: {},
+            },
+            borderRun: {
+                daily: {
+                    "2026-07-31": {
+                        challengeId: "b",
+                        generatorVersion: "v1",
+                        dataVersion: "data-v1",
+                        tier: "medium",
+                        rounds: [],
+                        completedAt: null,
+                    },
+                },
+                dailyBonus: {},
+            },
+            practice: {
+                ...defaultState.practice,
+                stats: {
+                    ...defaultState.practice.stats,
+                    world: {
+                        ...defaultState.practice.stats.world,
+                        compass: {
+                            attempts: 2,
+                            roundsAnswered: 6,
+                            totalCredit: 4.5,
+                        },
+                    },
+                    europe: {
+                        ...defaultState.practice.stats.europe,
+                        arrange: {
+                            attempts: 1,
+                            roundsAnswered: 3,
+                            totalCredit: 3,
+                        },
+                    },
+                },
+            },
+        };
+
+        expect(computeStatisticsOverview(state, NOW, 14)).toEqual({
+            completedRituals: 0,
+            activeDays: 1,
+            modeCompletionRate: 5,
+            practiceRoundsAnswered: 9,
+            practiceAccuracy: 83,
+        });
     });
 });

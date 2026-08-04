@@ -5,6 +5,7 @@ import {
 import {
     computeDailyHistory,
     computeModeStats,
+    computeStatisticsOverview,
     type ModeStats,
 } from "../lib/challenge/statistics";
 import { PRACTICE_COLLECTION_IDS } from "../lib/data/collections";
@@ -165,6 +166,26 @@ export function mountStatistics(): void {
         document.getElementById("mode-stats"),
         "mode-stats",
     );
+    const overviewRitualsEl = must(
+        document.getElementById("overview-rituals"),
+        "overview-rituals",
+    );
+    const overviewActiveDaysEl = must(
+        document.getElementById("overview-active-days"),
+        "overview-active-days",
+    );
+    const overviewCompletionRateEl = must(
+        document.getElementById("overview-completion-rate"),
+        "overview-completion-rate",
+    );
+    const overviewPracticeRoundsEl = must(
+        document.getElementById("overview-practice-rounds"),
+        "overview-practice-rounds",
+    );
+    const overviewPracticeAccuracyEl = must(
+        document.getElementById("overview-practice-accuracy"),
+        "overview-practice-accuracy",
+    );
 
     streakCurrentEl.textContent = t(locale, "common.streakDayCount", {
         count: state.streak.current,
@@ -172,6 +193,30 @@ export function mountStatistics(): void {
     streakLongestEl.textContent = t(locale, "common.streakDayCount", {
         count: state.streak.longest,
     });
+
+    const overview = computeStatisticsOverview(state, new Date(), HISTORY_DAYS);
+    overviewRitualsEl.textContent = t(locale, "statistics.completedRituals", {
+        count: overview.completedRituals,
+    });
+    overviewActiveDaysEl.textContent = t(locale, "statistics.activeDays", {
+        count: overview.activeDays,
+    });
+    overviewCompletionRateEl.textContent = t(
+        locale,
+        "statistics.modeCompletionRate",
+        { rate: overview.modeCompletionRate },
+    );
+    overviewPracticeRoundsEl.textContent = t(
+        locale,
+        "statistics.practiceRounds",
+        {
+            count: overview.practiceRoundsAnswered,
+        },
+    );
+    overviewPracticeAccuracyEl.textContent =
+        overview.practiceAccuracy === null
+            ? t(locale, "statistics.notAvailable")
+            : `${overview.practiceAccuracy}%`;
 
     // Oldest first, so the strip reads left-to-right chronologically.
     const history = computeDailyHistory(

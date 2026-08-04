@@ -150,6 +150,16 @@
         "practiceAttempts": "{count} intentos de práctica",
         "practiceAccuracy": "Precisión en práctica",
         "noData": "Sin datos todavía",
+        "notAvailable": "—",
+        "overviewTitle": "Resumen reciente",
+        "completedRituals": "{count} rituales completos",
+        "activeDays": "{count} días activos",
+        "modeCompletionRate": "{rate}% de desafíos de modo completados",
+        "practiceRounds": "{count} rondas de práctica",
+        "completedRitualsLabel": "Rituales completos",
+        "activeDaysLabel": "Días activos",
+        "modeCompletionRateLabel": "Completado de modos",
+        "practiceRoundsLabel": "Volumen de práctica",
         "storedOnDevice": "Tus estadísticas se guardan solo en este dispositivo."
     },
     "howToPlay": {

@@ -9,6 +9,13 @@ test.describe("Statistics (fresh state)", () => {
 
         await expect(page.locator("#streak-current")).toContainText("0");
         await expect(page.locator("#streak-longest")).toContainText("0");
+        await expect(page.locator("#overview-rituals")).toContainText("0");
+        await expect(page.locator("#overview-practice-rounds")).toContainText(
+            "0",
+        );
+        await expect(page.locator("#overview-practice-accuracy")).toHaveText(
+            "—",
+        );
         await expect(page.locator("#daily-history li")).toHaveCount(14);
         await expect(page.locator("#daily-history li").last()).toHaveAttribute(
             "data-status",
@@ -96,6 +103,13 @@ test.describe("Statistics (after activity)", () => {
 
         await page.goto("/statistics");
         await expect(page.locator("#streak-current")).toContainText("1");
+        await expect(page.locator("#overview-rituals")).toContainText("1");
+        await expect(page.locator("#overview-practice-rounds")).toContainText(
+            "3",
+        );
+        await expect(page.locator("#overview-practice-accuracy")).toHaveText(
+            /\d+%/,
+        );
         await expect(page.locator("#daily-history li").last()).toHaveAttribute(
             "data-status",
             "full",
