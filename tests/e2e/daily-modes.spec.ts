@@ -14,6 +14,9 @@ test.describe("Compass daily mode-challenge", () => {
 
         for (let round = 0; round < 3; round++) {
             const dial = page.getByRole("slider");
+            // Wait for the client controller to mount before sending a
+            // pointer event; the static HTML initially has an empty readout.
+            await expect(dial).toHaveAttribute("aria-valuetext", /.+/);
             const box = await dial.boundingBox();
             if (!box) {
                 throw new Error("compass dial has no bounding box");

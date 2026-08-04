@@ -20,7 +20,8 @@
         "practice": "Práctica",
         "statistics": "Estadísticas",
         "howToPlay": "Cómo jugar",
-        "settings": "Ajustes"
+        "settings": "Ajustes",
+        "about": "Acerca y datos"
     },
     "settings": {
         "title": "Ajustes",
@@ -40,6 +41,21 @@
         "imported": "Progreso importado.",
         "invalidImport": "El archivo no es una exportación válida de Worldwise.",
         "resetComplete": "Todos los datos locales se han restablecido."
+    },
+    "about": {
+        "title": "Acerca y datos",
+        "intro": "Worldwise es un pequeño juego de geografía basado en las relaciones entre lugares: dirección, orden, distancia y fronteras.",
+        "dataTitle": "Datos geográficos",
+        "worldBody": "La colección Mundo usa vectores culturales 1:50m de Natural Earth para las fronteras y las coordenadas de las capitales. Incluye 193 países soberanos y la Ciudad del Vaticano cuando existe un punto de capital en la fuente.",
+        "europeBody": "La colección Europa es una colección derivada de Práctica creada a partir de los mismos registros de países normalizados. Contiene 45 países seleccionados para esta primera región.",
+        "naturalEarthLink": "Fuente de datos Natural Earth",
+        "githubLink": "Repositorio de vectores de Natural Earth",
+        "borderTitle": "Reglas de Border Run",
+        "borderBody": "Las rutas por frontera terrestre se calculan con la misma geometría de países 1:50m. Las zonas disputadas, los enclaves y las fronteras solo marítimas se excluyen por defecto para que las rutas sean claras y reproducibles.",
+        "privacyTitle": "Privacidad",
+        "privacyBody": "No hay cuenta, analítica ni sincronización con servidores. Tu progreso y tus preferencias permanecen en este navegador. Usa Ajustes para exportar una copia o eliminar los datos locales.",
+        "sourceNote": "Versión de la fuente: Natural Earth 1:50m. Los datos se usan según los términos de dominio público indicados por Natural Earth.",
+        "backToSettings": "Abrir Ajustes"
     },
     "home": {
         "ritualProgress": "Ritual de hoy",

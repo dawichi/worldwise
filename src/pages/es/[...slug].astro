@@ -1,4 +1,5 @@
 ---
+import AboutPage from "../about.astro";
 import HowToPlayPage from "../how-to-play.astro";
 import HomePage from "../index.astro";
 import ArrangePage from "../play/arrange.astro";
@@ -18,6 +19,7 @@ import StatisticsPage from "../statistics.astro";
 export function getStaticPaths() {
     const pages = {
         "": HomePage,
+        about: AboutPage,
         "how-to-play": HowToPlayPage,
         statistics: StatisticsPage,
         settings: SettingsPage,

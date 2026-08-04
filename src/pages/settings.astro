@@ -55,6 +55,8 @@ const locale = pageLocale(Astro.currentLocale, Astro.url);
             </div>
             <p id="settings-status" class="mt-3 min-h-5 text-sm text-text-muted" role="status" aria-live="polite"></p>
         </section>
+
+        <a href="/about" class="mt-5 block text-center text-sm font-semibold text-accent-text">{t(locale, "nav.about")}</a>
     </main>
 
     <script>

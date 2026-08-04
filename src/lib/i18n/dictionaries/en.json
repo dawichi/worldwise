@@ -20,7 +20,8 @@
         "practice": "Practice",
         "statistics": "Statistics",
         "howToPlay": "How to play",
-        "settings": "Settings"
+        "settings": "Settings",
+        "about": "About & data"
     },
     "settings": {
         "title": "Settings",
@@ -40,6 +41,21 @@
         "imported": "Progress imported.",
         "invalidImport": "That file is not a valid Worldwise export.",
         "resetComplete": "All local data was reset."
+    },
+    "about": {
+        "title": "About & data",
+        "intro": "Worldwise is a small geography game built around relationships between places: direction, order, distance, and borders.",
+        "dataTitle": "Geographic data",
+        "worldBody": "The World collection uses Natural Earth 1:50m cultural vectors for country boundaries and capital coordinates. It includes 193 sovereign countries plus Vatican City when a source capital point is available.",
+        "europeBody": "The Europe collection is a derived Practice collection made from the same normalized country records. It contains 45 countries selected for this first regional set.",
+        "naturalEarthLink": "Natural Earth data source",
+        "githubLink": "Natural Earth vector repository",
+        "borderTitle": "Border Run rules",
+        "borderBody": "Land-border routes are computed from the same 1:50m country geometry. Disputed territories, enclaves, and maritime-only borders are excluded by default so routes stay clear and reproducible.",
+        "privacyTitle": "Privacy",
+        "privacyBody": "There is no account, analytics, or server sync. Your progress and preferences stay in this browser. Use Settings to export a backup or remove local data.",
+        "sourceNote": "Source version: Natural Earth 1:50m. Data is used under the public-domain terms stated by Natural Earth.",
+        "backToSettings": "Open Settings"
     },
     "home": {
         "ritualProgress": "Today's ritual",

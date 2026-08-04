@@ -1,0 +1,55 @@
+---
+import { ArrowLeft, ExternalLink } from "lucide-astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { pageLocale, t } from "../lib/i18n/t";
+
+const locale = pageLocale(Astro.currentLocale, Astro.url);
+---
+
+<BaseLayout title={`${t(locale, "about.title")} — ${t(locale, "common.appName")}`}>
+    <main class="mx-auto max-w-xl px-5 py-8 sm:px-6 sm:py-10">
+        <div class="mb-7 flex items-center gap-3">
+            <a
+                href={locale === "es" ? "/es/" : "/"}
+                aria-label={t(locale, "common.backToToday")}
+                class="flex h-8 w-8 items-center justify-center rounded-button bg-chip text-text-muted"
+            >
+                <ArrowLeft width={18} height={18} aria-hidden="true" />
+            </a>
+            <h1 class="text-lg font-bold text-text">{t(locale, "about.title")}</h1>
+        </div>
+
+        <p class="mb-7 text-base leading-relaxed text-text-muted">{t(locale, "about.intro")}</p>
+
+        <section class="mb-6 rounded-card border border-border bg-surface p-5" aria-labelledby="data-title">
+            <h2 id="data-title" class="mb-3 text-base font-extrabold text-text">{t(locale, "about.dataTitle")}</h2>
+            <div class="flex flex-col gap-4 text-sm leading-relaxed text-text-muted">
+                <p>{t(locale, "about.worldBody")}</p>
+                <p>{t(locale, "about.europeBody")}</p>
+            </div>
+            <div class="mt-4 flex flex-col gap-2 text-sm font-semibold">
+                <a href="https://www.naturalearthdata.com/" target="_blank" rel="noreferrer" class="inline-flex items-center gap-1.5 text-accent-text">
+                    {t(locale, "about.naturalEarthLink")}
+                    <ExternalLink width={14} height={14} aria-hidden="true" />
+                </a>
+                <a href="https://github.com/nvkelso/natural-earth-vector" target="_blank" rel="noreferrer" class="inline-flex items-center gap-1.5 text-accent-text">
+                    {t(locale, "about.githubLink")}
+                    <ExternalLink width={14} height={14} aria-hidden="true" />
+                </a>
+            </div>
+            <p class="mt-4 border-t border-border pt-3 text-xs leading-relaxed text-text-muted">{t(locale, "about.sourceNote")}</p>
+        </section>
+
+        <section class="mb-6 rounded-card border border-border bg-surface p-5" aria-labelledby="border-title">
+            <h2 id="border-title" class="mb-2 text-base font-extrabold text-text">{t(locale, "about.borderTitle")}</h2>
+            <p class="text-sm leading-relaxed text-text-muted">{t(locale, "about.borderBody")}</p>
+        </section>
+
+        <section class="mb-6 rounded-card border border-border bg-surface p-5" aria-labelledby="privacy-title">
+            <h2 id="privacy-title" class="mb-2 text-base font-extrabold text-text">{t(locale, "about.privacyTitle")}</h2>
+            <p class="text-sm leading-relaxed text-text-muted">{t(locale, "about.privacyBody")}</p>
+        </section>
+
+        <a href={locale === "es" ? "/es/settings" : "/settings"} class="block text-center text-sm font-semibold text-accent-text">{t(locale, "about.backToSettings")}</a>
+    </main>
+</BaseLayout>
