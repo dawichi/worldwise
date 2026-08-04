@@ -1,7 +1,7 @@
 ---
 import { ArrowLeft } from "lucide-astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { pageLocale, t } from "../lib/i18n/t";
+import { localizedPath, pageLocale, t } from "../lib/i18n/t";
 
 const locale = pageLocale(Astro.currentLocale, Astro.url);
 ---
@@ -10,7 +10,7 @@ const locale = pageLocale(Astro.currentLocale, Astro.url);
     <main class="mx-auto max-w-xl px-5 py-8 sm:px-6 sm:py-10">
         <div class="mb-7 flex items-center gap-3">
             <a
-                href={locale === "es" ? "/es/" : "/"}
+                href={localizedPath(locale, "/")}
                 aria-label={t(locale, "common.backToToday")}
                 class="flex h-8 w-8 items-center justify-center rounded-button bg-chip text-text-muted"
             >
@@ -56,7 +56,7 @@ const locale = pageLocale(Astro.currentLocale, Astro.url);
             <p id="settings-status" class="mt-3 min-h-5 text-sm text-text-muted" role="status" aria-live="polite"></p>
         </section>
 
-        <a href="/about" class="mt-5 block text-center text-sm font-semibold text-accent-text">{t(locale, "nav.about")}</a>
+        <a href={localizedPath(locale, "/about")} class="mt-5 block text-center text-sm font-semibold text-accent-text">{t(locale, "nav.about")}</a>
     </main>
 
     <script>

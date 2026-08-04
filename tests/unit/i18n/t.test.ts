@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import en from "../../../src/lib/i18n/dictionaries/en.json";
 import es from "../../../src/lib/i18n/dictionaries/es.json";
-import { t } from "../../../src/lib/i18n/t";
+import { localizedPath, t } from "../../../src/lib/i18n/t";
 
 function collectLeafPaths(node: unknown, prefix = ""): string[] {
     if (typeof node === "string") {
@@ -62,5 +62,14 @@ describe("t()", () => {
     it("throws for a key that doesn't resolve to a string", () => {
         expect(() => t("en", "common" as never)).toThrow();
         expect(() => t("en", "nonexistent.key" as never)).toThrow();
+    });
+});
+
+describe("localizedPath()", () => {
+    it("prefixes Spanish internal paths while leaving English paths unchanged", () => {
+        expect(localizedPath("en", "/statistics")).toBe("/statistics");
+        expect(localizedPath("es", "/statistics")).toBe("/es/statistics");
+        expect(localizedPath("es", "/")).toBe("/es/");
+        expect(localizedPath("es", "/es/about")).toBe("/es/about");
     });
 });

@@ -2,7 +2,7 @@
 import { CircleCheck } from "lucide-astro";
 import ShareResultButton from "../../components/shared/ShareResultButton.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { pageLocale, t } from "../../lib/i18n/t";
+import { localizedPath, pageLocale, t } from "../../lib/i18n/t";
 
 const locale = pageLocale(Astro.currentLocale, Astro.url);
 ---
@@ -21,7 +21,7 @@ const locale = pageLocale(Astro.currentLocale, Astro.url);
             <ShareResultButton label={t(locale, "common.shareResult")} />
         </div>
 
-        <a href="/" class="block w-full rounded-button bg-accent-button py-3.5 text-base font-bold text-white">
+        <a href={localizedPath(locale, "/")} class="block w-full rounded-button bg-accent-button py-3.5 text-base font-bold text-white">
             {t(locale, "common.backToToday")}
         </a>
     </main>

@@ -1,7 +1,7 @@
 ---
 import { CircleCheck } from "lucide-astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { pageLocale, t } from "../../lib/i18n/t";
+import { localizedPath, pageLocale, t } from "../../lib/i18n/t";
 
 const locale = pageLocale(Astro.currentLocale, Astro.url);
 ---
@@ -25,12 +25,12 @@ const locale = pageLocale(Astro.currentLocale, Astro.url);
                 {t(locale, "practice.playAgain")}
             </button>
             <a
-                href="/practice"
+                href={localizedPath(locale, "/practice")}
                 class="block w-full rounded-button border-2 border-accent py-3.5 text-center text-base font-bold text-accent-text"
             >
                 {t(locale, "practice.chooseAnother")}
             </a>
-            <a href="/" class="block w-full py-2 text-center text-sm font-semibold text-text-muted">
+            <a href={localizedPath(locale, "/")} class="block w-full py-2 text-center text-sm font-semibold text-text-muted">
                 {t(locale, "common.backToToday")}
             </a>
         </div>

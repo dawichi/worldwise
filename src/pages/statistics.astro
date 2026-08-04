@@ -1,7 +1,7 @@
 ---
 import { ArrowLeft } from "lucide-astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { pageLocale, t } from "../lib/i18n/t";
+import { localizedPath, pageLocale, t } from "../lib/i18n/t";
 
 const locale = pageLocale(Astro.currentLocale, Astro.url);
 ---
@@ -10,7 +10,7 @@ const locale = pageLocale(Astro.currentLocale, Astro.url);
     <main class="mx-auto max-w-xl px-5 py-8 sm:px-6 sm:py-10">
         <div class="mb-6 flex items-center gap-3">
             <a
-                href="/"
+                href={localizedPath(locale, "/")}
                 aria-label={t(locale, "common.backToToday")}
                 class="flex h-8 w-8 items-center justify-center rounded-button bg-chip text-text-muted"
             >

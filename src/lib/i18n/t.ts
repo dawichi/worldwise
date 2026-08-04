@@ -3,6 +3,16 @@ import es from "./dictionaries/es.json";
 
 export type Locale = "en" | "es";
 
+export function localizedPath(locale: Locale, path: string): string {
+    if (locale === "en" || path.startsWith("/es/")) {
+        return path;
+    }
+    if (path === "/") {
+        return "/es/";
+    }
+    return `/es${path}`;
+}
+
 export function pageLocale(
     currentLocale: string | undefined,
     url: URL,
