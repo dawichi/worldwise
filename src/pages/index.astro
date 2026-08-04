@@ -4,9 +4,9 @@ import BonusTierRow from "../components/home/BonusTierRow.astro";
 import ModeCard from "../components/home/ModeCard.astro";
 import RitualProgress from "../components/home/RitualProgress.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { t } from "../lib/i18n/t";
+import { pageLocale, t } from "../lib/i18n/t";
 
-const locale = Astro.currentLocale === "es" ? "es" : "en";
+const locale = pageLocale(Astro.currentLocale, Astro.url);
 ---
 
 <BaseLayout title={t(locale, "common.appName")}>
@@ -88,6 +88,7 @@ const locale = Astro.currentLocale === "es" ? "es" : "en";
             <a href="/practice" class="text-sm font-semibold text-accent-text">{t(locale, "home.practiceLink")}</a>
             <a href="/statistics" class="text-sm font-semibold text-accent-text">{t(locale, "home.statisticsLink")}</a>
             <a href="/how-to-play" class="text-sm font-semibold text-accent-text">{t(locale, "nav.howToPlay")}</a>
+            <a href="/settings" class="text-sm font-semibold text-accent-text">{t(locale, "nav.settings")}</a>
         </div>
     </main>
 

@@ -4,9 +4,9 @@ import CompassDial from "../../components/compass/CompassDial.astro";
 import FeedbackPanel from "../../components/shared/FeedbackPanel.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { parseDailyTierParam } from "../../lib/challenge/dailyTier";
-import { t } from "../../lib/i18n/t";
+import { pageLocale, t } from "../../lib/i18n/t";
 
-const locale = Astro.currentLocale === "es" ? "es" : "en";
+const locale = pageLocale(Astro.currentLocale, Astro.url);
 const tier = parseDailyTierParam(Astro.url.searchParams);
 const tierLabel = t(locale, "compass.tierLabel", {
     tier: t(locale, `tiers.${tier}`),

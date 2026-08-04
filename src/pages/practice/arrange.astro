@@ -3,9 +3,9 @@ import { ArrowLeft } from "lucide-astro";
 import ArrangeList from "../../components/arrange/ArrangeList.astro";
 import FeedbackPanel from "../../components/shared/FeedbackPanel.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { t } from "../../lib/i18n/t";
+import { pageLocale, t } from "../../lib/i18n/t";
 
-const locale = Astro.currentLocale === "es" ? "es" : "en";
+const locale = pageLocale(Astro.currentLocale, Astro.url);
 ---
 
 <BaseLayout title={`${t(locale, "modes.arrange.name")} — ${t(locale, "common.appName")}`}>

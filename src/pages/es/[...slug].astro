@@ -1,0 +1,46 @@
+---
+import HowToPlayPage from "../how-to-play.astro";
+import HomePage from "../index.astro";
+import ArrangePage from "../play/arrange.astro";
+import BorderRunPage from "../play/border-run.astro";
+import CompassPage from "../play/compass.astro";
+import PracticeArrangePage from "../practice/arrange.astro";
+import PracticeBorderRunPage from "../practice/border-run.astro";
+import PracticeCompassPage from "../practice/compass.astro";
+import PracticeIndexPage from "../practice/index.astro";
+import PracticeResultPage from "../practice/result.astro";
+import ArrangeResultPage from "../result/arrange.astro";
+import BorderRunResultPage from "../result/border-run.astro";
+import CompassResultPage from "../result/compass.astro";
+import SettingsPage from "../settings.astro";
+import StatisticsPage from "../statistics.astro";
+
+export function getStaticPaths() {
+    const pages = {
+        "": HomePage,
+        "how-to-play": HowToPlayPage,
+        statistics: StatisticsPage,
+        settings: SettingsPage,
+        "play/compass": CompassPage,
+        "play/arrange": ArrangePage,
+        "play/border-run": BorderRunPage,
+        practice: PracticeIndexPage,
+        "practice/compass": PracticeCompassPage,
+        "practice/arrange": PracticeArrangePage,
+        "practice/border-run": PracticeBorderRunPage,
+        "practice/result": PracticeResultPage,
+        "result/compass": CompassResultPage,
+        "result/arrange": ArrangeResultPage,
+        "result/border-run": BorderRunResultPage,
+    };
+
+    return Object.keys(pages).map((slug) => ({
+        params: { slug: slug || undefined },
+        props: { Page: pages[slug as keyof typeof pages] },
+    }));
+}
+
+const { Page } = Astro.props;
+---
+
+<Page />

@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { title } = Astro.props;
-const locale = Astro.currentLocale ?? "en";
+const locale = Astro.currentLocale === "es" ? "es" : "en";
 ---
 
 <html lang={locale}>
@@ -16,6 +16,29 @@ const locale = Astro.currentLocale ?? "en";
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="generator" content={Astro.generator} />
         <title>{title}</title>
+        <script is:inline>
+            try {
+                const raw = localStorage.getItem("worldwise:preferences");
+                const preferences = raw ? JSON.parse(raw) : null;
+                const preferredLocale = preferences?.locale;
+                const currentLocale = document.documentElement.lang;
+                const url = new URL(window.location.href);
+                const isSpanishPath = url.pathname === "/es" || url.pathname.startsWith("/es/");
+                const basePath = isSpanishPath ? url.pathname.slice(3) || "/" : url.pathname;
+                const preferredPath = preferredLocale === "es"
+                    ? `/es${basePath === "/" ? "/" : basePath}`
+                    : basePath;
+                if ((preferredLocale === "en" || preferredLocale === "es") && preferredLocale !== currentLocale && url.pathname !== preferredPath) {
+                    url.pathname = preferredPath;
+                    window.location.replace(url.toString());
+                }
+                if (preferences?.reducedMotion === true) {
+                    document.documentElement.classList.add("reduce-motion");
+                }
+            } catch {
+                // Preferences are optional; the app remains usable with defaults.
+            }
+        </script>
     </head>
     <body class="min-h-screen">
         <slot />

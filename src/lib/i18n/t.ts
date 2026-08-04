@@ -3,6 +3,16 @@ import es from "./dictionaries/es.json";
 
 export type Locale = "en" | "es";
 
+export function pageLocale(
+    currentLocale: string | undefined,
+    url: URL,
+): Locale {
+    if (url.searchParams.get("lang") === "es") {
+        return "es";
+    }
+    return currentLocale === "es" ? "es" : "en";
+}
+
 type Dictionary = typeof en;
 
 /**

@@ -2,9 +2,9 @@
 import { CircleCheck } from "lucide-astro";
 import ShareResultButton from "../../components/shared/ShareResultButton.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { t } from "../../lib/i18n/t";
+import { pageLocale, t } from "../../lib/i18n/t";
 
-const locale = Astro.currentLocale === "es" ? "es" : "en";
+const locale = pageLocale(Astro.currentLocale, Astro.url);
 ---
 
 <BaseLayout title={`${t(locale, "modes.compass.name")} — ${t(locale, "common.appName")}`}>

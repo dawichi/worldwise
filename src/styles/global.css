@@ -70,3 +70,16 @@ body {
         scroll-behavior: auto !important;
     }
 }
+
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: preference must override component animations. */
+    animation-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: preference must override component animations. */
+    animation-iteration-count: 1 !important;
+    /* biome-ignore lint/complexity/noImportantStyles: preference must override component transitions. */
+    transition-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: preference must override component scroll behavior. */
+    scroll-behavior: auto !important;
+}

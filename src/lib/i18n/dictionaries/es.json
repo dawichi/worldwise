@@ -22,6 +22,25 @@
         "howToPlay": "Cómo jugar",
         "settings": "Ajustes"
     },
+    "settings": {
+        "title": "Ajustes",
+        "languageTitle": "Idioma",
+        "languageDescription": "Elige el idioma que se usará en Worldwise.",
+        "english": "Inglés",
+        "spanish": "Español",
+        "reducedMotionTitle": "Reducir movimiento",
+        "reducedMotionDescription": "Limita las animaciones y transiciones de la aplicación.",
+        "dataTitle": "Tus datos locales",
+        "dataDescription": "Exporta una copia, impórtala en este dispositivo o elimina todo el progreso guardado. Nada se envía a un servidor.",
+        "exportData": "Exportar progreso",
+        "importData": "Importar progreso",
+        "resetData": "Restablecer todos los datos",
+        "resetConfirm": "¿Restablecer todo el progreso y los ajustes de Worldwise? Esta acción no se puede deshacer.",
+        "exported": "Progreso exportado.",
+        "imported": "Progreso importado.",
+        "invalidImport": "El archivo no es una exportación válida de Worldwise.",
+        "resetComplete": "Todos los datos locales se han restablecido."
+    },
     "home": {
         "ritualProgress": "Ritual de hoy",
         "completeOf": "{completed} de {total}",

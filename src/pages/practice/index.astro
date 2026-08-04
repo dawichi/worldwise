@@ -2,9 +2,9 @@
 import { ArrowLeft } from "lucide-astro";
 import ToggleGroup from "../../components/practice/ToggleGroup.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { t } from "../../lib/i18n/t";
+import { pageLocale, t } from "../../lib/i18n/t";
 
-const locale = Astro.currentLocale === "es" ? "es" : "en";
+const locale = pageLocale(Astro.currentLocale, Astro.url);
 
 const modeOptions = [
     { value: "compass", label: t(locale, "modes.compass.name") },
