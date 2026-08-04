@@ -226,6 +226,7 @@ test.describe("Daily ritual (ADR-0002: streak requires every enabled mode)", () 
         await expect(page).toHaveURL(/\/play\/compass/);
         for (let round = 0; round < 3; round++) {
             const dial = page.getByRole("slider");
+            await expect(dial).toHaveAttribute("aria-valuetext", /.+/);
             const box = await dial.boundingBox();
             if (!box) {
                 throw new Error("compass dial has no bounding box");
@@ -235,6 +236,7 @@ test.describe("Daily ritual (ADR-0002: streak requires every enabled mode)", () 
                 box.y + box.height / 2,
             );
             await page.getByRole("button", { name: "Submit answer" }).click();
+            await expect(page.locator("#feedback-panel")).toBeVisible();
             await page.getByRole("button", { name: "Continue" }).click();
         }
         await expect(page).toHaveURL(/\/result\/compass/);

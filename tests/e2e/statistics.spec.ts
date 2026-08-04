@@ -48,6 +48,7 @@ test.describe("Statistics (after activity)", () => {
                 box.y + box.height / 2,
             );
             await page.getByRole("button", { name: "Submit answer" }).click();
+            await expect(page.locator("#feedback-panel")).toBeVisible();
             await page.getByRole("button", { name: "Continue" }).click();
         }
         await expect(page).toHaveURL(/\/result\/compass/);
@@ -59,6 +60,7 @@ test.describe("Statistics (after activity)", () => {
                 .first()
                 .click();
             await page.getByRole("button", { name: "Submit answer" }).click();
+            await expect(page.locator("#feedback-panel")).toBeVisible();
             await page.getByRole("button", { name: "Continue" }).click();
         }
         await expect(page).toHaveURL(/\/result\/arrange/);
@@ -70,6 +72,7 @@ test.describe("Statistics (after activity)", () => {
                 .first()
                 .click();
             await page.getByRole("button", { name: "Submit answer" }).click();
+            await expect(page.locator("#feedback-panel")).toBeVisible();
             await page.getByRole("button", { name: "Continue" }).click();
         }
         await expect(page).toHaveURL(/\/result\/border-run/);
@@ -86,6 +89,7 @@ test.describe("Statistics (after activity)", () => {
                 box.y + box.height / 2,
             );
             await page.getByRole("button", { name: "Submit answer" }).click();
+            await expect(page.locator("#feedback-panel")).toBeVisible();
             await page.getByRole("button", { name: "Continue" }).click();
         }
         await expect(page).toHaveURL(/\/practice\/result/);
