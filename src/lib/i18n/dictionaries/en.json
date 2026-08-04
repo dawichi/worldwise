@@ -54,7 +54,7 @@
         "borderBody": "Land-border routes are computed from the same 1:50m country geometry. Disputed territories, enclaves, and maritime-only borders are excluded by default so routes stay clear and reproducible.",
         "privacyTitle": "Privacy",
         "privacyBody": "There is no account, analytics, or server sync. Your progress and preferences stay in this browser. Use Settings to export a backup or remove local data.",
-        "sourceNote": "Source version: Natural Earth 1:50m. Data is used under the public-domain terms stated by Natural Earth.",
+        "sourceNote": "Worldwise uses and transforms Natural Earth 1:50m data for country geometry and capital coordinates. Border routes are derived by Worldwise from that geometry. Made with Natural Earth.",
         "backToSettings": "Open Settings"
     },
     "home": {

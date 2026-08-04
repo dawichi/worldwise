@@ -54,7 +54,7 @@
         "borderBody": "Las rutas por frontera terrestre se calculan con la misma geometría de países 1:50m. Las zonas disputadas, los enclaves y las fronteras solo marítimas se excluyen por defecto para que las rutas sean claras y reproducibles.",
         "privacyTitle": "Privacidad",
         "privacyBody": "No hay cuenta, analítica ni sincronización con servidores. Tu progreso y tus preferencias permanecen en este navegador. Usa Ajustes para exportar una copia o eliminar los datos locales.",
-        "sourceNote": "Versión de la fuente: Natural Earth 1:50m. Los datos se usan según los términos de dominio público indicados por Natural Earth.",
+        "sourceNote": "Worldwise usa y transforma datos 1:50m de Natural Earth para la geometría de los países y las coordenadas de las capitales. Las rutas fronterizas las deriva Worldwise a partir de esa geometría. Hecho con Natural Earth.",
         "backToSettings": "Abrir Ajustes"
     },
     "home": {

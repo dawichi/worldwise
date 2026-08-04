@@ -17,6 +17,7 @@ test.describe("About and data", () => {
         await expect(
             page.getByText("There is no account, analytics, or server sync."),
         ).toBeVisible();
+        await expect(page.getByText("Made with Natural Earth.")).toBeVisible();
     });
 
     test("renders the Spanish localized route", async ({ page }) => {
