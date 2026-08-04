@@ -116,5 +116,26 @@
         "practiceAccuracy": "Precisión en práctica",
         "noData": "Sin datos todavía",
         "storedOnDevice": "Tus estadísticas se guardan solo en este dispositivo."
+    },
+    "howToPlay": {
+        "title": "Cómo jugar",
+        "intro": "Worldwise es un breve ritual diario de geografía sobre las relaciones entre lugares, no un concurso de memoria.",
+        "dailyTitle": "El ritual diario",
+        "dailyBody": "Cada día UTC tiene un desafío compartido en cada modo. Completa los tres desafíos obligatorios de nivel medio para terminar el ritual y avanzar tu racha.",
+        "requiredTier": "El nivel medio es obligatorio y está pensado para durar unos minutos.",
+        "bonusTiers": "Fácil y Difícil son desafíos adicionales opcionales. Nunca afectan a tu racha.",
+        "modesTitle": "Tres formas de pensar geográficamente",
+        "compassTitle": "Brújula",
+        "compassBody": "Lee el país de origen y sus vecinos, y apunta la flecha hacia el destino. Después de enviar tu respuesta, compara tu flecha con la dirección perfecta.",
+        "arrangeTitle": "Ordenar",
+        "arrangeBody": "Coloca los lugares en el orden geográfico correcto. Usa los controles para subir y bajar; nunca es necesario arrastrar.",
+        "borderRunTitle": "Cruce de Fronteras",
+        "borderRunBody": "Construye una ruta desde el origen hasta el destino usando solo países que compartan una frontera terrestre.",
+        "scoringTitle": "Cómo funciona la puntuación",
+        "scoringBody": "La puntuación depende de la corrección. Algunos modos dan crédito parcial cuando la respuesta se acerca. El tiempo se registra como referencia personal, pero nunca cambia tu puntuación.",
+        "practiceTitle": "Practica cuando quieras",
+        "practiceBody": "Elige Mundo o Europa, un modo y una dificultad para jugar desafíos nuevos sin límite. El progreso de Práctica está separado de tu racha diaria.",
+        "privacyTitle": "Tu progreso permanece en este dispositivo",
+        "privacyBody": "Worldwise no tiene cuentas ni clasificaciones. El progreso diario, las rachas y las estadísticas se guardan localmente en tu navegador."
     }
 }

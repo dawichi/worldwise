@@ -116,5 +116,26 @@
         "practiceAccuracy": "Practice accuracy",
         "noData": "No data yet",
         "storedOnDevice": "Your statistics are stored only on this device."
+    },
+    "howToPlay": {
+        "title": "How to play",
+        "intro": "Worldwise is a short daily geography ritual about relationships between places—not a memory quiz.",
+        "dailyTitle": "The daily ritual",
+        "dailyBody": "Every UTC day has one shared challenge in each mode. Complete the three required medium challenges to finish the ritual and advance your streak.",
+        "requiredTier": "Medium is the required tier and is designed to take a few minutes.",
+        "bonusTiers": "Easy and Hard are optional bonus challenges. They never affect your streak.",
+        "modesTitle": "Three ways to think geographically",
+        "compassTitle": "Compass",
+        "compassBody": "Read the origin country and its neighbors, then point the arrow toward the destination. After submitting, compare your arrow with the perfect bearing.",
+        "arrangeTitle": "Arrange",
+        "arrangeBody": "Put places in the correct geographic order. Use the up and down controls—dragging is never required.",
+        "borderRunTitle": "Border Run",
+        "borderRunBody": "Build a route from the origin to the destination using only countries that share a land border.",
+        "scoringTitle": "How scoring works",
+        "scoringBody": "Scores are based on correctness. Some modes award partial credit when your answer is close. Time is recorded for your own context, but never changes your score.",
+        "practiceTitle": "Practice whenever you want",
+        "practiceBody": "Choose World or Europe, a mode, and a difficulty for unlimited fresh challenges. Practice progress is separate from your daily streak.",
+        "privacyTitle": "Your progress stays on this device",
+        "privacyBody": "Worldwise has no account or leaderboard. Daily progress, streaks, and statistics are stored locally in your browser."
     }
 }

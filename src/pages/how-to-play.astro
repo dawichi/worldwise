@@ -1,0 +1,76 @@
+---
+import { ArrowLeft, BarChart3, Compass, Route } from "lucide-astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { t } from "../lib/i18n/t";
+
+const locale = Astro.currentLocale === "es" ? "es" : "en";
+---
+
+<BaseLayout title={`${t(locale, "howToPlay.title")} — ${t(locale, "common.appName")}`}>
+    <main class="mx-auto max-w-xl px-5 py-8 sm:px-6 sm:py-10">
+        <div class="mb-7 flex items-center gap-3">
+            <a
+                href="/"
+                aria-label={t(locale, "common.backToToday")}
+                class="flex h-8 w-8 items-center justify-center rounded-button bg-chip text-text-muted"
+            >
+                <ArrowLeft width={18} height={18} aria-hidden="true" />
+            </a>
+            <h1 class="text-lg font-bold text-text">{t(locale, "howToPlay.title")}</h1>
+        </div>
+
+        <p class="mb-7 text-base leading-relaxed text-text-muted">{t(locale, "howToPlay.intro")}</p>
+
+        <section class="mb-7 rounded-card border border-border bg-surface p-5" aria-labelledby="daily-title">
+            <h2 id="daily-title" class="mb-2 text-base font-extrabold text-text">{t(locale, "howToPlay.dailyTitle")}</h2>
+            <p class="mb-4 text-sm leading-relaxed text-text-muted">{t(locale, "howToPlay.dailyBody")}</p>
+            <ul class="flex flex-col gap-2 text-sm text-text">
+                <li class="rounded-button bg-accent-tint px-3 py-2">{t(locale, "howToPlay.requiredTier")}</li>
+                <li class="rounded-button bg-chip px-3 py-2">{t(locale, "howToPlay.bonusTiers")}</li>
+            </ul>
+        </section>
+
+        <section class="mb-7" aria-labelledby="modes-title">
+            <h2 id="modes-title" class="mb-3 text-base font-extrabold text-text">{t(locale, "howToPlay.modesTitle")}</h2>
+            <div class="flex flex-col gap-3">
+                <article class="rounded-card border border-border bg-surface p-4">
+                    <div class="mb-2 flex items-center gap-2 text-text">
+                        <Compass width={19} height={19} aria-hidden="true" />
+                        <h3 class="font-extrabold">{t(locale, "howToPlay.compassTitle")}</h3>
+                    </div>
+                    <p class="text-sm leading-relaxed text-text-muted">{t(locale, "howToPlay.compassBody")}</p>
+                </article>
+                <article class="rounded-card border border-border bg-surface p-4">
+                    <div class="mb-2 flex items-center gap-2 text-text">
+                        <BarChart3 width={19} height={19} aria-hidden="true" />
+                        <h3 class="font-extrabold">{t(locale, "howToPlay.arrangeTitle")}</h3>
+                    </div>
+                    <p class="text-sm leading-relaxed text-text-muted">{t(locale, "howToPlay.arrangeBody")}</p>
+                </article>
+                <article class="rounded-card border border-border bg-surface p-4">
+                    <div class="mb-2 flex items-center gap-2 text-text">
+                        <Route width={19} height={19} aria-hidden="true" />
+                        <h3 class="font-extrabold">{t(locale, "howToPlay.borderRunTitle")}</h3>
+                    </div>
+                    <p class="text-sm leading-relaxed text-text-muted">{t(locale, "howToPlay.borderRunBody")}</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="mb-7 rounded-card border border-border bg-surface p-5" aria-labelledby="scoring-title">
+            <h2 id="scoring-title" class="mb-2 text-base font-extrabold text-text">{t(locale, "howToPlay.scoringTitle")}</h2>
+            <p class="text-sm leading-relaxed text-text-muted">{t(locale, "howToPlay.scoringBody")}</p>
+        </section>
+
+        <section class="mb-7" aria-labelledby="practice-title">
+            <h2 id="practice-title" class="mb-2 text-base font-extrabold text-text">{t(locale, "howToPlay.practiceTitle")}</h2>
+            <p class="mb-3 text-sm leading-relaxed text-text-muted">{t(locale, "howToPlay.practiceBody")}</p>
+            <a href="/practice" class="font-bold text-accent-text">{t(locale, "nav.practice")}</a>
+        </section>
+
+        <section class="border-t border-border pt-5" aria-labelledby="privacy-title">
+            <h2 id="privacy-title" class="mb-2 text-sm font-extrabold text-text">{t(locale, "howToPlay.privacyTitle")}</h2>
+            <p class="text-xs leading-relaxed text-text-muted">{t(locale, "howToPlay.privacyBody")}</p>
+        </section>
+    </main>
+</BaseLayout>
