@@ -4,6 +4,21 @@ Worldwise is a small daily geography game about how we picture the world. Compas
 
 The daily challenges are deterministic and shared by every player. Progress, streaks, practice results, and the personal mental-map profile stay in the browser; there is no account or backend.
 
+<p align="center">
+  <a href="https://worldwise.kois.app">Play it live</a> ·
+  <a href="#screenshots">Screenshots</a>
+</p>
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/compass-reveal.png" alt="Compass reveal comparing an eastward answer with the westward great-circle route and flat-map line." width="720" />
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/border-run-reveal.png" alt="Border Run reveal comparing a five-hop route from Pakistan to Yemen with the four-hop shortest route." width="720" />
+</p>
+
 ## Play locally
 
 Requirements: Bun and Node.js 22.12 or newer.
