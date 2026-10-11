@@ -43,6 +43,10 @@ Astro prints the local URL, usually `http://localhost:4321`.
 
 The World collection uses Natural Earth 1:50m country geometry and capital coordinates. The derived country outlines and adjacency graph are produced from the same source geometry. Read [`src/data/world/source.md`](src/data/world/source.md) for the license, filter, coordinate semantics, known quirks, and regeneration details.
 
+## License
+
+Worldwise's original code and documentation are licensed under the [MIT License](LICENSE). The generated geographic data is derived from Natural Earth and remains under its public-domain terms; third-party dependencies keep their own licenses.
+
 ## Architecture notes
 
 - [The country filter that recovered twelve countries](docs/case-studies/geographic-data-filter.md)

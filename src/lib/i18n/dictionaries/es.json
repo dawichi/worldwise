@@ -47,6 +47,7 @@
     "about": {
         "title": "Acerca y datos",
         "intro": "Worldwise es un pequeño juego de geografía basado en las relaciones entre lugares: dirección, orden, distancia y fronteras.",
+        "sourceCodeLink": "Código fuente de Worldwise en GitHub",
         "dataTitle": "Datos geográficos",
         "worldBody": "La colección Mundo usa vectores culturales 1:50m de Natural Earth para las fronteras y las coordenadas de las capitales. Incluye 193 países soberanos y la Ciudad del Vaticano cuando existe un punto de capital en la fuente.",
         "europeBody": "La colección Europa es una colección derivada de Práctica creada a partir de los mismos registros de países normalizados. Contiene 45 países seleccionados para esta primera región.",

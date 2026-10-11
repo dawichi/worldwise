@@ -20,6 +20,12 @@ const locale = pageLocale(Astro.currentLocale, Astro.url);
         </div>
 
         <p class="mb-7 text-base leading-relaxed text-text-muted">{t(locale, "about.intro")}</p>
+        <div class="mb-7">
+            <a href="https://github.com/dawichi/worldwise" target="_blank" rel="noreferrer" class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-text">
+                {t(locale, "about.sourceCodeLink")}
+                <ExternalLink width={14} height={14} aria-hidden="true" />
+            </a>
+        </div>
 
         <section class="mb-6 rounded-card border border-border bg-surface p-5" aria-labelledby="data-title">
             <h2 id="data-title" class="mb-3 text-base font-extrabold text-text">{t(locale, "about.dataTitle")}</h2>

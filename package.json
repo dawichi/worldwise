@@ -2,6 +2,7 @@
     "name": "worldwise",
     "type": "module",
     "version": "0.0.1",
+    "license": "MIT",
     "private": true,
     "engines": {
         "node": ">=22.12.0"
