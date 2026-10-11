@@ -305,16 +305,13 @@ The first complete version should aim for:
 
 The World-collection vertical slice (generation, validation, persistence, accessibility, feedback, and tests) is done for all three MVP modes — Compass, Arrange, and Border Run — each at their required medium tier, a complete vertical slice before breadth, as this section originally called for if the full scope proved too broad for a first milestone. The easy/hard bonus tiers are also done for all three modes. Non-goals for the initial product are listed in [`AGENTS.md`](./AGENTS.md#non-goals).
 
-## Suggested implementation order
+## Implementation status
 
-Confirming the IA, researching geographic sources/licenses/coordinate semantics, scaffolding the toolchain, defining the core schemas, building deterministic seed/version infrastructure, the Compass/Arrange/Border Run vertical slices themselves, and applying the chosen design to the daily flow are all done. Remaining:
+The MVP implementation and review are complete. GitHub CI passes lint, type checks, unit tests, the production build, and end-to-end browser tests. A prior phone-sized smoke review covered Compass and Border Run; browser coverage includes accessibility scans and keyboard-only daily play. No committed implementation tasks remain for this scope.
 
-1. Practice, Statistics, sharing, and Settings/About are done. Practice offers World and Europe; `/statistics` reads existing persisted state — streak, per-mode Daily accuracy/days-completed, and per-collection Practice attempts/accuracy — via `src/lib/challenge/statistics.ts`, with no new generation or persistence writes. Result sharing is spoiler-free, Settings owns language/motion/data controls, and `/about` documents the geographic sources, border policy, and local-only privacy model.
-2. Perform mobile, accessibility, data-quality, and deterministic-regression testing before release (Compass, Arrange, and Border Run each already have a start: property-based generation tests and a Playwright accessibility scan; this still needs to happen for the product as a whole once it's more complete).
+## Product questions to revisit later
 
-## Open product decisions
-
-Most of the questions that used to appear here have been resolved and recorded as ADRs in `docs/adr/`. The decisions that remain genuinely open:
+These are deferred choices, not release blockers. Revisit them only if the product direction changes or after players have used the current daily ritual:
 
 - If a rotating daily program (multiple default collections over time) is introduced later, how should it be scheduled and versioned?
 - Should the roughly three rounds per mode-challenge be tuned once a playable vertical slice exists?
