@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 /*
- * Design tokens lifted verbatim from the chosen "Worldwise Screens 1/2/3"
- * mockups (oklch values). Components must reference these, never hard-code
- * a color/radius/font.
+ * Design tokens based on the chosen "Worldwise Screens 1/2/3" mockups
+ * (oklch values), with muted text darkened slightly to meet WCAG AA contrast.
+ * Components must reference these, never hard-code a color/radius/font.
  */
 @theme {
     --color-bg: oklch(96% 0.012 60);
@@ -12,7 +12,7 @@
     --color-chip: oklch(93% 0.012 55);
 
     --color-text: oklch(22% 0.02 50);
-    --color-text-muted: oklch(52% 0.02 50);
+    --color-text-muted: oklch(50% 0.02 50);
 
     --color-accent: oklch(64% 0.16 45);
     --color-accent-text: oklch(42% 0.14 45);
