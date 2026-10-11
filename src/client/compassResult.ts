@@ -1,4 +1,4 @@
-import { compassCountryShapes } from "../data/generated/compassShapes";
+import { countryThumbnails } from "../data/generated/countryThumbnails";
 import { worldCollection } from "../data/generated/world";
 import { resolveDailyCompass } from "../lib/challenge/dailyCompass";
 import { parseDailyTierParam, withTierQuery } from "../lib/challenge/dailyTier";
@@ -55,8 +55,7 @@ function buildRoundItem(
     const map = document.createElementNS("http://www.w3.org/2000/svg", "path");
     map.setAttribute(
         "d",
-        compassCountryShapes[originIso2] ??
-            "M20 35 L65 20 L82 55 L61 82 L25 72 Z",
+        countryThumbnails[originIso2] ?? "M20 35 L65 20 L82 55 L61 82 L25 72 Z",
     );
     map.setAttribute("class", "fill-accent/20 stroke-accent");
     map.setAttribute("stroke-width", "1.5");

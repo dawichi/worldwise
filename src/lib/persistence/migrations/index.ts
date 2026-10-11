@@ -92,12 +92,22 @@ function migrateV5ToV6(data: Record<string, unknown>): Record<string, unknown> {
     };
 }
 
+/**
+ * v6 → v7: the Statistics "mental map" profile needs a log of answered
+ * Compass rounds (ADR-0010). A v6 value has no such key, so it's
+ * backfilled empty — the profile simply starts from the next answer.
+ */
+function migrateV6ToV7(data: Record<string, unknown>): Record<string, unknown> {
+    return { ...data, schemaVersion: 7, insights: { compassAnswers: [] } };
+}
+
 export const REAL_MIGRATIONS: Record<number, Migration> = {
     1: migrateV1ToV2,
     2: migrateV2ToV3,
     3: migrateV3ToV4,
     4: migrateV4ToV5,
     5: migrateV5ToV6,
+    6: migrateV6ToV7,
 };
 
 function detectVersion(data: Record<string, unknown>): number {

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+    <rect width="1200" height="630" rx="36" fill="#F7F4EF"/>
+    <circle cx="942" cy="316" r="242" fill="#EAF2F2"/>
+    <circle cx="942" cy="316" r="210" stroke="#D7E2E3" stroke-width="2"/>
+    <circle cx="942" cy="316" r="164" stroke="#D7E2E3" stroke-width="1.5" stroke-dasharray="4 11"/>
+    <g stroke="#BFCFD0" stroke-width="2" stroke-linecap="round">
+        <path d="M942 76v20M942 536v20M702 316h20M1162 316h20M772.3 146.3l14.2 14.2M1097.5 471.5l14.2 14.2M772.3 485.7l14.2-14.2M1097.5 160.5l14.2-14.2"/>
+    </g>
+    <text x="942" y="133" text-anchor="middle" fill="#596B6D" font-family="system-ui, sans-serif" font-size="18" font-weight="700">N</text>
+    <text x="1113" y="322" text-anchor="middle" fill="#596B6D" font-family="system-ui, sans-serif" font-size="18" font-weight="700">E</text>
+    <text x="942" y="519" text-anchor="middle" fill="#596B6D" font-family="system-ui, sans-serif" font-size="18" font-weight="700">S</text>
+    <text x="770" y="322" text-anchor="middle" fill="#596B6D" font-family="system-ui, sans-serif" font-size="18" font-weight="700">W</text>
+    <path d="M813 375c55-141 143-174 259-112" stroke="#B8A793" stroke-width="5" stroke-linecap="round" stroke-dasharray="10 12"/>
+    <path d="M813 375c47-100 127-147 259-112" stroke="#CF5F3F" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="813" cy="375" r="12" fill="#CF5F3F" stroke="#F7F4EF" stroke-width="5"/>
+    <circle cx="1072" cy="263" r="12" fill="#2D7A66" stroke="#F7F4EF" stroke-width="5"/>
+    <path d="M1042 251l29 12-29 12 7-12-7-12Z" fill="#CF5F3F"/>
+    <text x="74" y="108" fill="#A34A31" font-family="system-ui, sans-serif" font-size="19" font-weight="800" letter-spacing="3">A DAILY GEOGRAPHY GAME</text>
+    <text x="72" y="216" fill="#203638" font-family="system-ui, sans-serif" font-size="76" font-weight="800" letter-spacing="-3">Worldwise</text>
+    <text x="76" y="286" fill="#203638" font-family="system-ui, sans-serif" font-size="32" font-weight="700">How well does your mental map</text>
+    <text x="76" y="332" fill="#203638" font-family="system-ui, sans-serif" font-size="32" font-weight="700">match the real world?</text>
+    <text x="76" y="408" fill="#596B6D" font-family="system-ui, sans-serif" font-size="22">Point. Learn. See the shortest way around.</text>
+    <rect x="76" y="468" width="168" height="48" rx="24" fill="#F1E3D8"/>
+    <text x="160" y="499" text-anchor="middle" fill="#8C422F" font-family="system-ui, sans-serif" font-size="17" font-weight="700">COMPASS · ROUTES · MAPS</text>
+</svg>

@@ -8,12 +8,20 @@ interface Props {
     statusLabel: string;
     startLabel: string;
     href: string;
+    featured?: boolean;
 }
 
-const { id, name, statusLabel, startLabel, href } = Astro.props;
+const {
+    id,
+    name,
+    statusLabel,
+    startLabel,
+    href,
+    featured = false,
+} = Astro.props;
 ---
 
-<div id={id} data-status="not-started" class="mode-card flex items-center gap-3.5 rounded-card border border-border bg-surface p-4">
+<div id={id} data-status="not-started" data-featured={featured} class="mode-card flex items-center gap-3.5 rounded-card border border-border bg-surface p-4">
     <div
         data-role="icon-tile"
         class="icon-tile flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-button bg-chip text-text-muted"
@@ -54,5 +62,26 @@ const { id, name, statusLabel, startLabel, href } = Astro.props;
     .mode-card[data-status="completed"] .status-label {
         color: var(--color-success-text);
         font-weight: 600;
+    }
+    .mode-card[data-featured="true"] {
+        border-width: 2px;
+        border-color: var(--color-accent);
+        background: var(--color-accent-tint);
+        padding: 1.25rem;
+    }
+    .mode-card[data-featured="true"] .icon-tile {
+        width: 3rem;
+        height: 3rem;
+        background: var(--color-surface);
+        color: var(--color-accent-text);
+    }
+    .mode-card[data-featured="true"] [data-role="action-link"] {
+        border-color: var(--color-accent-button);
+        background: var(--color-accent-button);
+        color: white;
+    }
+    .mode-card[data-featured="true"][data-status="completed"] {
+        border-color: var(--color-success-icon);
+        background: var(--color-success-bg);
     }
 </style>

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-export const CURRENT_SCHEMA_VERSION = 6;
+export const CURRENT_SCHEMA_VERSION = 7;
+export const MAX_COMPASS_ANSWER_RECORDS = 300;
 
 const tierSchema = z.enum(["easy", "medium", "hard"]);
 
@@ -41,7 +42,7 @@ const arrangeDailyEntrySchema = z.object({
 const borderRunRoundAnswerSchema = z.object({
     /** The submitted place-id path (origin through destination), or null if this round hasn't been answered yet. */
     submittedPath: z.array(z.string().min(1)).nullable(),
-    /** Credit for this round, in [0, 1]; 0 while unanswered (ADR-0004: binary for this mode). */
+    /** Credit for this round, in [0, 1]; 0 while unanswered. */
     credit: z.number().gte(0).lte(1),
 });
 
@@ -84,6 +85,24 @@ const practiceRecentFingerprintsSchema = z.object({
     europe: practiceRecentFingerprintsByModeSchema,
 });
 
+/**
+ * One answered Compass round, daily or practice, kept for the "mental map"
+ * profile on Statistics (see `lib/insights/mentalMap.ts`). Stores the
+ * answer next to both reference directions so the profile never has to
+ * regenerate old challenges.
+ */
+const compassAnswerRecordSchema = z.object({
+    originId: z.string().min(1),
+    destinationId: z.string().min(1),
+    chosenDeg: z.number().gte(0).lt(360),
+    /** Initial great-circle bearing — the scored answer (ADR-0008). */
+    trueBearingDeg: z.number().gte(0).lt(360),
+    /** Rhumb-line ("flat map") bearing, for the flat-map comparison (ADR-0010). */
+    flatBearingDeg: z.number().gte(0).lt(360),
+    distanceKm: z.number().gte(0),
+    answeredAt: z.string().min(1),
+});
+
 const streakSchema = z.object({
     current: z.number().int().gte(0),
     longest: z.number().int().gte(0),
@@ -116,6 +135,12 @@ export const persistedStateSchema = z.object({
         recentFingerprints: practiceRecentFingerprintsSchema,
     }),
     streak: streakSchema,
+    insights: z.object({
+        /** Bounded, oldest-first (see `MAX_COMPASS_ANSWER_RECORDS`). */
+        compassAnswers: z
+            .array(compassAnswerRecordSchema)
+            .max(MAX_COMPASS_ANSWER_RECORDS),
+    }),
 });
 
 export type PersistedState = z.infer<typeof persistedStateSchema>;
@@ -125,6 +150,7 @@ export type ArrangeDailyEntry = z.infer<typeof arrangeDailyEntrySchema>;
 export type ArrangeRoundAnswer = z.infer<typeof arrangeRoundAnswerSchema>;
 export type BorderRunDailyEntry = z.infer<typeof borderRunDailyEntrySchema>;
 export type BorderRunRoundAnswer = z.infer<typeof borderRunRoundAnswerSchema>;
+export type CompassAnswerRecord = z.infer<typeof compassAnswerRecordSchema>;
 export type PracticeModeStats = z.infer<typeof practiceModeStatsSchema>;
 export type PracticeStatsByMode = z.infer<typeof practiceStatsByModeSchema>;
 export type PracticeStats = z.infer<typeof practiceStatsSchema>;
@@ -158,5 +184,6 @@ export function createDefaultState(): PersistedState {
             },
         },
         streak: { current: 0, longest: 0, lastCompletedDate: null },
+        insights: { compassAnswers: [] },
     };
 }

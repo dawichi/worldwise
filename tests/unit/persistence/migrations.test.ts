@@ -224,3 +224,22 @@ describe("REAL_MIGRATIONS[5] (the real v5 -> v6 migration)", () => {
         });
     });
 });
+
+describe("REAL_MIGRATIONS[6] (the real v6 -> v7 migration)", () => {
+    it("adds an empty Compass answer log and bumps schemaVersion, leaving everything else untouched", () => {
+        const migrateV6ToV7 = REAL_MIGRATIONS[6];
+        expect(migrateV6ToV7).toBeDefined();
+
+        const v6Data = {
+            schemaVersion: 6,
+            compass: { daily: { "2026-07-31": { challengeId: "x" } } },
+            streak: { current: 5, longest: 9, lastCompletedDate: "2026-07-31" },
+        };
+
+        expect(migrateV6ToV7?.(v6Data)).toEqual({
+            ...v6Data,
+            schemaVersion: 7,
+            insights: { compassAnswers: [] },
+        });
+    });
+});

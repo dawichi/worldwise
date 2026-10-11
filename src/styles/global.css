@@ -31,6 +31,12 @@
     --color-attention-icon: oklch(55% 0.14 25);
     --color-attention-text: oklch(34% 0.06 25);
 
+    /* Map palette: a faintly cool sea so warm land reads as a map without
+       competing with the accent used for highlighted places and routes. */
+    --color-sea: oklch(96.5% 0.012 225);
+    --color-land: oklch(91% 0.02 70);
+    --color-land-edge: oklch(82% 0.02 60);
+
     --radius-card: 18px;
     --radius-button: 11px;
     --radius-pill: 999px;

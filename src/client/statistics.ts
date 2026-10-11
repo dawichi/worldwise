@@ -1,3 +1,4 @@
+import { worldCollection } from "../data/generated/world";
 import {
     ENABLED_MODE_IDS,
     type EnabledModeId,
@@ -9,10 +10,19 @@ import {
     type ModeStats,
 } from "../lib/challenge/statistics";
 import { PRACTICE_COLLECTION_IDS } from "../lib/data/collections";
+import { projectMercator } from "../lib/geo/mercator";
+import { shortLongitudeDelta } from "../lib/geo/route";
 import { type Locale, type TranslationKey, t } from "../lib/i18n/t";
+import {
+    estimatedDestinationPoint,
+    summarizeMentalMap,
+} from "../lib/insights/mentalMap";
 import { loadState } from "../lib/persistence/repository";
+import { drawWrappedWorld, loadCountryShapes } from "./maps/worldMap";
+import { svgElement } from "./shared/dom";
 
 const HISTORY_DAYS = 14;
+const MENTAL_MAP_PLOT_LIMIT = 24;
 
 function getLocale(): Locale {
     return document.documentElement.lang === "es" ? "es" : "en";
@@ -146,9 +156,236 @@ function buildModeCard(
     return card;
 }
 
+function renderMentalMap(locale: Locale): void {
+    const state = loadState(localStorage);
+    const records = state.insights.compassAnswers;
+    const content = must(
+        document.getElementById("mental-map-content"),
+        "mental-map-content",
+    );
+    const empty = must(
+        document.getElementById("mental-map-empty"),
+        "mental-map-empty",
+    );
+    if (records.length === 0) {
+        empty.classList.remove("hidden");
+        return;
+    }
+
+    content.classList.remove("hidden");
+    const pointById = new Map(
+        worldCollection.places.map((place) => [place.id, place.point]),
+    );
+    const summary = summarizeMentalMap(records, pointById);
+    must(
+        document.getElementById("mental-map-mean-error"),
+        "mean-error",
+    ).textContent =
+        summary.meanErrorDeg === null
+            ? t(locale, "statistics.notAvailable")
+            : `${summary.meanErrorDeg.toFixed(0)}°`;
+    const flatMapEl = must(
+        document.getElementById("mental-map-flat-map"),
+        "flat-map",
+    );
+    flatMapEl.textContent =
+        summary.flatMapTraps === 0
+            ? t(locale, "statistics.mentalMapNoFlatMapTraps")
+            : t(locale, "statistics.mentalMapFlatMapOf", {
+                  followed: summary.flatMapFollowed,
+                  total: summary.flatMapTraps,
+              });
+
+    const biasEl = must(
+        document.getElementById("mental-map-direction-bias"),
+        "direction-bias",
+    );
+    const signedError = summary.meanSignedErrorDeg;
+    if (summary.answers < 5) {
+        biasEl.textContent = t(locale, "statistics.mentalMapNeedsMore");
+    } else if (signedError === null || Math.abs(signedError) < 4) {
+        biasEl.textContent = t(locale, "statistics.mentalMapBalanced");
+    } else {
+        biasEl.textContent = t(
+            locale,
+            signedError > 0
+                ? "statistics.mentalMapClockwise"
+                : "statistics.mentalMapCounterclockwise",
+            { degrees: Math.abs(signedError).toFixed(0) },
+        );
+    }
+
+    const biasList = must(
+        document.getElementById("mental-map-destination-bias"),
+        "destination-bias",
+    );
+    for (const bias of summary.destinationBiases.slice(0, 3)) {
+        const place = worldCollection.places.find(
+            (candidate) => candidate.id === bias.destinationId,
+        );
+        if (!place) {
+            continue;
+        }
+        const northSouth = t(
+            locale,
+            bias.meanLatitudeOffsetDeg >= 0
+                ? "statistics.mentalMapBiasNorth"
+                : "statistics.mentalMapBiasSouth",
+        );
+        const eastWest = t(
+            locale,
+            bias.meanLongitudeOffsetDeg >= 0
+                ? "statistics.mentalMapBiasEast"
+                : "statistics.mentalMapBiasWest",
+        );
+        const item = document.createElement("li");
+        item.className = "rounded-button bg-chip px-3 py-2.5";
+        item.textContent = t(locale, "statistics.mentalMapBiasItem", {
+            place: place.names[locale],
+            latitude: Math.abs(bias.meanLatitudeOffsetDeg).toFixed(0),
+            northSouth,
+            longitude: Math.abs(bias.meanLongitudeOffsetDeg).toFixed(0),
+            eastWest,
+        });
+        biasList.append(item);
+    }
+    if (biasList.childElementCount === 0) {
+        const item = document.createElement("li");
+        item.className = "text-text-muted";
+        item.textContent = t(locale, "statistics.mentalMapBiasNoData");
+        biasList.append(item);
+    }
+
+    const bandList = must(
+        document.getElementById("mental-map-distance-bands"),
+        "distance-bands",
+    );
+    for (const band of summary.bands) {
+        const item = document.createElement("li");
+        item.className =
+            "flex items-center justify-between gap-3 rounded-button bg-chip px-3 py-2.5";
+        const label = document.createElement("span");
+        label.className = "font-semibold text-text";
+        const bandLabelKey: TranslationKey =
+            band.id === "near"
+                ? "statistics.mentalMapBandNear"
+                : band.id === "regional"
+                  ? "statistics.mentalMapBandRegional"
+                  : "statistics.mentalMapBandFar";
+        label.textContent = t(locale, bandLabelKey);
+        const value = document.createElement("span");
+        value.className = "text-right text-xs text-text-muted";
+        const bandValueKey: TranslationKey =
+            band.meanErrorDeg === null
+                ? "statistics.mentalMapBandNoData"
+                : band.answers === 1
+                  ? "statistics.mentalMapBandAnswer"
+                  : "statistics.mentalMapBandAnswers";
+        value.textContent = t(locale, bandValueKey, {
+            count: band.answers,
+            degrees: band.meanErrorDeg?.toFixed(0) ?? "",
+        });
+        item.append(label, value);
+        bandList.append(item);
+    }
+
+    const mapCount = must(
+        document.getElementById("mental-map-map-count"),
+        "map-count",
+    );
+    const plotted = records.slice(-MENTAL_MAP_PLOT_LIMIT);
+    mapCount.textContent = t(locale, "statistics.mentalMapMapCount", {
+        shown: plotted.length,
+        total: records.length,
+    });
+    const svg = must(
+        document.getElementById("mental-map-svg"),
+        "mental-map-svg",
+    );
+    const worldLayer = svg.querySelector<SVGGElement>(
+        '[data-role="mental-map-world"]',
+    );
+    const routeLayer = svg.querySelector<SVGGElement>(
+        '[data-role="mental-map-routes"]',
+    );
+    const pointLayer = svg.querySelector<SVGGElement>(
+        '[data-role="mental-map-points"]',
+    );
+    if (!worldLayer || !routeLayer || !pointLayer) {
+        throw new Error("statistics: mental map layers are missing");
+    }
+
+    void loadCountryShapes().then((shapes) => {
+        drawWrappedWorld(
+            worldLayer,
+            shapes,
+            "fill-land stroke-land-edge",
+            "mental-map-world-shapes",
+        );
+        const routes: SVGElement[] = [];
+        const points: SVGElement[] = [];
+        for (const record of plotted) {
+            const origin = worldCollection.places.find(
+                (place) => place.id === record.originId,
+            );
+            const destination = worldCollection.places.find(
+                (place) => place.id === record.destinationId,
+            );
+            if (!origin || !destination) {
+                continue;
+            }
+            const estimate = estimatedDestinationPoint(
+                origin.point,
+                record.chosenDeg,
+                record.distanceKm,
+            );
+            const estimateProjected = projectMercator(estimate);
+            const actualProjected = projectMercator(destination.point);
+            const actualLon =
+                estimate.lon +
+                shortLongitudeDelta(estimate.lon, destination.point.lon);
+            const midpointLon = (estimate.lon + actualLon) / 2;
+            const wrap = Math.round(midpointLon / 360) * 360;
+            const estimateLon = estimate.lon - wrap;
+            const wrappedActualLon = actualLon - wrap;
+            routes.push(
+                svgElement("path", {
+                    d: `M${estimateLon} ${estimateProjected.y} L${wrappedActualLon} ${actualProjected.y}`,
+                    fill: "none",
+                    stroke: "var(--color-text-muted)",
+                    "stroke-width": "0.55",
+                    "stroke-dasharray": "1.5 1.5",
+                    opacity: "0.65",
+                }),
+            );
+            points.push(
+                svgElement("circle", {
+                    cx: wrappedActualLon,
+                    cy: actualProjected.y,
+                    r: 1.8,
+                    fill: "var(--color-success-icon)",
+                    stroke: "var(--color-surface)",
+                    "stroke-width": "0.6",
+                }),
+                svgElement("circle", {
+                    cx: estimateLon,
+                    cy: estimateProjected.y,
+                    r: 1.8,
+                    fill: "var(--color-accent)",
+                    stroke: "var(--color-surface)",
+                    "stroke-width": "0.6",
+                }),
+            );
+        }
+        routeLayer.replaceChildren(...routes);
+        pointLayer.replaceChildren(...points);
+    });
+}
+
 export function mountStatistics(): void {
     const locale = getLocale();
     const state = loadState(localStorage);
+    renderMentalMap(locale);
 
     const streakCurrentEl = must(
         document.getElementById("streak-current"),

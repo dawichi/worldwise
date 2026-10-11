@@ -4,9 +4,13 @@ import type { Locale } from "../lib/i18n/t";
 export interface BorderRunPathController {
     getPath: () => string[];
     /** Resets the path to a fresh round, starting at `originId`. */
-    setRound: (originId: string, destinationId: string) => void;
-    /** Colors the trail by whether the submitted path was a valid route, and disables further edits. */
-    showResult: (isValid: boolean) => void;
+    setRound: (
+        originId: string,
+        destinationId: string,
+        hopBudget: number,
+    ) => void;
+    /** Colors the trail by score and disables further edits. */
+    showResult: (credit: number) => void;
     disable: () => void;
     enable: () => void;
 }
@@ -58,6 +62,7 @@ export function createBorderRunPathController(
     const placesById = new Map(places.map((place) => [place.id, place]));
     let path: string[] = [];
     let destinationId = "";
+    let hopBudget = 0;
     let disabled = false;
 
     function nameOf(id: string): string {
@@ -100,7 +105,13 @@ export function createBorderRunPathController(
 
         candidatesRoot.innerHTML = "";
         const alreadyReachedDestination = lastId === destinationId;
-        if (!disabled && lastId !== undefined && !alreadyReachedDestination) {
+        const usedHops = Math.max(path.length - 1, 0);
+        if (
+            !disabled &&
+            lastId !== undefined &&
+            !alreadyReachedDestination &&
+            usedHops < hopBudget
+        ) {
             const usedIds = new Set(path);
             for (const neighborId of neighborsOf(lastId)) {
                 if (usedIds.has(neighborId)) {
@@ -124,6 +135,15 @@ export function createBorderRunPathController(
             }
         }
 
+        const hopStatus = root.querySelector<HTMLElement>(
+            '[data-role="hop-status"]',
+        );
+        if (hopStatus) {
+            hopStatus.dataset.exhausted = String(
+                !alreadyReachedDestination && usedHops >= hopBudget,
+            );
+            hopStatus.textContent = `${usedHops} / ${hopBudget}`;
+        }
         undoButton.disabled = disabled || path.length <= 1;
     }
 
@@ -137,16 +157,22 @@ export function createBorderRunPathController(
 
     return {
         getPath: () => [...path],
-        setRound(originId: string, newDestinationId: string): void {
+        setRound(
+            originId: string,
+            newDestinationId: string,
+            newHopBudget: number,
+        ): void {
             path = [originId];
             destinationId = newDestinationId;
+            hopBudget = newHopBudget;
             disabled = false;
             trail.removeAttribute("data-credit");
             render();
         },
-        showResult(isValid: boolean): void {
+        showResult(credit: number): void {
             disabled = true;
-            trail.dataset.credit = isValid ? "full" : "none";
+            trail.dataset.credit =
+                credit === 1 ? "full" : credit > 0 ? "partial" : "none";
             candidatesRoot.innerHTML = "";
             undoButton.disabled = true;
         },

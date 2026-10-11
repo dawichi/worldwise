@@ -51,6 +51,8 @@ Permanent unless superseded by a later ADR — read the linked ADR for full cont
 - English and Spanish ship together at MVP launch; i18n infrastructure is required from day one, not deferred. — [ADR-0006](./adr/0006-bilingual-launch-english-spanish.md)
 - Daily always draws from a single fixed default collection (World); other collections live in Practice. — [ADR-0007](./adr/0007-daily-uses-single-default-collection.md)
 - Compass answers are a continuous angle on a dial, scored by angular error, not a discrete 8-direction choice; supersedes ADR-0004's Compass-specific clause only. — [ADR-0008](./adr/0008-compass-continuous-angle-scoring.md)
+- Border Run rewards efficient land routes: a shortest route earns full credit, valid detours within a tier's hop budget earn proportional credit, and invalid or over-budget routes earn none. — [ADR-0009](./adr/0009-border-run-route-efficiency-scoring.md)
+- Compass keeps a bounded local history of answers to build a personal mental-map profile; it is never sent to a server. — [ADR-0010](./adr/0010-local-compass-mental-map-profile.md)
 
 ## Tech stack
 

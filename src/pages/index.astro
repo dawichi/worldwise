@@ -26,18 +26,29 @@ const path = (value: string) => localizedPath(locale, value);
             </div>
         </header>
 
+        <section class="mb-6 rounded-card border border-border bg-surface p-5">
+            <p class="mb-2 text-xs font-extrabold uppercase tracking-[0.12em] text-accent-text">{t(locale, "home.heroEyebrow")}</p>
+            <h2 class="mb-2 text-xl font-extrabold leading-tight text-text">{t(locale, "home.heroTitle")}</h2>
+            <p class="text-sm leading-relaxed text-text-muted">{t(locale, "home.heroBody")}</p>
+        </section>
+
         <RitualProgress label={t(locale, "home.ritualProgress")} />
 
-        <div class="flex flex-col gap-3">
+        <div class="mb-5 flex flex-col gap-3">
             <ModeCard
                 id="compass-mode-card"
                 name={t(locale, "modes.compass.name")}
                 statusLabel={t(locale, "home.notStarted")}
                 startLabel={t(locale, "home.start")}
                 href={path("/play/compass")}
+                featured={true}
             >
                 <Compass slot="icon" width={20} height={20} aria-hidden="true" />
             </ModeCard>
+        </div>
+
+        <h2 class="mb-2 text-sm font-extrabold text-text-muted">{t(locale, "home.otherModesTitle")}</h2>
+        <div class="flex flex-col gap-3">
 
             <ModeCard
                 id="arrange-mode-card"

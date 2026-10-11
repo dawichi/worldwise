@@ -56,6 +56,50 @@ const locale = pageLocale(Astro.currentLocale, Astro.url);
             </div>
         </section>
 
+        <section class="mb-6 rounded-card border border-border bg-surface p-4" aria-labelledby="mental-map-title">
+            <h2 id="mental-map-title" class="mb-1 text-sm font-extrabold text-text">{t(locale, "statistics.mentalMapTitle")}</h2>
+            <p class="mb-4 text-xs leading-relaxed text-text-muted">{t(locale, "statistics.mentalMapDescription")}</p>
+            <p id="mental-map-empty" class="mb-4 hidden rounded-button bg-chip p-3 text-sm text-text-muted">{t(locale, "statistics.mentalMapNoData")}</p>
+
+            <div id="mental-map-content" class="hidden">
+                <div class="mb-4 grid grid-cols-2 gap-3">
+                    <div class="rounded-button bg-chip p-3">
+                        <div class="text-xs font-semibold text-text-muted">{t(locale, "statistics.mentalMapMeanError")}</div>
+                        <div id="mental-map-mean-error" class="mt-1 text-xl font-extrabold text-text"></div>
+                    </div>
+                    <div class="rounded-button bg-chip p-3">
+                        <div class="text-xs font-semibold text-text-muted">{t(locale, "statistics.mentalMapFlatMap")}</div>
+                        <div id="mental-map-flat-map" class="mt-1 text-sm font-bold text-text"></div>
+                    </div>
+                </div>
+
+                <p id="mental-map-direction-bias" class="mb-4 text-sm font-semibold text-text"></p>
+
+                <figure class="mb-5">
+                    <svg id="mental-map-svg" viewBox="-210 -180 420 360" preserveAspectRatio="xMidYMid meet" role="img" aria-label={t(locale, "statistics.mentalMapMapLabel")} class="mb-2 aspect-[7/6] w-full overflow-hidden rounded-button border border-border bg-sea">
+                        <g data-role="mental-map-world" stroke-width="0.45"></g>
+                        <g data-role="mental-map-routes"></g>
+                        <g data-role="mental-map-points"></g>
+                    </svg>
+                    <figcaption class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-semibold text-text-muted">
+                        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-success-icon"></span>{t(locale, "statistics.mentalMapMapLegendActual")}</span>
+                        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-accent"></span>{t(locale, "statistics.mentalMapMapLegendEstimate")}</span>
+                    </figcaption>
+                    <p id="mental-map-map-count" class="mt-1 text-xs text-text-muted"></p>
+                </figure>
+
+                <div class="mb-5">
+                    <h3 class="mb-2 text-sm font-bold text-text">{t(locale, "statistics.mentalMapBiasTitle")}</h3>
+                    <ul id="mental-map-destination-bias" class="flex flex-col gap-2 text-sm text-text"></ul>
+                </div>
+
+                <div>
+                    <h3 class="mb-2 text-sm font-bold text-text">{t(locale, "statistics.mentalMapDistanceTitle")}</h3>
+                    <ul id="mental-map-distance-bands" class="flex flex-col gap-2 text-sm"></ul>
+                </div>
+            </div>
+        </section>
+
         <div class="mb-6">
             <h2 class="mb-2 text-sm font-semibold text-text-muted">{t(locale, "statistics.dailyHistory")}</h2>
             <ol id="daily-history" class="flex flex-wrap gap-1.5"></ol>

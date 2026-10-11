@@ -104,8 +104,8 @@ export function shortestPath(
  * every consecutive pair must actually share a land border. This is the
  * single source of truth for Border Run scoring (see `modes/borderRun/score.ts`)
  * and for generation-time sanity checks — it deliberately says nothing about
- * path length, since ADR-0004 makes Border Run's scoring binary rather than
- * optimality-based.
+ * path length. Border Run's scoring compares the route length with the
+ * shortest route; this helper only checks geographic validity.
  */
 export function isValidLandRoute(
     places: Place[],

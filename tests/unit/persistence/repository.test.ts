@@ -33,7 +33,7 @@ describe("loadState", () => {
     it("round-trips a valid state through save and load", () => {
         const storage = createMemoryStorage();
         const state: PersistedState = {
-            schemaVersion: 6,
+            schemaVersion: 7,
             compass: {
                 daily: {
                     "2026-07-31": {
@@ -123,6 +123,19 @@ describe("loadState", () => {
                 longest: 12,
                 lastCompletedDate: "2026-07-30",
             },
+            insights: {
+                compassAnswers: [
+                    {
+                        originId: "country:usa",
+                        destinationId: "country:jpn",
+                        chosenDeg: 270,
+                        trueBearingDeg: 331,
+                        flatBearingDeg: 266,
+                        distanceKm: 10900,
+                        answeredAt: "2026-07-30T10:00:00.000Z",
+                    },
+                ],
+            },
         };
 
         saveState(state, storage);
@@ -151,12 +164,13 @@ describe("loadState", () => {
         storage.setItem(STORAGE_KEY, JSON.stringify(v1Value));
 
         const result = loadState(storage);
-        expect(result.schemaVersion).toBe(6);
+        expect(result.schemaVersion).toBe(7);
         expect(result.compass).toEqual({ ...v1Value.compass, dailyBonus: {} });
         expect(result.streak).toEqual(v1Value.streak);
         expect(result.arrange).toEqual({ daily: {}, dailyBonus: {} });
         expect(result.borderRun).toEqual({ daily: {}, dailyBonus: {} });
         expect(result.practice).toEqual(createDefaultState().practice);
+        expect(result.insights).toEqual({ compassAnswers: [] });
     });
 
     it("recovers to defaults from invalid JSON rather than throwing", () => {

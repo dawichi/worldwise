@@ -2,6 +2,7 @@
 import { ArrowLeft } from "lucide-astro";
 import RouteBuilder from "../../components/borderRun/RouteBuilder.astro";
 import FeedbackPanel from "../../components/shared/FeedbackPanel.astro";
+import RouteMap from "../../components/shared/RouteMap.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { parseDailyTierParam } from "../../lib/challenge/dailyTier";
 import { localizedPath, pageLocale, t } from "../../lib/i18n/t";
@@ -42,6 +43,15 @@ const tierLabel = t(locale, "borderRun.tierLabel", {
         <div class="mb-4">
             <FeedbackPanel id="feedback-panel" />
         </div>
+
+        <RouteMap
+            id="border-run-map"
+            label={t(locale, "borderRun.mapLabel")}
+            legend={[
+                { kind: "solid", label: t(locale, "borderRun.legendOptimal") },
+                { kind: "dashed", label: t(locale, "borderRun.legendYourRoute") },
+            ]}
+        />
 
         <button
             id="continue-round"

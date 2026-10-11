@@ -1,85 +1,74 @@
-import { compassCountryGeoShapes } from "../data/generated/compassShapes";
-import type { Collection } from "../lib/data/collections.schema";
 import type { Place } from "../lib/data/places.schema";
-
-const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
-
-function pathForPlace(place: Place, className: string): SVGPathElement | null {
-    const shape = compassCountryGeoShapes[place.iso2];
-    if (!shape) {
-        return null;
-    }
-    const path = document.createElementNS(SVG_NAMESPACE, "path");
-    path.setAttribute("d", shape.path);
-    path.setAttribute("class", className);
-    path.setAttribute("stroke-width", "0.05");
-    path.setAttribute("stroke-linejoin", "round");
-    path.dataset.countryId = place.id;
-    return path;
-}
+import {
+    countryPath,
+    drawWrappedWorld,
+    loadCountryShapes,
+    viewBoxAttribute,
+} from "./maps/worldMap";
+import { byRole } from "./shared/dom";
 
 export interface CompassMapController {
     render: (origin: Place) => void;
 }
 
+/**
+ * The context map behind the Compass dial: the world in Mercator (the
+ * projection is conformal, so north-up directions at the origin match the
+ * dial exactly), framed on the origin country's main landmass.
+ */
 export function createCompassMapController(
     root: HTMLElement,
-    collection: Collection,
 ): CompassMapController {
-    const mapSvg = root.querySelector<SVGSVGElement>('[data-role="map-svg"]');
-    const context = root.querySelector<SVGGElement>(
-        '[data-role="map-context"]',
-    );
-    if (!mapSvg || !context) {
-        throw new Error("compassMap: missing map elements");
-    }
-    const mapSvgElement = mapSvg;
-    const contextElement = context;
+    const mapSvg = byRole<SVGSVGElement>(root, "map-svg");
+    const worldLayer = byRole<SVGGElement>(root, "map-world");
+    const contextLayer = byRole<SVGGElement>(root, "map-context");
+    let worldDrawn = false;
+    let renderToken = 0;
 
     function render(origin: Place): void {
-        const originShape = compassCountryGeoShapes[origin.iso2];
-        if (!originShape) {
-            return;
-        }
-
-        const originWidth =
-            originShape.bounds.maxLon - originShape.bounds.minLon;
-        const originHeight =
-            originShape.bounds.maxLat - originShape.bounds.minLat;
-        const paddingLon = Math.max(originWidth * 0.72, 2.5);
-        const paddingLat = Math.max(originHeight * 0.72, 2.5);
-        const minLon = originShape.bounds.minLon - paddingLon;
-        const maxLon = originShape.bounds.maxLon + paddingLon;
-        const minLat = originShape.bounds.minLat - paddingLat;
-        const maxLat = originShape.bounds.maxLat + paddingLat;
-        mapSvgElement.setAttribute(
-            "viewBox",
-            `${minLon} ${-maxLat} ${maxLon - minLon} ${maxLat - minLat}`,
-        );
-
-        contextElement.replaceChildren();
-        for (const neighborId of origin.landBorders) {
-            const neighbor = collection.places.find(
-                (place) => place.id === neighborId,
-            );
-            if (!neighbor) {
-                continue;
+        renderToken += 1;
+        const token = renderToken;
+        void loadCountryShapes().then((shapes) => {
+            // A later round may have started while the shapes were loading.
+            if (token !== renderToken) {
+                return;
             }
-            const neighborPath = pathForPlace(
-                neighbor,
-                "fill-chip stroke-border",
-            );
-            if (neighborPath) {
-                contextElement.append(neighborPath);
+            if (!worldDrawn) {
+                drawWrappedWorld(
+                    worldLayer,
+                    shapes,
+                    "fill-land stroke-land-edge",
+                    "compass-context-world",
+                );
+                worldDrawn = true;
             }
-        }
 
-        const originPath = pathForPlace(origin, "fill-accent/45 stroke-accent");
-        if (originPath) {
+            const originShape = shapes[origin.iso2];
+            if (!originShape) {
+                contextLayer.replaceChildren();
+                return;
+            }
+            const { minX, maxX, minY, maxY } = originShape.bounds;
+            const paddingX = Math.max((maxX - minX) * 0.72, 2.5);
+            const paddingY = Math.max((maxY - minY) * 0.72, 2.5);
+            mapSvg.setAttribute(
+                "viewBox",
+                viewBoxAttribute({
+                    x: minX - paddingX,
+                    y: minY - paddingY,
+                    width: maxX - minX + 2 * paddingX,
+                    height: maxY - minY + 2 * paddingY,
+                }),
+            );
+
+            const originPath = countryPath(
+                originShape,
+                "fill-accent/45 stroke-accent",
+            );
             originPath.dataset.role = "origin-map";
-            originPath.setAttribute("stroke-width", "0.08");
-            contextElement.append(originPath);
-        }
+            originPath.setAttribute("stroke-width", "1.5");
+            contextLayer.replaceChildren(originPath);
+        });
     }
 
     return { render };

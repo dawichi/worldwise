@@ -18,6 +18,11 @@ const locale = Astro.currentLocale === "es" ? "es" : "en";
     >
     </ol>
 
+    <div class="mb-3 flex items-center justify-between rounded-card bg-chip px-3.5 py-2.5 text-sm">
+        <span class="font-semibold text-text-muted">{t(locale, "borderRun.hopBudgetLabel")}</span>
+        <span data-role="hop-status" aria-live="polite" class="font-extrabold tabular-nums text-text">0 / 0</span>
+    </div>
+
     <button
         type="button"
         data-role="undo-hop"
@@ -39,6 +44,11 @@ const locale = Astro.currentLocale === "es" ? "es" : "en";
         border-color: var(--color-success-icon);
         background-color: var(--color-success-bg);
         color: var(--color-success-text);
+    }
+    [data-role="path-trail"][data-credit="partial"] li {
+        border-color: var(--color-attention-icon);
+        background-color: var(--color-attention-bg);
+        color: var(--color-attention-text);
     }
     [data-role="path-trail"][data-credit="none"] li {
         border-color: var(--color-attention-icon);

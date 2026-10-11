@@ -1,0 +1,73 @@
+---
+interface LegendItem {
+    kind: "solid" | "dashed" | "arrow";
+    label: string;
+}
+
+interface Props {
+    id: string;
+    /** Accessible description of what the map shows (it is decorative beside the text feedback). */
+    label: string;
+    legend: LegendItem[];
+}
+
+const { id, label, legend } = Astro.props;
+---
+
+<figure id={id} class="route-map hidden mb-4" data-revealed="false">
+    <svg
+        data-role="route-svg"
+        viewBox="-180 -90 360 180"
+        preserveAspectRatio="xMidYMid meet"
+        class="aspect-[2/1] w-full overflow-hidden rounded-card border border-border bg-sea"
+        role="img"
+        aria-label={label}
+    >
+        <g data-role="route-world" stroke-width="0.6"></g>
+        <g data-role="route-highlight" stroke-width="1.2"></g>
+        <g data-role="route-lines"></g>
+    </svg>
+    <figcaption class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold text-text-muted">
+        {
+            legend.map((item) => (
+                <span class="flex items-center gap-1.5">
+                    <svg width="22" height="8" viewBox="0 0 22 8" aria-hidden="true">
+                        {item.kind === "solid" && (
+                            <line x1="1" y1="4" x2="21" y2="4" class="stroke-accent" stroke-width="3" stroke-linecap="round" />
+                        )}
+                        {item.kind === "dashed" && (
+                            <line x1="1" y1="4" x2="21" y2="4" class="stroke-text-muted" stroke-width="2" stroke-dasharray="4 3" />
+                        )}
+                        {item.kind === "arrow" && (
+                            <path d="M1 4 H17 M13 1 L18 4 L13 7" fill="none" class="stroke-text" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        )}
+                    </svg>
+                    {item.label}
+                </span>
+            ))
+        }
+    </figcaption>
+</figure>
+
+<style is:global>
+    .route-map[data-revealed="true"] .route-line-primary {
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        animation: route-draw 1.4s ease-out 0.15s forwards;
+    }
+    @keyframes route-draw {
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .route-map[data-revealed="true"] .route-line-primary {
+            animation: none;
+            stroke-dashoffset: 0;
+        }
+    }
+    html.reduce-motion .route-map[data-revealed="true"] .route-line-primary {
+        animation: none;
+        stroke-dashoffset: 0;
+    }
+</style>
